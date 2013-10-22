@@ -376,10 +376,7 @@ GirlMouseEngineMenu12 *gLayer12;
 }
 
 -(void) addLevelCompleteLayerToTheScene{
-    hudLayer.visible = NO;
-    LevelCompleteScreen *lvlCompleteLayer = [[LevelCompleteScreen alloc] init];
-    lvlCompleteLayer.tag = 12;
-    [gLayer12 addChild: lvlCompleteLayer z:2000];
+    [self levelCompleted :12];
 }
 
 -(void)initValue{
@@ -1020,6 +1017,10 @@ GirlMouseEngineMenu12 *gLayer12;
     }
 }
 -(void)heroWinFunc{
+    if (isLevelCompleted) {
+        return;
+    }
+    
     if(mouseWinChe&&!gameFunc.trappedChe){
         heroWinCount+=1;
         if(heroWinCount==15){

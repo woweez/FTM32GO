@@ -14,6 +14,7 @@
 #import "HudLayer.h"
 #import "FTMUtil.h"
 #import "SimpleAudioEngine.h"
+#import "LevelCompleteScreen.h"
 
 @implementation CommonEngine
 
@@ -556,6 +557,22 @@ BOOL isFist;
         [self unschedule:@selector(stopClockTimer)];
     }
 }
+
+-(void) levelCompleted : (int) tag{
+    isLevelCompleted = YES;
+    int totalNoOffCheese = [hudLayer getTotalNoOffCheeseCollected];
+    hudLayer.visible = NO;
+    LevelCompleteScreen *lvlCompleteLayer = [[LevelCompleteScreen alloc] init];
+    [lvlCompleteLayer playStarImageAnimationAgainstLevel:totalNoOffCheese];
+    lvlCompleteLayer.tag = tag;
+    [[[CCDirector sharedDirector] runningScene] addChild: lvlCompleteLayer z:2000];
+}
+
+
+-(void) mouseTrapped{
+    
+}
+
 - (void)dealloc
 {
     [[SimpleAudioEngine sharedEngine] stopAllEffects];

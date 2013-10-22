@@ -37,11 +37,12 @@
     float xScale;
     float yScale;
     float cScale;
-    
+    int totalCheeseCollected;
 }
 
 -(void) showRetryOptionMenu;
 -(void) addLevelSceneAgainForRetry;
 -(void) updateNoOfCheeseCollected:(int) currentValue andMaxValue: (int) maxValue;
 -(void) updateTimeRemaining:(int) minuts andTimeInSec: (int) seconds;
+-(int) getTotalNoOffCheeseCollected;
 @end

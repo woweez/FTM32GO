@@ -47,6 +47,7 @@
     BOOL heroJumpRunningChe;
     BOOL jumpingChe;
     BOOL isLandingAnimationAdded;
+    BOOL isLevelCompleted;
     int miceTrapAnimationType;
     int currentAnim;
     CCSpriteFrameCache *cache;
@@ -69,7 +70,8 @@
 -(void) addStrongMousePushingSprite;
 -(void)progressBarFunc;
 -(void) startClockTimer;
-
+-(void) levelCompleted : (int) tag;
+-(void) mouseTrapped;
 
 //-(void)playMamaKniveHitAnimation;
 //-(void)playStrongKniveHitAnimation;

@@ -995,6 +995,7 @@ GameEngineMenu *layer2;
     }
 }
 -(void)heroWinFunc{
+    
     if(mouseWinChe){
         heroWinCount+=1;
         if(heroWinCount==15){

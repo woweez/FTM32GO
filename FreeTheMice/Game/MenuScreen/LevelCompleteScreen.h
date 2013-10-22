@@ -20,11 +20,14 @@
     sound *soundEffect;
     float scaleFactorX;
     float scaleFactorY;
-
+    float xScale;
+    float yScale;
+    float cScale;
     CCSprite *levelCompleteBg;
     CCLayer *parentReference;
 
     CCLabelAtlas * score;
     
 }
+-(void) playStarImageAnimationAgainstLevel:(int) starsLevel;
 @end

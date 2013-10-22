@@ -469,10 +469,7 @@ GameEngine13Menu *layer13;
 }
 
 -(void) addLevelCompleteLayerToTheScene{
-    hudLayer.visible = NO;
-    LevelCompleteScreen *lvlCompleteLayer = [[LevelCompleteScreen alloc] init];
-    lvlCompleteLayer.tag = 13;
-    [layer13 addChild: lvlCompleteLayer z:2000];
+    [self levelCompleted :13];
 }
 
 -(void)initValue{
@@ -1080,6 +1077,9 @@ GameEngine13Menu *layer13;
     }
 }
 -(void)heroWinFunc{
+    if (isLevelCompleted) {
+        return;
+    }
     if(mouseWinChe){
         DB *db = [DB new];
         int currentLvl = [[db getSettingsFor:@"mamaCurrLvl"] intValue];

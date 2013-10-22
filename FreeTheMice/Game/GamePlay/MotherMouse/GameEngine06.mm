@@ -339,10 +339,7 @@ GameEngine06Menu *layer06;
 }
 
 -(void) addLevelCompleteLayerToTheScene{
-    hudLayer.visible = NO;
-    LevelCompleteScreen *lvlCompleteLayer = [[LevelCompleteScreen alloc] init];
-    lvlCompleteLayer.tag = 6;
-    [layer06 addChild: lvlCompleteLayer z:2000];
+    [self levelCompleted :6];
 }
 
 -(void)initValue{
@@ -952,6 +949,9 @@ GameEngine06Menu *layer06;
     }
 }
 -(void)heroWinFunc{
+    if (isLevelCompleted) {
+        return;
+    }
     if(mouseWinChe){
         
         DB *db = [DB new];

@@ -288,10 +288,7 @@ GameEngine01Menu *layer01;
 }
 
 -(void) addLevelCompleteLayerToTheScene{
-    hudLayer.visible = NO;
-    LevelCompleteScreen *lvlCompleteLayer = [[LevelCompleteScreen alloc] init];
-    lvlCompleteLayer.tag = 1;
-    [layer01 addChild: lvlCompleteLayer z:2000];
+    [self levelCompleted : 1];
 }
 -(void)initValue{
     //Cheese Count Important
@@ -530,6 +527,9 @@ GameEngine01Menu *layer01;
 }
 
 -(void)heroWinFunc{
+    if (isLevelCompleted) {
+        return;
+    }
     if(mouseWinChe){
         DB *db = [DB new];
         int currentLvl = [[db getSettingsFor:@"mamaCurrLvl"] intValue];

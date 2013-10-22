@@ -263,10 +263,7 @@ StrongMouseEngineMenu03 *sLayer03;
 }
 
 -(void) addLevelCompleteLayerToTheScene{
-    hudLayer.visible = NO;
-    LevelCompleteScreen *lvlCompleteLayer = [[LevelCompleteScreen alloc] init];
-    lvlCompleteLayer.tag = 3;
-    [sLayer03 addChild: lvlCompleteLayer z:2000];
+    [self levelCompleted :3];
 }
 
 -(void)initValue{
@@ -713,6 +710,10 @@ StrongMouseEngineMenu03 *sLayer03;
     
 }
 -(void)heroWinFunc{
+    if (isLevelCompleted) {
+        return;
+    }
+    
     if(mouseWinChe){
         heroWinCount+=1;
         if (heroWinCount <2) {

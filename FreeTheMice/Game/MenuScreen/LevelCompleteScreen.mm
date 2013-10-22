@@ -80,9 +80,20 @@ enum {
         scaleFactorX = winSize.width/480;
         scaleFactorY = winSize.height/320;
         
+        if (RETINADISPLAY == 2) {
+            xScale = 1 * scaleFactorX;
+            yScale = 1 * scaleFactorY;
+            cScale = 1;
+        }else{
+            xScale = 0.5 * scaleFactorX;
+            yScale = 0.5 * scaleFactorY;
+            cScale = 0.5;
+        }
+        
+        
 		levelCompleteBg = [CCSprite spriteWithFile:@"level_complete_bg.png"];
         levelCompleteBg.position = ccp(240 *scaleFactorX, 160*scaleFactorY);
-        [levelCompleteBg setScale:0.5];
+        [levelCompleteBg setScale:cScale];
         [self addChild: levelCompleteBg z:0];
         
         
@@ -113,7 +124,7 @@ enum {
         [soundEffect button_1];
         [[CCDirector sharedDirector] replaceScene:[LevelScreen scene]];
     }];
-    [levelsMenuItem setScale:0.5];
+    [levelsMenuItem setScale:cScale];
     CGSize winSize = [CCDirector sharedDirector].winSize;
     if(winSize.width >480 && winSize.height < 1100){
         levelsMenuItem.position = ccp(0 *scaleFactorX, 10 *scaleFactorY);
@@ -124,6 +135,7 @@ enum {
     menu = [CCMenu menuWithItems: levelsMenuItem,  nil];
     menu.position = ccp(190 *scaleFactorX, 71 *scaleFactorY);
     [self addChild:menu];
+    
 }
 
 -(void) addRetryBtnMenu{
@@ -144,7 +156,7 @@ enum {
                 break;
         }
     }];
-    [retryMenuItem setScale:0.5];
+    [retryMenuItem setScale:cScale];
     retryMenuItem.position = ccp(53 *scaleFactorX, 10 *scaleFactorY);
     [menu addChild:retryMenuItem];
 }
@@ -169,7 +181,7 @@ enum {
                 break;
         }
     }];
-    [nextLevelMenuItem setScale:0.5];
+    [nextLevelMenuItem setScale:cScale];
     CGSize winSize = [CCDirector sharedDirector].winSize;
     if(winSize.width >480 && winSize.height < 1100){
         nextLevelMenuItem.position = ccp(102 *scaleFactorX, 10 *scaleFactorY);
@@ -354,34 +366,55 @@ enum {
     
 }
 
--(void)clickMouse:(CCMenuItem *)sender {
-    [soundEffect button_1];
-//    DB *db = [DB new];
-//    [db setSettingsFor:@"CurrentMouse" withValue:[NSString stringWithFormat:@"%d",sender.tag]];
-//    [db release];
-}
-
--(CCSprite *) getAppropriateStarImageAgainstLevel: (int) level{
+-(void) playStarImageAnimationAgainstLevel: (int) level{
    // get the appropriate star image id here from the level: use db to get that. for now just 1;
-    CCSprite *starImage = [CCSprite spriteWithFile:[NSString stringWithFormat:@"stars_%d.png",level]];
-    starImage.position = ccp(45, 18);
+    level = [self getAppropriateStarLevel:level];
+    CCSpriteFrameCache *cache = [CCSpriteFrameCache sharedSpriteFrameCache];
+    [cache addSpriteFramesWithFile:[NSString stringWithFormat:@"star_%d_Anim.plist", level]];
+    CCSpriteBatchNode *spriteSheet = [CCSpriteBatchNode batchNodeWithFile:[NSString stringWithFormat:@"star_%d_Anim.png", level]];
+    [self addChild:spriteSheet z:10];
     
-    return starImage;
-}
--(void)ccTouchesMoved:(NSSet *)touches withEvent:(UIEvent *)event {
-    for( UITouch *touch in touches ) {
-		CGPoint location = [touch locationInView: [touch view]];
-		location = [[CCDirector sharedDirector] convertToGL: location];
-	}
+    CCSprite *starSprite = [CCSprite spriteWithSpriteFrameName:[NSString stringWithFormat:@"%d_star_0.png", level]];
+    if (level == 3) {
+       starSprite.position = ccp(231 *scaleFactorX, 220 *scaleFactorY);
+    }
+    else{
+        starSprite.position = ccp(212 *scaleFactorX, 220 *scaleFactorY);
+    }
+    [spriteSheet addChild:starSprite];
+    
+    int length = 0;
+    
+    if (level == 1) {
+        length = 27;
+    }else if (level == 2){
+        length = 34;
+    }else{
+        length = 44;
+    }
+    
+    NSMutableArray *animFrames = [NSMutableArray array];
+    for(int i = 0; i <= length; i++) {
+        CCSpriteFrame *frame = [cache spriteFrameByName:[NSString stringWithFormat:@"%d_star_%d.png",level,i]];
+        [animFrames addObject:frame];
+    }
+    CCAnimation *animation = [CCAnimation animationWithSpriteFrames:animFrames delay:0.06f];
+    [starSprite runAction:[CCAnimate actionWithAnimation:animation]];
 }
 
-- (void)ccTouchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {
-	for( UITouch *touch in touches ) {
-		CGPoint location = [touch locationInView: [touch view]];
-		location = [[CCDirector sharedDirector] convertToGL: location];
-        
-	}
+-(int) getAppropriateStarLevel:(int) count{
     
+    switch (count) {
+        case 1:
+        case 2:
+        case 3:
+            return 1;
+        case 4:
+            return 2;
+        case 5:
+            return 3;
+        default:
+            return 1;
+    }
 }
-
 @end

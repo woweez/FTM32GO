@@ -124,7 +124,9 @@
 }
 
 -(void) updateNoOfCheeseCollected:(int)currentValue andMaxValue:(int)maxValue{
-    
+    if (currentValue > 0) {
+        totalCheeseCollected++;
+    }
     switch (currentValue) {
         case 1:
             [soundEffect cheese_1];
@@ -147,6 +149,9 @@
     [noOfCollectedCheese setString:[NSString stringWithFormat:@"%d/%d",currentValue,maxValue]];
 }
 
+-(int) getTotalNoOffCheeseCollected{
+    return totalCheeseCollected;
+}
 -(void) updateTimeRemaining:(int)minuts andTimeInSec:(int)seconds{
     float time = minuts * 60 + seconds;
     float totalTime = 120;
