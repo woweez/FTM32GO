@@ -72,6 +72,8 @@
 -(void) startClockTimer;
 -(void) levelCompleted : (int) tag;
 -(void) mouseTrapped;
+-(void) playIceCubeApprearSound;
+-(void) playIceCubeFallSound;
 
 //-(void)playMamaKniveHitAnimation;
 //-(void)playStrongKniveHitAnimation;

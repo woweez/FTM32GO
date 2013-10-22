@@ -378,6 +378,8 @@ GameEngine10Menu *layer10;
         [self addChild:dotSprite z:10];
         [self addHudLayerToTheScene];
         [self starCheeseSpriteInitilized];
+//        [self schedule:@selector(playIceCubeFallSound) interval:6];
+//        [self schedule:@selector(playIceCubeApprearSound) interval:8];
         [self scheduleUpdate];
         
     }
@@ -536,6 +538,7 @@ GameEngine10Menu *layer10;
                 if(iceQubeCount[i]==51 || iceQubeCount[i] == 52){
                     iceBlastAnimationCount=1;
                     iceBlastAtlas.position=ccp(iceQubePos[i][0]-80,iceQubePos[i][1]-15);
+                    [soundEffect ice_cubes_appear];
                 }
                 
                 iceQubeCount[i]+=1.2;
@@ -559,6 +562,7 @@ GameEngine10Menu *layer10;
             iceQubeCount[3]=-39;
         }
         if(iceQubeCount[i]>=470){
+            [soundEffect ice_cubes_fall];
             iceBlastAnimationCount=1;
             iceBlastAtlas.position=ccp(iceQubePos[i][0]-90,iceQubePos[i][1]-14);
             iceQubeCount[i]=-39;

@@ -375,6 +375,10 @@ enum {
     [self addChild:spriteSheet z:10];
     
     CCSprite *starSprite = [CCSprite spriteWithSpriteFrameName:[NSString stringWithFormat:@"%d_star_0.png", level]];
+    if (RETINADISPLAY == 2) {
+        starSprite.scale = 2;
+    }
+
     if (level == 3) {
        starSprite.position = ccp(231 *scaleFactorX, 220 *scaleFactorY);
     }
@@ -398,7 +402,7 @@ enum {
         CCSpriteFrame *frame = [cache spriteFrameByName:[NSString stringWithFormat:@"%d_star_%d.png",level,i]];
         [animFrames addObject:frame];
     }
-    CCAnimation *animation = [CCAnimation animationWithSpriteFrames:animFrames delay:0.06f];
+    CCAnimation *animation = [CCAnimation animationWithSpriteFrames:animFrames delay:0.03f];
     [starSprite runAction:[CCAnimate actionWithAnimation:animation]];
 }
 

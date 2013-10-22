@@ -965,6 +965,12 @@ GirlMouseEngineMenu14 *gLayer14;
     pulbCount+=0.7;
     pulbCount=(pulbCount>=250?0:pulbCount);
     int lCount=(pulbCount<=125?pulbCount-63:(125-(pulbCount-125)-63));
+    if (pulbCount == 0) {
+        [soundEffect bulb_swaying];
+    }
+    if (pulbCount >= 125 && pulbCount < 127) {
+        [soundEffect bulb_swaying];
+    }
     if(pulbCount<=125){
         pulbSprite.rotation=(pulbCount-63);
         eleAtlas.position=ccp(820,605);

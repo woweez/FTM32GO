@@ -37,10 +37,22 @@
         
         walkingSpeed = 60;
         
+        soundManager = [[sound alloc ] init];
+        
+        [self schedule:@selector(playTheCatSound) interval:4];
+        
     }
     return self;
 }
 
+-(void) playTheCatSound{
+    
+    int r = arc4random() % 2;
+    if (r == 1) {
+        [soundManager cat];
+    }
+    
+}
 -(CCSprite *) getCatSprite{
     if (catSprite != nil) {
         return catSprite;

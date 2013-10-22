@@ -568,6 +568,13 @@ BOOL isFist;
     [[[CCDirector sharedDirector] runningScene] addChild: lvlCompleteLayer z:2000];
 }
 
+-(void) playIceCubeApprearSound{
+    [soundManager ice_cubes_appear];
+}
+
+-(void) playIceCubeFallSound{
+    [soundManager ice_cubes_fall];
+}
 
 -(void) mouseTrapped{
     

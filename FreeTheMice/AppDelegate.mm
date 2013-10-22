@@ -43,7 +43,7 @@
 	director_.wantsFullScreenLayout = YES;
 	
 	// Display FSP and SPF by Kamran
-	[director_ setDisplayStats:YES];
+	[director_ setDisplayStats:NO];
 	
 	// set FPS at 60
 	[director_ setAnimationInterval:1.0/60];
@@ -78,6 +78,7 @@
 	[sharedFileUtils setiPadRetinaDisplaySuffix:@"-ipadhd"];	// Default on iPad RetinaDisplay is "-ipadhd"
 	
 	// Assume that PVR images have premultiplied alpha
+    
 	[CCTexture2D PVRImagesHavePremultipliedAlpha:YES];
 	int cheese = [[NSUserDefaults standardUserDefaults] integerForKey:@"currentCheese"];
     int firstTutorial = [[NSUserDefaults standardUserDefaults] integerForKey:@"firstTutorial"];

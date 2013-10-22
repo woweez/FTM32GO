@@ -514,12 +514,19 @@ GameEngine14Menu *layer14;
     pulbCount+=1.7;
     pulbCount=(pulbCount>=250?0:pulbCount);
     int lCount=(pulbCount<=125?pulbCount-63:(125-(pulbCount-125)-63));
+    if (pulbCount == 0) {
+        [soundEffect bulb_swaying];
+    }
+    if (pulbCount >= 125 && pulbCount < 127) {
+        [soundEffect bulb_swaying];
+    }
     if(pulbCount<=125){
         pulbSprite.rotation=(pulbCount-63);
         eleAtlas.position=ccp(820,605);
     }else{
         pulbSprite.rotation=(125-(pulbCount-125)-63);
         eleAtlas.position=ccp(430,605);
+        
     }
     
     CGFloat xx=[trigo circlex:150 a:360-((lCount+73)*1.2)]+568;

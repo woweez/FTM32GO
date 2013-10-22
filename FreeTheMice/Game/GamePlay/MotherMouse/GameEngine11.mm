@@ -535,6 +535,9 @@ GameEngine11Menu *layer11;
     //Left Ice Cube
     for(int i=0;i<4;i++){
         if(iceQubeCount[i]!=0){
+            if (i ==0) {
+                [soundEffect ice_cubes_appear];
+            }
             if(iceQubeCount[i]<244){
                 iceQubeCount[i]+=2.0;
                 iceQubePos[i][0]=[trigo circlex:iceQubeCount[i] a:270]+440;
@@ -558,6 +561,10 @@ GameEngine11Menu *layer11;
             iceBlastAtlas.position=ccp(iceQubePos[i][0]-90,iceQubePos[i][1]-14);
         }
         if(iceQubeCount[i]>=400&&iceQubeCount[i]<=403){
+            if (i == 2) {
+                [soundEffect ice_cubes_fall];
+            }
+            
             iceBlastAnimationCount=1;
             iceBlastAtlas.position=ccp(iceQubePos[i][0]-95,iceQubePos[i][1]-10);
             iceQubeSprite[i].rotation=arc4random() % 360 + 1;
@@ -577,6 +584,10 @@ GameEngine11Menu *layer11;
     //Right Ice Cube
     for(int i=0;i<4;i++){
         if(iceQubeCount2[i]!=0){
+            if (i == 3) {
+                [soundEffect ice_cubes_appear];
+            }
+            
             if(iceQubeCount2[i]<160){
                 iceQubeCount2[i]+=2.0;
                 iceQubePos2[i][0]=[trigo circlex:iceQubeCount2[i] a:270]+980;
@@ -599,6 +610,10 @@ GameEngine11Menu *layer11;
             iceBlastAtlas2.position=ccp(iceQubePos2[i][0]-90,iceQubePos2[i][1]-8);
         }
         if(iceQubeCount2[i]>=410&&iceQubeCount2[i]<415){
+            if (i == 3) {
+                [soundEffect ice_cubes_fall];
+            }
+            
             iceBlastAnimationCount2=1;
             iceBlastAtlas2.position=ccp(iceQubePos2[i][0]-75,iceQubePos2[i][1]-10);
             iceQubeCount2[i]=415;

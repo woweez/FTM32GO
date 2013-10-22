@@ -1139,6 +1139,10 @@ StrongMouseEngineMenu13 *sLayer13;
     }
     pulbCount+=1.7;
     pulbCount=(pulbCount>=250?0:pulbCount);
+
+    if (pulbCount >= 62 && pulbCount < 64) {
+        [soundEffect bulb_swaying];
+    }
     if(pulbCount<=125){
         pulbSprite.rotation=(pulbCount-63);
     }else{

@@ -8,6 +8,7 @@
 
 #import <cocos2d.h>
 #import "CCSprite.h"
+#import "sound.h"
 
 @interface CatObject : CCSprite {
 
@@ -19,6 +20,7 @@
     int catYPos;
     int moveXend;
     int moveXstart;
+    sound *soundManager;
     
 }
 

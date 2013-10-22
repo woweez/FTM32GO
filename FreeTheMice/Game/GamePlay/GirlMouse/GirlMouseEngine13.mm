@@ -1234,6 +1234,12 @@ GirlMouseEngineMenu13 *gLayer13;
     catStopWoodSprite.position=ccp(815,650+gameFunc.plateWoodStopCount);
     pulbCount+=1.0;
     pulbCount=(pulbCount>=250?0:pulbCount);
+    if (pulbCount == 0) {
+        [soundEffect bulb_swaying];
+    }
+    if (pulbCount >= 125 && pulbCount < 127) {
+        [soundEffect bulb_swaying];
+    }
     if(pulbCount<=125){
         pulbSprite.rotation=(pulbCount-63);
     }else{
