@@ -402,7 +402,7 @@ enum {
         CCSpriteFrame *frame = [cache spriteFrameByName:[NSString stringWithFormat:@"%d_star_%d.png",level,i]];
         [animFrames addObject:frame];
     }
-    CCAnimation *animation = [CCAnimation animationWithSpriteFrames:animFrames delay:0.03f];
+    CCAnimation *animation = [CCAnimation animationWithSpriteFrames:animFrames delay:0.06f];
     [starSprite runAction:[CCAnimate actionWithAnimation:animation]];
 }
 

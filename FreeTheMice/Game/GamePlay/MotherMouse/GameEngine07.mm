@@ -13,7 +13,7 @@
 #import "LevelCompleteScreen.h"
 #import "DB.h"
 #import "FTMUtil.h"
-
+#import "FTMConstants.h"
 
 enum {
     kTagParentNode = 1,
@@ -83,6 +83,9 @@ GameEngine07Menu *layer07;
         
         self.tileMap = [CCTMXTiledMap tiledMapWithTMXFile:@"background.tmx"];
         self.background = [_tileMap layerNamed:@"background"];
+        if (RETINADISPLAY == 2) {
+            self.background.scale = RETINADISPLAY;
+        }
         [self addChild:_tileMap z:-1 tag:1];
         
         cache = [CCSpriteFrameCache sharedSpriteFrameCache];
@@ -283,7 +286,10 @@ GameEngine07Menu *layer07;
         
         domeSprite=[CCSprite spriteWithSpriteFrameName:@"dome_0.png"];
         domeSprite.position=ccp(-348,479);
-        domeSprite.scale =0.5;
+        if (RETINADISPLAY != 2) {
+            domeSprite.scale =0.5;
+        }
+        
         [self addChild:domeSprite z:9];
         
         
@@ -576,6 +582,9 @@ GameEngine07Menu *layer07;
         [self startClockTimer];
         clockArrowSprite.position=ccp(450,258);
         clockBackgroundSprite.position=ccp(450,258);
+        if ([[switchAtlas string] isEqualToString:@"0"]){
+            [soundEffect switchSound];
+        }
         [switchAtlas setString:@"1"];
     }else if(gameFunc.switchCount>=1){
         gameFunc.switchCount+=1;
@@ -585,12 +594,19 @@ GameEngine07Menu *layer07;
             clockBackgroundSprite.position=ccp(-100,258);
             clockArrowSprite.position=ccp(-100,258);
             gameFunc.switchCount=0;
+            if ([[switchAtlas string] isEqualToString:@"1"]){
+                [soundEffect correct_switch];
+            }
             [switchAtlas setString:@"0"];
         }
     }
     
-    if(gameFunc.domeSwitchChe&&!screenMoveChe)
+    if(gameFunc.domeSwitchChe&&!screenMoveChe){
+        if ([[switchAtlas2 string] isEqualToString:@"0"]){
+            [soundEffect switchSound];
+        }
         [switchAtlas2 setString:@"1"];
+    }
     
     if(screenMoveChe){
         if(screenShowX<650&&gameFunc.moveCount2==0)
@@ -953,22 +969,7 @@ GameEngine07Menu *layer07;
     }
 }
 -(void)heroAnimationFunc:(int)fValue animationType:(NSString *)type{
-    NSString *fStr=@"";
-    if([type isEqualToString:@"jump"]){
-        if(fValue!=9)
-            fStr=[NSString stringWithFormat:@"mother_jump0%d.png",fValue+1];
-        else
-            fStr=[NSString stringWithFormat:@"mother_jump%d.png",fValue+1];
-    }else if([type isEqualToString:@"stand"])
-        fStr=[NSString stringWithFormat:@"mother_stand0%d.png",fValue+1];
-    else if([type isEqualToString:@"win"])
-        fStr=@"mother_win01.png";
-    
-    [spriteSheet removeChild:heroSprite cleanup:YES];
-    heroSprite = [CCSprite spriteWithSpriteFrameName:fStr];
-    heroSprite.position = ccp(platformX, platformY);
-    heroSprite.scale=0.8;
-    [spriteSheet addChild:heroSprite z:10];
+    [self mamaAnimationWithType:fValue animationType:type];
     [self heroUpdateForwardPosFunc];
 }
 -(void)heroUpdateForwardPosFunc{

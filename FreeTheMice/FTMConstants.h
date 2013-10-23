@@ -73,7 +73,25 @@
 #define HERO_SPRITE_TAG          211
 #define HERO_RUN_SPRITE_TAG      212
 
-#define STRONG_SCALE            0.7
+
+
+
+#if(RETINADISPLAY == 2)
+//HD Scales
+#define STRONG_SCALE            1.3 //0.7 for no HD.
+#define MAMA_SCALE              1.6
+#define GIRL_SCALE              1.3
+#define MAMA_RUN_SCALE          1.6
+#define MAMA_PUSH_SCALE         1.6
+#define CAT_SCALE               1.2
+#else
+#define STRONG_SCALE            0.65 //0.7 for no HD.
+#define GIRL_SCALE              0.65
+#define MAMA_SCALE              0.8
+#define MAMA_RUN_SCALE          0.8
+#define MAMA_PUSH_SCALE         0.8
+#define CAT_SCALE               0.6
+#endif
 
 #define STRONG_SHOCK_ANIM     1
 #define STRONG_WATER_ANIM     2

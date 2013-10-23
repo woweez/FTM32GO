@@ -82,6 +82,9 @@ StrongMouseEngineMenu05 *sLayer05;
         
         self.tileMap = [CCTMXTiledMap tiledMapWithTMXFile:@"background.tmx"];
         self.background = [_tileMap layerNamed:@"background"];
+        if (RETINADISPLAY == 2) {
+            self.background.scale = RETINADISPLAY;
+        }
         [self addChild:_tileMap z:-1 tag:1];
         
         
@@ -547,6 +550,9 @@ StrongMouseEngineMenu05 *sLayer05;
     
     movePlatformSprite.position=ccp(480+gameFunc.moveCount2,500);
     vesselsSprite.position=ccp(420+gameFunc.vesselsCount+gameFunc.vesselsMoveCount,541-gameFunc.vesselsCount2);
+    if (gameFunc.vesselsCount == 260) {
+        [soundEffect knife_tray];
+    }
     crackedWindowSprite.position=ccp(835+gameFunc.crackedMoveCount,574);
     crackedWindowHoleSprite.position=ccp(885+gameFunc.crackedMoveCount,544);
     crackedWindowHoleSprite2.position=ccp(805+gameFunc.crackedMoveCount,628);
@@ -609,6 +615,9 @@ StrongMouseEngineMenu05 *sLayer05;
     
     if(hx-iValue>560 &&hx-iValue<630 &&hy >= 620 &&gameFunc.switchCount==0){
         gameFunc.switchCount=1;
+        if ([[switchAtlas string] isEqualToString:@"0"]){
+            [soundEffect switchSound];
+        }
         [switchAtlas setString:@"1"];
     }
     if(gameFunc.teaPotCount2>=90&&knifeCount==0)
@@ -963,6 +972,11 @@ StrongMouseEngineMenu05 *sLayer05;
                 heroPushSprite.position=ccp(heroSprite.position.x-10,heroSprite.position.y);
             
             heroRunSprite.visible=NO;
+            if (!heroPushSprite.visible) {
+                [soundEffect pushing];
+            }else if (arc4random() % 20 == 1){
+                [soundEffect pushing];
+            }
             heroPushSprite.visible=YES;
         }
     }

@@ -9,8 +9,7 @@
 // Import the interfaces
 #import "GirlMouseEngine11.h"
 #import "LevelScreen.h"
-
-
+#import "FTMConstants.h"
 // Needed to obtain the Navigation Controller
 #import "AppDelegate.h"
 #import "DB.h"
@@ -81,6 +80,9 @@ GirlMouseEngineMenu11 *gLayer11;
         
         self.tileMap = [CCTMXTiledMap tiledMapWithTMXFile:@"bridge_background.tmx"];
         self.background = [_tileMap layerNamed:@"bridge_background"];
+        if (RETINADISPLAY == 2) {
+            self.background.scale = RETINADISPLAY;
+        }
         _tileMap.position=ccp(0,-158);
         _tileMap.scaleY=1.3;
         [self addChild:_tileMap z:-1 tag:1];
@@ -271,7 +273,6 @@ GirlMouseEngineMenu11 *gLayer11;
         
         CCSprite *iceBoxSprite=[CCSprite spriteWithFile:@"bridge_ice_box2.png"];
         iceBoxSprite.position=ccp(275,263);
-        iceBoxSprite.scale=1.25;
         [self addChild:iceBoxSprite z:0];
         
         iceBoxSprite=[CCSprite spriteWithFile:@"bridge_ice_box.png"];
@@ -518,6 +519,9 @@ GirlMouseEngineMenu11 *gLayer11;
         }
     }
     if(hx-iValue<40 && hy ==523 && gameFunc.switchCount==0){
+        if ([[switchAtlas string] isEqualToString:@"0"]){
+            [soundEffect switchSound];
+        }
         [switchAtlas setString:@"1"];
         gameFunc.switchCount=1;
     }
@@ -529,10 +533,16 @@ GirlMouseEngineMenu11 *gLayer11;
         CGFloat yy=0;
         if(iceQubeCount[i]!=0){
             if(iceQubeCount[i]<230){
+                if (iceQubeCount[i] >2 && iceQubeCount[i] < 4 ) {
+                    [soundEffect ice_cubes_appear];
+                }
                 iceQubeCount[i]+=1.2;
                 xx=[trigo circlex:iceQubeCount[i] a:270]+530;
                 yy=[trigo circley:iceQubeCount[i] a:270]+420;
             }else {
+                if (iceQubeCount[i] >233&& iceQubeCount[i] < 235 ) {
+                    [soundEffect ice_cubes_fall];
+                }
                 iceQubeCount[i]+=1.2;
                 xx=[trigo circlex:iceQubeCount[i] a:359]+248;
                 yy=[trigo circley:iceQubeCount[i] a:359]+133;
@@ -1040,19 +1050,7 @@ GirlMouseEngineMenu11 *gLayer11;
 }
 
 -(void)heroAnimationFunc:(int)fValue animationType:(NSString *)type{
-    NSString *fStr=@"";
-    if([type isEqualToString:@"jump"])
-        fStr=[NSString stringWithFormat:@"girl_jump%d.png",fValue+1];
-    else if([type isEqualToString:@"stand"]){
-        fStr=[NSString stringWithFormat:@"girl_stand%d.png",fValue+1];
-    }else if([type isEqualToString:@"win"])
-        fStr=@"girl_win1.png";
-    
-    [spriteSheet removeChild:heroSprite cleanup:YES];
-    heroSprite = [CCSprite spriteWithSpriteFrameName:fStr];
-    heroSprite.position = ccp(platformX, platformY);
-    heroSprite.scale=0.65;
-    [spriteSheet addChild:heroSprite z:10];
+    [self girlAnimationWithType:fValue animationType:type];
     [self heroUpdateForwardPosFunc];
     
     if([type isEqualToString:@"jump"]){

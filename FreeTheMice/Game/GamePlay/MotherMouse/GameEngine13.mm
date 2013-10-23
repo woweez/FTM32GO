@@ -84,6 +84,9 @@ GameEngine13Menu *layer13;
         
         self.tileMap = [CCTMXTiledMap tiledMapWithTMXFile:@"background.tmx"];
         self.background = [_tileMap layerNamed:@"background"];
+        if (RETINADISPLAY == 2) {
+            self.background.scale = RETINADISPLAY;
+        }
         [self addChild:_tileMap z:-1 tag:1];
         
         
@@ -692,10 +695,16 @@ GameEngine13Menu *layer13;
         for(int i=0;i<4;i++){
             if(iceQubeCount[i]!=-40){
                 if(iceQubeCount[i]<=25){
+                    if (iceQubeCount[i] > 2 && iceQubeCount[i] < 4) {
+                        [soundEffect ice_cubes_appear];
+                    }
                     iceQubeCount[i]+=1.5;
                     iceQubePos[i][0]=[trigo circlex:120 a:180-(iceQubeCount[i]-230)]+100;
                     iceQubePos[i][1]=[trigo circley:120 a:180-(iceQubeCount[i]-230)]+200;
                 }else {
+                    if (iceQubeCount[i] > 26 && iceQubeCount[i] < 28) {
+                        [soundEffect ice_cubes_appear];
+                    }
                     iceQubeCount[i]+=1.2;
                     iceQubePos[i][0]=[trigo circlex:iceQubeCount[i] a:359]+200;
                     iceQubePos[i][1]=[trigo circley:iceQubeCount[i] a:359]+263;
@@ -709,6 +718,7 @@ GameEngine13Menu *layer13;
                 iceQubeCount[3]=-39;
             }
             if(iceQubeCount[i]>26&&iceQubeCount[i]<=28){
+                [soundEffect ice_cubes_fall];
                 iceBlastAnimationCount=1;
                 iceBlastAtlas.position=ccp(iceQubePos[i][0]-82,iceQubePos[i][1]-16);
             }
@@ -743,6 +753,14 @@ GameEngine13Menu *layer13;
         for(int i=0;i<5;i++){
             for(int j=0;j<2;j++){
                 if(iceSmokingCount[i][j]!=0){
+                    if (!isWaterEffectPlaying) {
+                        if (iceSmokingCount[0][0] > 1 && iceSmokingCount[0][0] <3 ) {
+                            
+                            [soundEffect water_falling_from_vase];
+                            isWaterEffectPlaying = YES;
+                        }
+                    }
+                    
                     int xx=0;
                     int yy=0;
                     xx=[trigo circlex:iceSmokingCount[i][j] a:265+(j*12)]+488-((waterSprayCount>600&&waterSprayCount<=1000)||(waterSprayCount<100)?73:0);
@@ -779,9 +797,15 @@ GameEngine13Menu *layer13;
         }
         
         if(waterSprayCount<=500){
+            if (waterPipeSprite.flipX == 1) {
+                isWaterEffectPlaying = NO;
+            }
             waterPipeSprite.position=ccp(463,297);
             waterPipeSprite.flipX=0;
         }else{
+            if (waterPipeSprite.flipX == 0) {
+                isWaterEffectPlaying = NO;
+            }
             waterPipeSprite.flipX=1;
             waterPipeSprite.position=ccp(440,297);
         }
@@ -798,8 +822,12 @@ GameEngine13Menu *layer13;
 }
 -(void)switchFunc{
     
-    if(gameFunc.switchCount!=0)
+    if(gameFunc.switchCount!=0){
+        if ([[switchAtlas string] isEqualToString:@"0"]){
+            [soundEffect switchSound];
+        }
         [switchAtlas setString:@"1"];
+    }
     if(screenMoveChe){
         if(screenMovementFindValue==0){
             screenShowY+=3;
@@ -1022,6 +1050,7 @@ GameEngine13Menu *layer13;
                     heroTrappedSprite.position = ccp(heroSprite.position.x-fValue+30, 275);
                 }
             }else if(trappedTypeValue==2){
+                [soundEffect water_sink_splash];
                 heroTrappedSprite.position = ccp(heroSprite.position.x-fValue+30, 275);
             }else if(trappedTypeValue==3){
                 heroTrappedSprite.position = ccp(50, 610);
@@ -1194,22 +1223,7 @@ GameEngine13Menu *layer13;
 
 
 -(void)heroAnimationFunc:(int)fValue animationType:(NSString *)type{
-    NSString *fStr=@"";
-    if([type isEqualToString:@"jump"]){
-        if(fValue!=9)
-            fStr=[NSString stringWithFormat:@"mother_jump0%d.png",fValue+1];
-        else
-            fStr=[NSString stringWithFormat:@"mother_jump%d.png",fValue+1];
-    }else if([type isEqualToString:@"stand"])
-        fStr=[NSString stringWithFormat:@"mother_stand0%d.png",fValue+1];
-    else if([type isEqualToString:@"win"])
-        fStr=@"mother_win01.png";
-    
-    [spriteSheet removeChild:heroSprite cleanup:YES];
-    heroSprite = [CCSprite spriteWithSpriteFrameName:fStr];
-    heroSprite.position = ccp(platformX, platformY);
-    heroSprite.scale=0.8;
-    [spriteSheet addChild:heroSprite z:10];
+    [self mamaAnimationWithType:fValue animationType:type];
     [self heroUpdateForwardPosFunc];
 }
 -(void)heroUpdateForwardPosFunc{

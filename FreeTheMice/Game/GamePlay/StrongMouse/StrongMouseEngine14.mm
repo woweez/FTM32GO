@@ -83,6 +83,9 @@ StrongMouseEngineMenu14 *sLayer14;
         
         self.tileMap = [CCTMXTiledMap tiledMapWithTMXFile:@"background.tmx"];
         self.background = [_tileMap layerNamed:@"background"];
+        if (RETINADISPLAY == 2) {
+            self.background.scale = RETINADISPLAY;
+        }
         [self addChild:_tileMap z:-1 tag:1];
         
         cache = [CCSpriteFrameCache sharedSpriteFrameCache];
@@ -1499,6 +1502,11 @@ StrongMouseEngineMenu14 *sLayer14;
                 heroPushSprite.position=ccp(heroSprite.position.x-10,heroSprite.position.y);
             
             heroRunSprite.visible=NO;
+            if (!heroPushSprite.visible) {
+                [soundEffect pushing];
+            }else if (arc4random() % 20 == 1){
+                [soundEffect pushing];
+            }
             heroPushSprite.visible=YES;
         }
     }

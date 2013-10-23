@@ -82,6 +82,9 @@ GameEngine08Menu *layer08;
         
         self.tileMap = [CCTMXTiledMap tiledMapWithTMXFile:@"background.tmx"];
         self.background = [_tileMap layerNamed:@"background"];
+        if (RETINADISPLAY == 2) {
+            self.background.scale = RETINADISPLAY;
+        }
         [self addChild:_tileMap z:-1 tag:1];
         
         cache = [CCSpriteFrameCache sharedSpriteFrameCache];
@@ -514,6 +517,9 @@ GameEngine08Menu *layer08;
     int localVegetableCount=(gameFunc.vegetableCount<=200?gameFunc.vegetableCount:200-(gameFunc.vegetableCount-200));
     
     if(vegetableChe){
+        if (gameFunc.vegetableCount == 2) {
+            [soundEffect tray_open_close];
+        }
         gameFunc.vegetableCount+=1;
         gameFunc.vegetableCount=(gameFunc.vegetableCount>=200?200:gameFunc.vegetableCount);
     }else{
@@ -543,10 +549,18 @@ GameEngine08Menu *layer08;
         [self startClockTimer];
         clockArrowSprite.position=ccp(450,258);
         clockBackgroundSprite.position=ccp(450,258);
-        if(!vegetableChe)
+        if(!vegetableChe){
+            if ([[switchAtlas string] isEqualToString:@"0"]){
+                [soundEffect switchSound];
+            }
             [switchAtlas setString:@"1"];
-        else
+        }
+        else{
+            if ([[switchAtlas2 string] isEqualToString:@"0"]){
+                [soundEffect switchSound];
+            }
             [switchAtlas2 setString:@"1"];
+        }
         
     }else if(gameFunc.switchCount>=1){
         gameFunc.switchCount+=1;
@@ -557,9 +571,15 @@ GameEngine08Menu *layer08;
             clockArrowSprite.position=ccp(-100,258);
             gameFunc.switchCount=0;
             if(!vegetableChe){
+                if ([[switchAtlas string] isEqualToString:@"1"]){
+                    [soundEffect correct_switch];
+                }
                 [switchAtlas setString:@"0"];
                 gameFunc.level8PlatforChe=YES;
             }else{
+                if ([[switchAtlas2 string] isEqualToString:@"1"]){
+                    [soundEffect correct_switch];
+                }
                 [switchAtlas2 setString:@"0"];
                 vegetableChe=NO;
                 gameFunc.vegetableTouchChe=NO;
@@ -951,22 +971,7 @@ GameEngine08Menu *layer08;
 
 
 -(void)heroAnimationFunc:(int)fValue animationType:(NSString *)type{
-    NSString *fStr=@"";
-    if([type isEqualToString:@"jump"]){
-        if(fValue!=9)
-            fStr=[NSString stringWithFormat:@"mother_jump0%d.png",fValue+1];
-        else
-            fStr=[NSString stringWithFormat:@"mother_jump%d.png",fValue+1];
-    }else if([type isEqualToString:@"stand"])
-        fStr=[NSString stringWithFormat:@"mother_stand0%d.png",fValue+1];
-    else if([type isEqualToString:@"win"])
-        fStr=@"mother_win01.png";
-    
-    [spriteSheet removeChild:heroSprite cleanup:YES];
-    heroSprite = [CCSprite spriteWithSpriteFrameName:fStr];
-    heroSprite.position = ccp(platformX, platformY);
-    heroSprite.scale=0.8;
-    [spriteSheet addChild:heroSprite z:10];
+    [self mamaAnimationWithType:fValue animationType:type];
     [self heroUpdateForwardPosFunc];
 }
 -(void)heroUpdateForwardPosFunc{
@@ -1198,6 +1203,9 @@ GameEngine08Menu *layer08;
                 screenShowY=platformY;
                 screenShowX2=platformX;
                 screenShowY2=platformY;
+                if ([[switchAtlas string] isEqualToString:@"0"]){
+                    [soundEffect switchSound];
+                }
                 [switchAtlas setString:@"1"];
             }else if(!screenMoveChe&&!safetyJumpChe&&gameFunc.vegetableTouchChe&&gameFunc.switchCount==0){
                 vegetableChe=YES;
@@ -1206,6 +1214,9 @@ GameEngine08Menu *layer08;
                 screenShowY=platformY;
                 screenShowX2=platformX;
                 screenShowY2=platformY;
+                if ([[switchAtlas2 string] isEqualToString:@"0"]){
+                    [soundEffect switchSound];
+                }
                 [switchAtlas2 setString:@"1"];
                 if(gameFunc.vegetableCount==0)
                     gameFunc.vegetableCount=1;

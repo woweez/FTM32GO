@@ -85,6 +85,9 @@ StrongMouseEngineMenu12 *sLayer12;
         
         self.tileMap = [CCTMXTiledMap tiledMapWithTMXFile:@"bridge_background.tmx"];
         self.background = [_tileMap layerNamed:@"bridge_background"];
+        if (RETINADISPLAY == 2) {
+            self.background.scale = RETINADISPLAY;
+        }
         [self addChild:_tileMap z:-1 tag:1];
         
         /* NSString *tmxStr=[NSString stringWithFormat:@"level%d.tmx",motherLevel];
@@ -507,6 +510,7 @@ StrongMouseEngineMenu12 *sLayer12;
                     iceQubePos[i][1]=[trigo circley:25 a:180-(iceQubeCount[i]-230)]+410;
                 }else if(iceQubeCount[i]>50&&iceQubeCount[i]<230){
                     if(iceQubeCount[i]==51 || iceQubeCount[i] == 52){
+                        [soundEffect ice_cubes_appear];
                         iceBlastAnimationCount=1;
                         iceBlastAtlas.position=ccp(iceQubePos[i][0]-100,iceQubePos[i][1]-15);
                     }
@@ -535,6 +539,10 @@ StrongMouseEngineMenu12 *sLayer12;
                 iceQubeCount[3]=-39;
             }
             if(iceQubeCount[i]>480&&iceQubeCount[i]<=482){
+                if (iceQubeCount[i] > 480 && iceQubeCount[i] < 482) {
+                    [soundEffect ice_cubes_fall];
+                }
+
                 iceBlastAnimationCount=1;
                 iceBlastAtlas.position=ccp(iceQubePos[i][0]-115,iceQubePos[i][1]-16);
             }
@@ -565,6 +573,10 @@ StrongMouseEngineMenu12 *sLayer12;
         if(iceQubeCount2[i]!=0){
             
             if(iceQubeCount2[i]<202){
+                if (iceQubeCount2[i] > 2 && iceQubeCount2[i] < 4) {
+                    [soundEffect ice_cubes_appear];
+                }
+
                 iceQubeCount2[i]+=1.4;
                 iceQubePos2[i][0]=[trigo circlex:iceQubeCount2[i] a:180]+1060;
                 iceQubePos2[i][1]=[trigo circley:iceQubeCount2[i] a:180]+315;
@@ -588,6 +600,9 @@ StrongMouseEngineMenu12 *sLayer12;
             iceQubeCount2[3]=1;
         }
         if(iceQubeCount2[i]>=300&&iceQubeCount2[i]<302){
+            if (iceQubeCount2[i] > 300 && iceQubeCount2[i] < 302) {
+                [soundEffect ice_cubes_fall];
+            }
             iceBlastAnimationCount2=1;
             iceBlastAtlas2.position=ccp(iceQubePos2[i][0]-97,iceQubePos2[i][1]-25);
         }
@@ -1176,6 +1191,11 @@ StrongMouseEngineMenu12 *sLayer12;
                 heroPushSprite.position=ccp(heroSprite.position.x-10,heroSprite.position.y);
             
             heroRunSprite.visible=NO;
+            if (!heroPushSprite.visible) {
+                [soundEffect pushing];
+            }else if (arc4random() % 20 == 1){
+                [soundEffect pushing];
+            }
             heroPushSprite.visible=YES;
         }
     }

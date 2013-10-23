@@ -14,6 +14,8 @@
 // Needed to obtain the Navigation Controller
 #import "AppDelegate.h"
 #import "DB.h"
+#import "FTMConstants.h"
+
 enum {
     kTagParentNode = 1,
 };
@@ -80,6 +82,9 @@ GirlMouseEngineMenu04 *gLayer04;
         
         self.tileMap = [CCTMXTiledMap tiledMapWithTMXFile:@"background.tmx"];
         self.background = [_tileMap layerNamed:@"background"];
+        if (RETINADISPLAY == 2) {
+            self.background.scale = RETINADISPLAY;
+        }
         _tileMap.position=ccp(0,-158);
         _tileMap.scaleY=1.3;
         [self addChild:_tileMap z:-1 tag:1];
@@ -999,6 +1004,9 @@ GirlMouseEngineMenu04 *gLayer04;
     
     if(hx-iValue>495 && hx-iValue<570&&hy>218 &&hy<260 && gameFunc.switchCount==0&&screenMovementFindValue==0){
         gameFunc.switchCount=1;
+        if ([[switchAtlas string] isEqualToString:@"0"]){
+            [soundEffect switchSound];
+        }
         [switchAtlas setString:@"1"];
         
         screenMoveChe=YES;
@@ -1445,19 +1453,7 @@ GirlMouseEngineMenu04 *gLayer04;
 }
 
 -(void)heroAnimationFunc:(int)fValue animationType:(NSString *)type{
-    NSString *fStr=@"";
-    if([type isEqualToString:@"jump"])
-        fStr=[NSString stringWithFormat:@"girl_jump%d.png",fValue+1];
-    else if([type isEqualToString:@"stand"])
-        fStr=[NSString stringWithFormat:@"girl_stand%d.png",fValue+1];
-    else if([type isEqualToString:@"win"])
-        fStr=@"girl_win1.png";
-    
-    [spriteSheet removeChild:heroSprite cleanup:YES];
-    heroSprite = [CCSprite spriteWithSpriteFrameName:fStr];
-    heroSprite.position = ccp(platformX, platformY);
-    heroSprite.scale=0.65;
-    [spriteSheet addChild:heroSprite z:10];
+    [self girlAnimationWithType:fValue animationType:type];
     [self heroUpdateForwardPosFunc];
     
     if([type isEqualToString:@"jump"]){

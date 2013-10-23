@@ -209,7 +209,11 @@
     }else{
         trappingAnimationSprite.position = ccp(heroSprite.position.x-heroSprite.contentSize.width/4, heroSprite.position.y -heroSprite.contentSize.height/3);
     }
-    trappingAnimationSprite.scale=0.5;
+    if (RETINADISPLAY == 2) {
+        trappingAnimationSprite.scale = 1;
+    }else{
+        trappingAnimationSprite.scale=0.5;
+    }
     [spriteSheets addChild:trappingAnimationSprite];
     
     CCAnimate *actionOne = [CCAnimate actionWithAnimation:animation];
@@ -250,8 +254,8 @@
         heroSprite.visible = YES;
     }
     
-    heroSprite.position = ccp(platformX, platformY);
-    heroSprite.scale = 0.6;
+    heroSprite.position = ccp(platformX, platformY +5);
+    heroSprite.scale = STRONG_SCALE;
 
 }
 -(void) playJumpingAnimation{
@@ -356,9 +360,14 @@
         return;
     }
     isScheduledTime = YES;
+    if (RETINADISPLAY == 2) {
+        heroRunSprite.scale = 1.6;
+        heroPushSprite.scale = 1.6;
+        heroSprite.scale = 1.6;
+    }
     [self schedule:@selector(startTheHudLayerTimer) interval:1];
 }
-BOOL isFist;
+
 -(void) startTheHudLayerTimer{
     if (elapsedSeconds == 0) {
         [soundManager playGamePlayMusic];
@@ -425,7 +434,6 @@ BOOL isFist;
     }
     CCAnimation *animation2 = [CCAnimation animationWithSpriteFrames:animFrames2 delay:0.03f];
     [heroPushSprite runAction:[CCRepeatForever actionWithAction:[CCAnimate actionWithAnimation:animation2]]];
-    [soundManager pushing];
 
 // for boots.
 //    
@@ -579,7 +587,42 @@ BOOL isFist;
 -(void) mouseTrapped{
     
 }
+-(void) mamaAnimationWithType:(int)fValue animationType:(NSString *)type{
+    NSString *fStr=@"";
+    if([type isEqualToString:@"jump"]){
+        if(fValue!=9)
+            fStr=[NSString stringWithFormat:@"mother_jump0%d.png",fValue+1];
+        else
+            fStr=[NSString stringWithFormat:@"mother_jump%d.png",fValue+1];
+    }else if([type isEqualToString:@"stand"])
+        fStr=[NSString stringWithFormat:@"mother_stand0%d.png",fValue+1];
+    else if([type isEqualToString:@"win"])
+        fStr=@"mother_win01.png";
+    
+    [spriteSheet removeChild:heroSprite cleanup:YES];
+    heroSprite = [CCSprite spriteWithSpriteFrameName:fStr];
+    heroSprite.position = ccp(platformX, platformY);
+    heroSprite.scale = MAMA_SCALE;
+    [spriteSheet addChild:heroSprite z:10];
+  
+}
 
+-(void) girlAnimationWithType:(int)fValue animationType:(NSString *)type{
+    NSString *fStr=@"";
+    if([type isEqualToString:@"jump"])
+        fStr=[NSString stringWithFormat:@"girl_jump%d.png",fValue+1];
+    else if([type isEqualToString:@"stand"])
+        fStr=[NSString stringWithFormat:@"girl_stand%d.png",fValue+1];
+    else if([type isEqualToString:@"win"])
+        fStr=@"girl_win1.png";
+    
+    [spriteSheet removeChild:heroSprite cleanup:YES];
+    heroSprite = [CCSprite spriteWithSpriteFrameName:fStr];
+    heroSprite.position = ccp(platformX, platformY);
+    heroSprite.scale = GIRL_SCALE;
+    [spriteSheet addChild:heroSprite z:10];
+    
+}
 - (void)dealloc
 {
     [[SimpleAudioEngine sharedEngine] stopAllEffects];

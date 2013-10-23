@@ -83,6 +83,9 @@ StrongMouseEngineMenu01 *sLayer01;
         
         self.tileMap = [CCTMXTiledMap tiledMapWithTMXFile:@"level1.tmx"];
         self.background = [_tileMap layerNamed:@"level1"];
+        if (RETINADISPLAY == 2) {
+            self.background.scale = RETINADISPLAY;
+        }
         [self addChild:_tileMap z:-1 tag:1];
         
         for(int i=0;i<20;i++){
@@ -554,6 +557,11 @@ StrongMouseEngineMenu01 *sLayer01;
                 heroPushSprite.position=ccp(heroSprite.position.x-10,heroSprite.position.y);
                 
             heroRunSprite.visible=NO;
+            if (!heroPushSprite.visible) {
+                [soundEffect pushing];
+            }else if (arc4random() % 20 == 1){
+                [soundEffect pushing];
+            }
             heroPushSprite.visible=YES;
         }
     }

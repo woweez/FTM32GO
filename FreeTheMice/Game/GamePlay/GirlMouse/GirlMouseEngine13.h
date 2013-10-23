@@ -35,6 +35,8 @@
 	GirlGameFunc *gameFunc;
     sound *soundEffect;
     b2World* world;
+    
+    BOOL isWaterEffectPlaying;
     Trigo *trigo;
 //    HudLayer *hudLayer;
     GirlLevel13Cat *catObj1;

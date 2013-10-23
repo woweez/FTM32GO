@@ -81,6 +81,9 @@ GirlMouseEngineMenu14 *gLayer14;
         
         self.tileMap = [CCTMXTiledMap tiledMapWithTMXFile:@"background.tmx"];
         self.background = [_tileMap layerNamed:@"background"];
+        if (RETINADISPLAY == 2) {
+            self.background.scale = RETINADISPLAY;
+        }
         _tileMap.position=ccp(0,-158);
         _tileMap.scaleY=1.3;
         [self addChild:_tileMap z:-1 tag:1];
@@ -909,7 +912,7 @@ GirlMouseEngineMenu14 *gLayer14;
     [catSpriteSheet removeChild:catSprite cleanup:YES];
     catSprite = [CCSprite spriteWithSpriteFrameName:fStr];
     catSprite.position = ccp(catX,catY);
-    catSprite.scale=0.6;
+    catSprite.scale=CAT_SCALE;
     if(!catForwardChe){
         catSprite.flipX=0;
     }else{
@@ -929,7 +932,7 @@ GirlMouseEngineMenu14 *gLayer14;
     [catSpriteSheet removeChild:catSprite2 cleanup:YES];
     catSprite2 = [CCSprite spriteWithSpriteFrameName:fStr];
     catSprite2.position = ccp(catX2,catY2);
-    catSprite2.scale=0.6;
+    catSprite2.scale=CAT_SCALE;
     if(!catForwardChe2){
         catSprite2.flipX=0;
     }else{
@@ -949,7 +952,7 @@ GirlMouseEngineMenu14 *gLayer14;
     [catSpriteSheet removeChild:catSprite3 cleanup:YES];
     catSprite3 = [CCSprite spriteWithSpriteFrameName:fStr];
     catSprite3.position = ccp(catX3,catY3);
-    catSprite3.scale=0.6;
+    catSprite3.scale=CAT_SCALE;
     if(!catForwardChe3){
         catSprite3.flipX=0;
     }else{
@@ -1006,6 +1009,9 @@ GirlMouseEngineMenu14 *gLayer14;
             trappedTypeValue=1;
             gameFunc.trappedChe=YES;
         }else{
+            if ([[switchAtlas2 string] isEqualToString:@"0"]){
+                [soundEffect switchSound];
+            }
             [switchAtlas2  setString:@"1"];
             screenMovementFindValue2=1;
         }
@@ -1014,6 +1020,9 @@ GirlMouseEngineMenu14 *gLayer14;
             trappedTypeValue=1;
             gameFunc.trappedChe=YES;
         }else{
+            if ([[switchAtlas string] isEqualToString:@"0"]){
+                [soundEffect switchSound];
+            }
             [switchAtlas  setString:@"1"];
             screenMovementFindValue=1;
         }
@@ -1732,19 +1741,7 @@ GirlMouseEngineMenu14 *gLayer14;
 }
 
 -(void)heroAnimationFunc:(int)fValue animationType:(NSString *)type{
-    NSString *fStr=@"";
-    if([type isEqualToString:@"jump"])
-        fStr=[NSString stringWithFormat:@"girl_jump%d.png",fValue+1];
-    else if([type isEqualToString:@"stand"]){
-        fStr=[NSString stringWithFormat:@"girl_stand%d.png",fValue+1];
-    }else if([type isEqualToString:@"win"])
-        fStr=@"girl_win1.png";
-    
-    [spriteSheet removeChild:heroSprite cleanup:YES];
-    heroSprite = [CCSprite spriteWithSpriteFrameName:fStr];
-    heroSprite.position = ccp(platformX, platformY);
-    heroSprite.scale=0.65;
-    [spriteSheet addChild:heroSprite z:10];
+    [self girlAnimationWithType:fValue animationType:type];
     [self heroUpdateForwardPosFunc];
     
     if([type isEqualToString:@"jump"]){

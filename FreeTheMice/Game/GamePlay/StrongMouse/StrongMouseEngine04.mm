@@ -83,6 +83,9 @@ StrongMouseEngineMenu04 *sLayer04;
         
         self.tileMap = [CCTMXTiledMap tiledMapWithTMXFile:@"background.tmx"];
         self.background = [_tileMap layerNamed:@"background"];
+        if (RETINADISPLAY == 2) {
+            self.background.scale = RETINADISPLAY;
+        }
         [self addChild:_tileMap z:-1 tag:1];
         
         
@@ -606,6 +609,10 @@ StrongMouseEngineMenu04 *sLayer04;
     
     
     silverPotSprite.position=ccp(420+gameFunc.siverPotCount,593-gameFunc.siverPotCount2);
+    
+    if (gameFunc.siverPotCount2 == 278) {
+        [soundEffect pot_hitting_ground];
+    }
     toasterBreadSprite.position=ccp(300,369-gameFunc.toasterBreadCount);
     greyBoxSprite.position=ccp(415+gameFunc.boxCount,505-gameFunc.boxCount2);
     
@@ -910,6 +917,11 @@ StrongMouseEngineMenu04 *sLayer04;
                 heroPushSprite.position=ccp(heroSprite.position.x-10,heroSprite.position.y);
             
             heroRunSprite.visible=NO;
+            if (!heroPushSprite.visible) {
+                [soundEffect pushing];
+            }else if (arc4random() % 20 == 1){
+                [soundEffect pushing];
+            }
             heroPushSprite.visible=YES;
         }
     }

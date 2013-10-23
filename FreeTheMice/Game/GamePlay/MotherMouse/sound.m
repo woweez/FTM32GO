@@ -134,7 +134,7 @@
     if (![FTMUtil sharedInstance].isGameSoundOn) {
         return;
     }
-    [[SimpleAudioEngine sharedEngine] playEffect:CORRECT_SWITCH loop:NO];
+    [[SimpleAudioEngine sharedEngine] playEffect:SWITCH loop:NO];
 }
 -(void)door_close{
     if (![FTMUtil sharedInstance].isGameSoundOn) {
@@ -254,7 +254,7 @@
     if (![FTMUtil sharedInstance].isGameSoundOn) {
         return;
     }
-    [[SimpleAudioEngine sharedEngine] playEffect:SWITCH loop:NO];
+    [[SimpleAudioEngine sharedEngine] playEffect:CORRECT_SWITCH loop:NO];
 }
 -(void)timer{
     if (![FTMUtil sharedInstance].isGameSoundOn) {

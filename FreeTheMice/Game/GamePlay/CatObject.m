@@ -7,6 +7,7 @@
 //
 
 #import "CatObject.h"
+#import "FTMConstants.h"
 
 @implementation CatObject
 
@@ -26,12 +27,13 @@
         
         catSprite = [CCSprite spriteWithSpriteFrameName:@"cat_run1.png"];
         catSprite.position = ccp(100, 100);
-        catSprite.scale = 0.6;
+        
+        catSprite.scale = CAT_SCALE;
         [catSpriteSheet addChild:catSprite];
         
         secondCatSprite = [CCSprite spriteWithSpriteFrameName:@"cat_run1.png"];
         secondCatSprite.position = ccp(100, 100);
-        secondCatSprite.scale = 0.6;
+        secondCatSprite.scale = CAT_SCALE;
         secondCatSprite.visible = NO;
         [catSpriteSheet addChild:secondCatSprite];
         

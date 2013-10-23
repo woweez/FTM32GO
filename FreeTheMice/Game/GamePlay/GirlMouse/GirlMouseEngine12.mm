@@ -9,7 +9,7 @@
 // Import the interfaces
 #import "GirlMouseEngine12.h"
 #import "LevelScreen.h"
-
+#import "FTMConstants.h"
 
 // Needed to obtain the Navigation Controller
 #import "AppDelegate.h"
@@ -81,6 +81,9 @@ GirlMouseEngineMenu12 *gLayer12;
         
         self.tileMap = [CCTMXTiledMap tiledMapWithTMXFile:@"bridge_background.tmx"];
         self.background = [_tileMap layerNamed:@"bridge_background"];
+        if (RETINADISPLAY == 2) {
+            self.background.scale = RETINADISPLAY;
+        }
         _tileMap.position=ccp(0,-158);
         _tileMap.scaleY=1.3;
         [self addChild:_tileMap z:-1 tag:1];
@@ -522,6 +525,9 @@ GirlMouseEngineMenu12 *gLayer12;
     }
     
     if(hx-iValue<40 && hy >=100 && hy <135 && screenMovementFindValue==0){
+        if ([[switchAtlas string] isEqualToString:@"0"]){
+            [soundEffect switchSound];
+        }
         [switchAtlas setString:@"1"];
         screenMovementFindValue=1;
         gameFunc.bridgeOpenCount+=1;
@@ -537,12 +543,18 @@ GirlMouseEngineMenu12 *gLayer12;
     }
     
     if(hx-iValue<60 && hy >=435 && hy <475 && screenMovementFindValue2==0){
+        if ([[switchAtlas2 string] isEqualToString:@"0"]){
+            [soundEffect switchSound];
+        }
         [switchAtlas2 setString:@"1"];
         screenMovementFindValue2=1;
         gameFunc.bridgeOpenCount+=1;
     }
     
     if(hx-iValue>460 && hx-iValue <=540 && hy>=580&& hy<620 && screenMovementFindValue3==0){
+        if ([[switchAtlas3 string] isEqualToString:@"0"]){
+            [soundEffect switchSound];
+        }
         [switchAtlas3 setString:@"1"];
         screenMovementFindValue3=1;
         gameFunc.bridgeOpenCount+=1;
@@ -558,11 +570,18 @@ GirlMouseEngineMenu12 *gLayer12;
         CGFloat yy=0;
         if(iceQubeCount[i]!=0){
             if(iceQubeCount[i]<=205){
+                if (iceQubeCount[i] > 2 && iceQubeCount[i] < 4) {
+                    [soundEffect ice_cubes_appear];
+                }
+                
                 iceQubeCount[i]+=1;
                 xx=[trigo circlex:iceQubeCount[i] a:359]-25;
                 yy=[trigo circley:iceQubeCount[i] a:359]+550;
             }else if(iceQubeCount[i]>205&&iceQubeCount[i]<=510){
                 if(iceQubeSideCount[i]==0){
+                    if (iceQubeCount[i] > 207 && iceQubeCount[i] < 209) {
+                        [soundEffect ice_cubes_appear];
+                    }
                     iceQubeCount[i]+=1.5;
                     xx=[trigo circlex:iceQubeCount[i]-205 a:280]+235;
                     yy=[trigo circley:iceQubeCount[i]-205 a:280]+550;
@@ -575,6 +594,9 @@ GirlMouseEngineMenu12 *gLayer12;
                 }
             }else if(iceQubeCount[i]>510){
                 if(iceQubeSideCount[i]==0){
+                    if (iceQubeCount[i] > 510 && iceQubeCount[i] < 512) {
+                        [soundEffect ice_cubes_appear];
+                    }
                     iceQubeCount[i]+=1.5;
                     xx=[trigo circlex:iceQubeCount[i]-510 a:359]+305;
                     yy=[trigo circley:iceQubeCount[i]-510 a:359]+175;
@@ -582,17 +604,22 @@ GirlMouseEngineMenu12 *gLayer12;
             }
             if(iceQubeSideCount[i]==1){
                 if(iceQubeCount[i]>330&&iceQubeCount[i]<=660){
+                    if (iceQubeCount[i] > 333 && iceQubeCount[i] < 336) {
+                        [soundEffect ice_cubes_fall];
+                    }
                     iceQubeCount[i]+=1.5;
                     xx=[trigo circlex:iceQubeCount[i]-330 a:359]+265;
                     yy=[trigo circley:iceQubeCount[i]-330 a:359]+395;
                 }else if(iceQubeCount[i]>660){
+                    if (iceQubeCount[i] > 663 && iceQubeCount[i] < 665) {
+                        [soundEffect ice_cubes_fall];
+                    }
                     iceQubeCount[i]+=1.5;
                     xx=[trigo circlex:iceQubeCount[i]-660 a:275]+678;
                     yy=[trigo circley:iceQubeCount[i]-660 a:275]+397;
                 }
             }
         }
-        
         
         if(iceQubeCount[i]>=(iceQubeSideCount[i]==0?610:840)){
             iceBlastAnimationCount=1;
@@ -631,6 +658,9 @@ GirlMouseEngineMenu12 *gLayer12;
         CGFloat yy=0;
         if(iceQubeCount2[i]!=0){
             if(iceQubeCount2[i]<=160){
+                if (iceQubeCount2[i] > 2 && iceQubeCount2[i]< 4) {
+                    [soundEffect ice_cubes_appear];
+                }
                 iceQubeCount2[i]+=1;
                 xx=[trigo circlex:iceQubeCount2[i] a:179]+1010;
                 yy=[trigo circley:iceQubeCount2[i] a:179]+400;
@@ -639,6 +669,9 @@ GirlMouseEngineMenu12 *gLayer12;
                 xx=[trigo circlex:iceQubeCount2[i]-154 a:265]+810;
                 yy=[trigo circley:iceQubeCount2[i]-154 a:265]+408;
             }else if(iceQubeCount2[i]>340){
+                if (iceQubeCount2[i] > 343 && iceQubeCount2[i] < 346) {
+                    [soundEffect ice_cubes_fall];
+                }
                 iceQubeCount2[i]+=2;
                 xx=[trigo circlex:iceQubeCount2[i]-340 a:179]+795;
                 yy=[trigo circley:iceQubeCount2[i]-340 a:179]+175;
@@ -1161,19 +1194,7 @@ GirlMouseEngineMenu12 *gLayer12;
 }
 
 -(void)heroAnimationFunc:(int)fValue animationType:(NSString *)type{
-    NSString *fStr=@"";
-    if([type isEqualToString:@"jump"])
-        fStr=[NSString stringWithFormat:@"girl_jump%d.png",fValue+1];
-    else if([type isEqualToString:@"stand"]){
-        fStr=[NSString stringWithFormat:@"girl_stand%d.png",fValue+1];
-    }else if([type isEqualToString:@"win"])
-        fStr=@"girl_win1.png";
-    
-    [spriteSheet removeChild:heroSprite cleanup:YES];
-    heroSprite = [CCSprite spriteWithSpriteFrameName:fStr];
-    heroSprite.position = ccp(platformX, platformY);
-    heroSprite.scale=0.65;
-    [spriteSheet addChild:heroSprite z:10];
+    [self girlAnimationWithType:fValue animationType:type];
     [self heroUpdateForwardPosFunc];
     
     if([type isEqualToString:@"jump"]){

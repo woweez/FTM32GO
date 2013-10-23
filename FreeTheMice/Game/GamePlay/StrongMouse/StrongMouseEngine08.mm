@@ -75,6 +75,9 @@ StrongMouseEngineMenu08 *sLayer08;
         
         self.tileMap = [CCTMXTiledMap tiledMapWithTMXFile:@"background.tmx"];
         self.background = [_tileMap layerNamed:@"background"];
+        if (RETINADISPLAY == 2) {
+            self.background.scale = RETINADISPLAY;
+        }
         [self addChild:_tileMap z:-1 tag:1];
         
         cache = [CCSpriteFrameCache sharedSpriteFrameCache];
@@ -1093,6 +1096,9 @@ StrongMouseEngineMenu08 *sLayer08;
     
     if(vegetableOpenCount>=1){
         vegetableOpenCount+=0.5;
+        if (vegetableOpenCount == 2) {
+            [soundEffect tray_open_close];
+        }
         vegetableOpenCount=(vegetableOpenCount>100?100:vegetableOpenCount);
         vegetableCloseSprite.rotation=vegetableOpenCount-15;
     }
@@ -1518,6 +1524,11 @@ StrongMouseEngineMenu08 *sLayer08;
                 heroPushSprite.position=ccp(heroSprite.position.x-10,heroSprite.position.y);
             
             heroRunSprite.visible=NO;
+            if (!heroPushSprite.visible) {
+                [soundEffect pushing];
+            }else if (arc4random() % 20 == 1){
+                [soundEffect pushing];
+            }
             heroPushSprite.visible=YES;
         }
     }

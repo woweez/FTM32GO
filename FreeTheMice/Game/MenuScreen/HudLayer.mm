@@ -276,6 +276,7 @@
     
     CCMenuItem *levelsMenuItem = [CCMenuItemImage itemWithNormalImage:@"level_select_btn.png" selectedImage:@"level_select_btn_press.png" block:^(id sender) {
         [soundEffect button_1];
+        [soundEffect stopPlayingMusic];
         [[CCDirector sharedDirector] resume];
         [[SimpleAudioEngine sharedEngine] setMute:NO];
         [[CCDirector sharedDirector] replaceScene:[LevelScreen scene]];

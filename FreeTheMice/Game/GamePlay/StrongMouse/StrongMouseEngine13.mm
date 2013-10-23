@@ -81,6 +81,9 @@ StrongMouseEngineMenu13 *sLayer13;
         
         self.tileMap = [CCTMXTiledMap tiledMapWithTMXFile:@"background.tmx"];
         self.background = [_tileMap layerNamed:@"background"];
+        if (RETINADISPLAY == 2) {
+            self.background.scale = RETINADISPLAY;
+        }
         [self addChild:_tileMap z:-1 tag:1];
         
         cache = [CCSpriteFrameCache sharedSpriteFrameCache];
@@ -849,6 +852,10 @@ StrongMouseEngineMenu13 *sLayer13;
         for(int i=0;i<4;i++){
             if(iceQubeCount[i]!=-40){
                 if(iceQubeCount[i]<=25){
+                    if (iceQubeCount[i] > 1 && iceQubeCount[i] < 3) {
+                        [soundEffect ice_cubes_appear];
+                    }
+
                     iceQubeCount[i]+=1.5;
                     iceQubePos[i][0]=[trigo circlex:120 a:180-(iceQubeCount[i]-230)]+100;
                     iceQubePos[i][1]=[trigo circley:120 a:180-(iceQubeCount[i]-230)]+200;
@@ -860,6 +867,10 @@ StrongMouseEngineMenu13 *sLayer13;
                 
                 
                 if(iceQubeCount[i]>26&&iceQubeCount[i]<=28){
+                    if (iceQubeCount[i] > 26 && iceQubeCount[i] < 28) {
+                        [soundEffect ice_cubes_fall];
+                    }
+
                     iceBlastAnimationCount=1;
                     iceBlastAtlas.position=ccp(iceQubePos[i][0]-82,iceQubePos[i][1]-16);
                 }
@@ -937,6 +948,13 @@ StrongMouseEngineMenu13 *sLayer13;
     for(int i=0;i<5;i++){
         for(int j=0;j<2;j++){
             if(iceSmokingCount[i][j]!=0){
+                if (!isWaterEffectPlaying) {
+                    if (iceSmokingCount[0][0] > 1 && iceSmokingCount[0][0] <3 ) {
+                        
+                        [soundEffect water_falling_from_vase];
+                        isWaterEffectPlaying = YES;
+                    }
+                }
                 int xx=0;
                 int yy=0;
                 xx=[trigo circlex:iceSmokingCount[i][j] a:255+(j*12)]+423;
@@ -947,6 +965,7 @@ StrongMouseEngineMenu13 *sLayer13;
                 iceSmokingCount[i][j]+=1.2;
                 if(iceSmokingCount[i][j]>=46){
                     iceSmokingCount[i][j]=0;
+                    isWaterEffectPlaying = NO;
                     iceSmokingSprite[i][j].position=ccp(-200,100);
                 }
             }
@@ -1299,6 +1318,7 @@ StrongMouseEngineMenu13 *sLayer13;
                 
                 CCMoveTo *move = [CCMoveTo actionWithDuration:1 position:ccp(heroSprite.position.x, posY)];
                 [heroTrappedSprite runAction:move];
+                [soundEffect water_sink_splash];
             }
             else{
                 heroTrappedSprite = [CCSprite spriteWithFile:@"sm_mist_0.png"];
@@ -1486,6 +1506,11 @@ StrongMouseEngineMenu13 *sLayer13;
                 heroPushSprite.position=ccp(heroSprite.position.x-10,heroSprite.position.y);
             
             heroRunSprite.visible=NO;
+            if (!heroPushSprite.visible) {
+                [soundEffect pushing];
+            }else if (arc4random() % 20 == 1){
+                [soundEffect pushing];
+            }
             heroPushSprite.visible=YES;
         }
     }

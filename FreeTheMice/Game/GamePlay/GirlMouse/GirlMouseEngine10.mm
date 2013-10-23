@@ -14,6 +14,8 @@
 // Needed to obtain the Navigation Controller
 #import "AppDelegate.h"
 #import "DB.h"
+#import "FTMConstants.h"
+
 enum {
     kTagParentNode = 1,
 };
@@ -81,6 +83,9 @@ GirlMouseEngineMenu10 *gLayer10;
         
         self.tileMap = [CCTMXTiledMap tiledMapWithTMXFile:@"bridge_background.tmx"];
         self.background = [_tileMap layerNamed:@"bridge_background"];
+        if (RETINADISPLAY == 2) {
+            self.background.scale = RETINADISPLAY;
+        }
         _tileMap.position=ccp(0,-158);
         _tileMap.scaleY=1.3;
         [self addChild:_tileMap z:-1 tag:1];
@@ -501,6 +506,9 @@ GirlMouseEngineMenu10 *gLayer10;
     int iValue=(forwardChe?43:0);
     
     if(hx-iValue>380&& hx-iValue<440 && hy> 560 && hy<590&&combJumpChe){
+        if ([[switchAtlas string] isEqualToString:@"0"]){
+            [soundEffect switchSound];
+        }
         [switchAtlas setString:@"1"];
         if(combinationValue==0&&combinationValue2==0&&combinationValue3==0){
             combinationValue=1;
@@ -512,9 +520,15 @@ GirlMouseEngineMenu10 *gLayer10;
         combJumpChe=NO;
     }
     if(hx-iValue>463&& hx-iValue<523 && hy> 560 && hy<590&&combJumpChe){
+        if ([[switchAtlas2 string] isEqualToString:@"0"]){
+            [soundEffect switchSound];
+        }
         [switchAtlas2 setString:@"1"];
         if(combinationValue==1){
             combinationValue=0;
+            if ([[switchAtlas string] isEqualToString:@"1"]){
+                [soundEffect correct_switch];
+            }
             [switchAtlas setString:@"0"];
             combinationValue2=1;
         }else if(combinationValue == 2){
@@ -526,12 +540,18 @@ GirlMouseEngineMenu10 *gLayer10;
             combinationValue3=3;
         else if(combinationValue3==1){
             combinationValue3=0;
+            if ([[switchAtlas3 string] isEqualToString:@"1"]){
+                [soundEffect correct_switch];
+            }
             [switchAtlas3 setString:@"0"];
             combinationValue2=1;
         }
         combJumpChe=NO;
     }
     if(hx-iValue>540&& hx-iValue<600 && hy> 560 && hy<590&&combJumpChe){
+        if ([[switchAtlas3 string] isEqualToString:@"0"]){
+            [soundEffect switchSound];
+        }
         [switchAtlas3 setString:@"1"];
         if(combinationValue==1){
             combinationValue=2;
@@ -540,6 +560,9 @@ GirlMouseEngineMenu10 *gLayer10;
             combinationValue2=3;
         if(combinationValue2==1){
             combinationValue2=0;
+            if ([[switchAtlas2 string] isEqualToString:@"1"]){
+                [soundEffect correct_switch];
+            }
             [switchAtlas2 setString:@"0"];
         }
         
@@ -578,6 +601,9 @@ GirlMouseEngineMenu10 *gLayer10;
         CGFloat yy=0;
         if(iceQubeCount[i]!=0){
             if(iceQubeCount[i]<230){
+                if (iceQubeCount[i] > 2 && iceQubeCount[i] < 4) {
+                   [soundEffect ice_cubes_appear];
+                }
                 iceQubeCount[i]+=1.2;
                 xx=[trigo circlex:iceQubeCount[i] a:359];
                 yy=[trigo circley:iceQubeCount[i] a:359]+410;
@@ -592,6 +618,7 @@ GirlMouseEngineMenu10 *gLayer10;
             }
         }
         if(iceQubeCount[i]>=560){
+            [soundEffect ice_cubes_fall];
             iceBlastAnimationCount=1;
             iceBlastAtlas.position=ccp(xx-125,yy+100);
             iceQubeCount[i]=0;
@@ -1266,19 +1293,7 @@ GirlMouseEngineMenu10 *gLayer10;
 }
 
 -(void)heroAnimationFunc:(int)fValue animationType:(NSString *)type{
-    NSString *fStr=@"";
-    if([type isEqualToString:@"jump"])
-        fStr=[NSString stringWithFormat:@"girl_jump%d.png",fValue+1];
-    else if([type isEqualToString:@"stand"]){
-        fStr=[NSString stringWithFormat:@"girl_stand%d.png",fValue+1];
-    }else if([type isEqualToString:@"win"])
-        fStr=@"girl_win1.png";
-    
-    [spriteSheet removeChild:heroSprite cleanup:YES];
-    heroSprite = [CCSprite spriteWithSpriteFrameName:fStr];
-    heroSprite.position = ccp(platformX, platformY);
-    heroSprite.scale=0.65;
-    [spriteSheet addChild:heroSprite z:10];
+    [self girlAnimationWithType:fValue animationType:type];
     [self heroUpdateForwardPosFunc];
     
     if([type isEqualToString:@"jump"]){

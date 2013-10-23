@@ -83,6 +83,9 @@ StrongMouseEngineMenu11 *sLayer11;
         
         self.tileMap = [CCTMXTiledMap tiledMapWithTMXFile:@"bridge_background.tmx"];
         self.background = [_tileMap layerNamed:@"bridge_background"];
+        if (RETINADISPLAY == 2) {
+            self.background.scale = RETINADISPLAY;
+        }
         [self addChild:_tileMap z:-1 tag:1];
         
         /* NSString *tmxStr=[NSString stringWithFormat:@"level%d.tmx",motherLevel];
@@ -564,16 +567,23 @@ StrongMouseEngineMenu11 *sLayer11;
         CGFloat yy=0;
         if(iceQubeCount[i]!=0){
             if(iceQubeCount[i]<230){
+                if (iceQubeCount[i] >2 && iceQubeCount[i] < 4) {
+                    [soundEffect ice_cubes_appear];
+                }
                 iceQubeCount[i]+=1.2;
                 xx=[trigo circlex:iceQubeCount[i] a:270]+480;
                 yy=[trigo circley:iceQubeCount[i] a:270]+420;
             }else {
+                if (iceQubeCount[i] > 230 && iceQubeCount[i] < 233) {
+                    [soundEffect ice_cubes_fall];
+                }
                 iceQubeCount[i]+=1.2;
                 xx=[trigo circlex:iceQubeCount[i] a:359]+198;
                 yy=[trigo circley:iceQubeCount[i] a:359]+133;
             }
         }
         if(iceQubeCount[i]>=380){
+            
             iceBlastAnimationCount=1;
             iceBlastAtlas.position=ccp(xx-125,yy+34);
             iceQubeCount[i]=0;
@@ -1002,6 +1012,11 @@ StrongMouseEngineMenu11 *sLayer11;
                 heroPushSprite.position=ccp(heroSprite.position.x-10,heroSprite.position.y);
             
             heroRunSprite.visible=NO;
+            if (!heroPushSprite.visible) {
+                [soundEffect pushing];
+            }else if (arc4random() % 20 == 1){
+                [soundEffect pushing];
+            }
             heroPushSprite.visible=YES;
         }
     }

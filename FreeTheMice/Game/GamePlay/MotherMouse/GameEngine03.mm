@@ -85,6 +85,9 @@ GameEngine03Menu *layer03;
         
         self.tileMap = [CCTMXTiledMap tiledMapWithTMXFile:@"background.tmx"];
         self.background = [_tileMap layerNamed:@"background"];
+        if (RETINADISPLAY == 2) {
+            self.background.scale = RETINADISPLAY;
+        }
         [self addChild:_tileMap z:-1 tag:1];
         
         cache = [CCSpriteFrameCache sharedSpriteFrameCache];
@@ -473,10 +476,15 @@ GameEngine03Menu *layer03;
             cheeseSprite[2].position=ccp(750-gameFunc.moveCount3,443);
             cheeseSprite2[2].position=ccp(750-gameFunc.moveCount3,443);
         }
-        if(!gameFunc.switchStrChe)
+        if(!gameFunc.switchStrChe){
             [switchAtlas setString:@"0"];
-        else
+        }
+        else{
+            if ([[switchAtlas string] isEqualToString:@"0"]){
+                [soundEffect switchSound];
+            }
             [switchAtlas setString:@"1"];
+        }
     }else if(motherLevel == 7){
         tileMove.position=ccp(650,349+gameFunc.moveCount2);
         domeSprite.position=ccp(650,393+gameFunc.domeMoveCount);
@@ -517,10 +525,18 @@ GameEngine03Menu *layer03;
         vegetableCloseSprite.rotation=(localVegetableCount/3.0)-15;
         
         tileMove.position=ccp(960-gameFunc.moveCount2,299);
-        if(gameFunc.vegetableCount!=0)
+        if(gameFunc.vegetableCount!=0){
+            if ([[switchAtlas2 string] isEqualToString:@"0"]){
+                [soundEffect switchSound];
+            }
             [switchAtlas2 setString:@"1"];
-        else if(gameFunc.moveCount2!=0)
+        }
+        else if(gameFunc.moveCount2!=0){
+            if ([[switchAtlas string] isEqualToString:@"0"]){
+                [soundEffect switchSound];
+            }
             [switchAtlas setString:@"1"];
+        }
         
         
         if(gameFunc.vegetableCount<50&&!gameFunc.trappedChe&&gameFunc.vegetableCount!=0){
@@ -636,6 +652,9 @@ GameEngine03Menu *layer03;
             gameFunc.switchCount=2;
             clockArrowSprite.position=ccp(450,258);
             clockBackgroundSprite.position=ccp(450,258);
+            if ([[switchAtlas string] isEqualToString:@"0"]){
+                [soundEffect switchSound];
+            }
             [switchAtlas setString:@"1"];
         }else if(gameFunc.switchCount>=1){
             gameFunc.switchCount+=1;
@@ -649,8 +668,12 @@ GameEngine03Menu *layer03;
             }
         }
         
-        if(gameFunc.domeSwitchChe)
+        if(gameFunc.domeSwitchChe){
+            if ([[switchAtlas2 string] isEqualToString:@"0"]){
+                [soundEffect switchSound];
+            }
             [switchAtlas2 setString:@"1"];
+        }
     }
 }
 
@@ -1034,22 +1057,7 @@ GameEngine03Menu *layer03;
 
 
 -(void)heroAnimationFunc:(int)fValue animationType:(NSString *)type{
-    NSString *fStr=@"";
-    if([type isEqualToString:@"jump"]){
-        if(fValue!=9)
-            fStr=[NSString stringWithFormat:@"mother_jump0%d.png",fValue+1];
-        else
-            fStr=[NSString stringWithFormat:@"mother_jump%d.png",fValue+1];
-    }else if([type isEqualToString:@"stand"])
-        fStr=[NSString stringWithFormat:@"mother_stand0%d.png",fValue+1];
-    else if([type isEqualToString:@"win"])
-        fStr=@"mother_win01.png";
-    
-    [spriteSheet removeChild:heroSprite cleanup:YES];
-    heroSprite = [CCSprite spriteWithSpriteFrameName:fStr];
-    heroSprite.position = ccp(platformX, platformY);
-    heroSprite.scale=0.8;
-    [spriteSheet addChild:heroSprite z:10];
+   [self mamaAnimationWithType:fValue animationType:type];
     [self heroUpdateForwardPosFunc];
 }
 -(void)heroUpdateForwardPosFunc{

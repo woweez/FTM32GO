@@ -86,6 +86,10 @@ GameEngine01Menu *layer01;
         
         self.tileMap = [CCTMXTiledMap tiledMapWithTMXFile:@"level1.tmx"];
         self.background = [_tileMap layerNamed:@"level1"];
+        if (RETINADISPLAY == 2) {
+            self.background.scale = RETINADISPLAY;
+        }
+        
         [self addChild:_tileMap z:-1 tag:1];
         
         cache = [CCSpriteFrameCache sharedSpriteFrameCache];
@@ -645,22 +649,7 @@ GameEngine01Menu *layer01;
 
 
 -(void)heroAnimationFunc:(int)fValue animationType:(NSString *)type{
-    NSString *fStr=@"";
-    if([type isEqualToString:@"jump"]){
-        if(fValue!=9)
-            fStr=[NSString stringWithFormat:@"mother_jump0%d.png",fValue+1];
-        else
-            fStr=[NSString stringWithFormat:@"mother_jump%d.png",fValue+1];
-    }else if([type isEqualToString:@"stand"])
-        fStr=[NSString stringWithFormat:@"mother_stand0%d.png",fValue+1];
-    else if([type isEqualToString:@"win"])
-        fStr=@"mother_win01.png";
-    
-    [spriteSheet removeChild:heroSprite cleanup:YES];
-    heroSprite = [CCSprite spriteWithSpriteFrameName:fStr];
-    heroSprite.position = ccp(platformX, platformY);
-    heroSprite.scale=0.8;
-    [spriteSheet addChild:heroSprite z:10];
+    [self mamaAnimationWithType:fValue animationType:type];
     [self heroUpdateForwardPosFunc];
 }
 -(void)heroUpdateForwardPosFunc{

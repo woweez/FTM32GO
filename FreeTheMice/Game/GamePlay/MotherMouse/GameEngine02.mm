@@ -85,6 +85,9 @@ GameEngine02Menu *layer02;
         
         self.tileMap = [CCTMXTiledMap tiledMapWithTMXFile:@"background.tmx"];
         self.background = [_tileMap layerNamed:@"background"];
+        if (RETINADISPLAY == 2) {
+            self.background.scale = RETINADISPLAY;
+        }
         [self addChild:_tileMap z:-1 tag:1];
         
         cache = [CCSpriteFrameCache sharedSpriteFrameCache];
@@ -679,22 +682,7 @@ GameEngine02Menu *layer02;
     if ([type isEqualToString:@"stand"] && [FTMUtil sharedInstance].isSecondTutorial && screenFirstViewCount == 4) {
         return;
     }
-    NSString *fStr=@"";
-    if([type isEqualToString:@"jump"]){
-        if(fValue!=9)
-            fStr=[NSString stringWithFormat:@"mother_jump0%d.png",fValue+1];
-        else
-            fStr=[NSString stringWithFormat:@"mother_jump%d.png",fValue+1];
-    }else if([type isEqualToString:@"stand"])
-        fStr=[NSString stringWithFormat:@"mother_stand0%d.png",fValue+1];
-    else if([type isEqualToString:@"win"])
-        fStr=@"mother_win01.png";
-    
-    [spriteSheet removeChild:heroSprite cleanup:YES];
-    heroSprite = [CCSprite spriteWithSpriteFrameName:fStr];
-    heroSprite.position = ccp(platformX, platformY);
-    heroSprite.scale=0.8;
-    [spriteSheet addChild:heroSprite z:10];
+    [self mamaAnimationWithType:fValue animationType:type];
     [self heroUpdateForwardPosFunc];
 }
 -(void)heroUpdateForwardPosFunc{
@@ -975,7 +963,6 @@ GameEngine02Menu *layer02;
         heroPimpleSprite[i].position=ccp(xx,yy);
     }
     if(!forwardChe){
-        
         mouseDragSprite.position=ccp(platformX+2,platformY+3+tValue);
         if(gameFunc.trigoVisibleChe)
             heroSprite.position=ccp(platformX+2,platformY+3+tValue);

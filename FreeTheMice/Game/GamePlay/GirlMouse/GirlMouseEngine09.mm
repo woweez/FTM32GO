@@ -13,6 +13,8 @@
 // Needed to obtain the Navigation Controller
 #import "AppDelegate.h"
 #import "DB.h"
+#import "FTMConstants.h"
+
 enum {
     kTagParentNode = 1,
 };
@@ -79,6 +81,9 @@ GirlMouseEngineMenu09 *gLayer09;
         
         self.tileMap = [CCTMXTiledMap tiledMapWithTMXFile:@"background.tmx"];
         self.background = [_tileMap layerNamed:@"background"];
+        if (RETINADISPLAY == 2) {
+            self.background.scale = RETINADISPLAY;
+        }
         _tileMap.position=ccp(0,-158);
         _tileMap.scaleY=1.3;
         [self addChild:_tileMap z:-1 tag:1];
@@ -712,35 +717,56 @@ GirlMouseEngineMenu09 *gLayer09;
     int iValue=(forwardChe?43:0);
     if(hx-iValue>75&& hx-iValue<140&&hy>670 &&hy<=710&&screenMovementFindValue==0){
         screenMovementFindValue=1;
+        if ([[switchAtlas string] isEqualToString:@"0"]){
+            [soundEffect switchSound];
+        }
         [switchAtlas setString:@"1"];
         
         if(screenMovementFindValue2!=0){
             screenMovementFindValue2=0;
+            if ([[switchAtlas2 string] isEqualToString:@"1"]){
+                [soundEffect correct_switch];
+            }
             [switchAtlas2 setString:@"0"];
         }
         if(screenMovementFindValue3 !=0){
             screenMovementFindValue3=0;
+            if ([[switchAtlas3 string] isEqualToString:@"1"]){
+                [soundEffect correct_switch];
+            }
             [switchAtlas3 setString:@"0"];
         }
     }
     
     if(hx-iValue>910 &&hy>580 &&hy<=620&&screenMovementFindValue2==0){
         screenMovementFindValue2=1;
+        if ([[switchAtlas2 string] isEqualToString:@"0"]){
+            [soundEffect switchSound];
+        }
         [switchAtlas2 setString:@"1"];
         if(gameFunc.moveCount2==290)
             cButtonChe=YES;
         if(screenMovementFindValue3 !=0){
             screenMovementFindValue3=0;
+            if ([[switchAtlas3 string] isEqualToString:@"1"]){
+                [soundEffect correct_switch];
+            }
             [switchAtlas3 setString:@"0"];
         }
     }
     if(hx-iValue>350 &&hx-iValue<440 &&hy>=290 && hy<=340&& screenMovementFindValue3==0){
         screenMovementFindValue3=1;
+        if ([[switchAtlas3 string] isEqualToString:@"0"]){
+            [soundEffect switchSound];
+        }
         [switchAtlas3 setString:@"1"];
         if(gameFunc.moveCount2==0)
             aButtonChe=YES;
         if(screenMovementFindValue == 0&&screenMovementFindValue2!=0){
             screenMovementFindValue=0;
+            if ([[switchAtlas2 string] isEqualToString:@"1"]){
+                [soundEffect correct_switch];
+            }
             [switchAtlas setString:@"0"];
             screenMovementFindValue2=0;
             [switchAtlas2 setString:@"0"];
@@ -748,6 +774,9 @@ GirlMouseEngineMenu09 *gLayer09;
             screenMovementFindValue=0;
             [switchAtlas setString:@"0"];
             screenMovementFindValue2=0;
+            if ([[switchAtlas2 string] isEqualToString:@"1"]){
+                [soundEffect correct_switch];
+            }
             [switchAtlas2 setString:@"0"];
         }
         
@@ -1324,19 +1353,7 @@ GirlMouseEngineMenu09 *gLayer09;
 }
 
 -(void)heroAnimationFunc:(int)fValue animationType:(NSString *)type{
-    NSString *fStr=@"";
-    if([type isEqualToString:@"jump"])
-        fStr=[NSString stringWithFormat:@"girl_jump%d.png",fValue+1];
-    else if([type isEqualToString:@"stand"]){
-        fStr=[NSString stringWithFormat:@"girl_stand%d.png",fValue+1];
-    }else if([type isEqualToString:@"win"])
-        fStr=@"girl_win1.png";
-    
-    [spriteSheet removeChild:heroSprite cleanup:YES];
-    heroSprite = [CCSprite spriteWithSpriteFrameName:fStr];
-    heroSprite.position = ccp(platformX, platformY);
-    heroSprite.scale=0.65;
-    [spriteSheet addChild:heroSprite z:10];
+    [self girlAnimationWithType:fValue animationType:type];
     [self heroUpdateForwardPosFunc];
     
     if([type isEqualToString:@"jump"]){

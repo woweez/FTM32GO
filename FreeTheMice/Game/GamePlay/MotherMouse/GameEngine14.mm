@@ -83,7 +83,9 @@ GameEngine14Menu *layer14;
         world->SetContactListener(_contactListener);
         
         self.tileMap = [CCTMXTiledMap tiledMapWithTMXFile:@"background.tmx"];
-        self.background = [_tileMap layerNamed:@"background"];
+        self.background = [_tileMap layerNamed:@"background"];if (RETINADISPLAY == 2) {
+            self.background.scale = RETINADISPLAY;
+        }
         [self addChild:_tileMap z:-1 tag:1];
         
         cache = [CCSpriteFrameCache sharedSpriteFrameCache];
@@ -548,6 +550,9 @@ GameEngine14Menu *layer14;
 //            gameFunc.trappedChe=YES;
         }else{
             gameFunc.moveCount=1;
+            if ([[switchAtlas[0] string] isEqualToString:@"0"]){
+                [soundEffect switchSound];
+            }
             [switchAtlas[0]  setString:@"1"];
             if(!screenMoveChe)
                 screenMovementFindValue2=1;
@@ -557,6 +562,9 @@ GameEngine14Menu *layer14;
             trappedTypeValue=5;
 //            gameFunc.trappedChe=YES;
         }else{
+            if ([[switchAtlas[1] string] isEqualToString:@"0"]){
+                [soundEffect switchSound];
+            }
             [switchAtlas[1]  setString:@"1"];
             gameFunc.switchCount=1;
             if(!screenMoveChe)
@@ -1216,22 +1224,7 @@ GameEngine14Menu *layer14;
 
 
 -(void)heroAnimationFunc:(int)fValue animationType:(NSString *)type{
-    NSString *fStr=@"";
-    if([type isEqualToString:@"jump"]){
-        if(fValue!=9)
-            fStr=[NSString stringWithFormat:@"mother_jump0%d.png",fValue+1];
-        else
-            fStr=[NSString stringWithFormat:@"mother_jump%d.png",fValue+1];
-    }else if([type isEqualToString:@"stand"])
-        fStr=[NSString stringWithFormat:@"mother_stand0%d.png",fValue+1];
-    else if([type isEqualToString:@"win"])
-        fStr=@"mother_win01.png";
-    
-    [spriteSheet removeChild:heroSprite cleanup:YES];
-    heroSprite = [CCSprite spriteWithSpriteFrameName:fStr];
-    heroSprite.position = ccp(platformX, platformY);
-    heroSprite.scale=0.8;
-    [spriteSheet addChild:heroSprite z:10];
+    [self mamaAnimationWithType:fValue animationType:type];
     [self heroUpdateForwardPosFunc];
 }
 -(void)heroUpdateForwardPosFunc{

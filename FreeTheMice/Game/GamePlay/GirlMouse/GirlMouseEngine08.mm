@@ -80,6 +80,9 @@ GirlMouseEngineMenu08 *gLayer08;
         
         self.tileMap = [CCTMXTiledMap tiledMapWithTMXFile:@"background.tmx"];
         self.background = [_tileMap layerNamed:@"background"];
+        if (RETINADISPLAY == 2) {
+            self.background.scale = RETINADISPLAY;
+        }
         _tileMap.position=ccp(0,-158);
         _tileMap.scaleY=1.3;
         [self addChild:_tileMap z:-1 tag:1];
@@ -915,11 +918,17 @@ GirlMouseEngineMenu08 *gLayer08;
     
     if(hx-iValue>860&& hx-iValue<925&&hy>670  && gameFunc.switchCount==0&&screenMovementFindValue==0){
         gameFunc.switchCount=1;
+        if ([[switchAtlas string] isEqualToString:@"0"]){
+            [soundEffect switchSound];
+        }
         [switchAtlas setString:@"1"];
     }
     
     if(hx-iValue>420&& hx-iValue<500&&hy>270&&hy<310 &&screenMovementFindValue2==0){
         screenMovementFindValue2=1;
+        if ([[switchAtlas2 string] isEqualToString:@"0"]){
+            [soundEffect switchSound];
+        }
         [switchAtlas2 setString:@"1"];
     }
     if(heroStandChe&&screenMovementFindValue2==2){
@@ -1047,6 +1056,9 @@ GirlMouseEngineMenu08 *gLayer08;
     
     if(vegetableOpenCount>=1){
         vegetableOpenCount+=0.5;
+        if (vegetableOpenCount == 2) {
+            [soundEffect tray_open_close];
+        }
         vegetableOpenCount=(vegetableOpenCount>100?100:vegetableOpenCount);
         vegetableCloseSprite.rotation=vegetableOpenCount-15;
     }
@@ -1419,19 +1431,7 @@ GirlMouseEngineMenu08 *gLayer08;
 }
 
 -(void)heroAnimationFunc:(int)fValue animationType:(NSString *)type{
-    NSString *fStr=@"";
-    if([type isEqualToString:@"jump"])
-        fStr=[NSString stringWithFormat:@"girl_jump%d.png",fValue+1];
-    else if([type isEqualToString:@"stand"]){
-        fStr=[NSString stringWithFormat:@"girl_stand%d.png",fValue+1];
-    }else if([type isEqualToString:@"win"])
-        fStr=@"girl_win1.png";
-    
-    [spriteSheet removeChild:heroSprite cleanup:YES];
-    heroSprite = [CCSprite spriteWithSpriteFrameName:fStr];
-    heroSprite.position = ccp(platformX, platformY);
-    heroSprite.scale=0.65;
-    [spriteSheet addChild:heroSprite z:10];
+    [self girlAnimationWithType:fValue animationType:type];
     [self heroUpdateForwardPosFunc];
     
     if([type isEqualToString:@"jump"]){

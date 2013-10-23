@@ -82,6 +82,9 @@ StrongMouseEngineMenu07 *sLayer07;
         
         self.tileMap = [CCTMXTiledMap tiledMapWithTMXFile:@"background.tmx"];
         self.background = [_tileMap layerNamed:@"background"];
+        if (RETINADISPLAY == 2) {
+            self.background.scale = RETINADISPLAY;
+        }
         [self addChild:_tileMap z:-1 tag:1];
         
         cache = [CCSpriteFrameCache sharedSpriteFrameCache];
@@ -260,7 +263,9 @@ StrongMouseEngineMenu07 *sLayer07;
         
         domeSprite=[CCSprite spriteWithSpriteFrameName:@"dome_0.png"];
         domeSprite.position=ccp(-348,479);
-        domeSprite.scale = 0.5;
+        if (RETINADISPLAY != 2) {
+            domeSprite.scale =0.5;
+        }
         [self addChild:domeSprite z:9];
         
         tileMove=[CCSprite spriteWithFile:@"move_platform3.png"];
@@ -1015,6 +1020,11 @@ StrongMouseEngineMenu07 *sLayer07;
                 heroPushSprite.position=ccp(heroSprite.position.x-10,heroSprite.position.y);
             
             heroRunSprite.visible=NO;
+            if (!heroPushSprite.visible) {
+                [soundEffect pushing];
+            }else if (arc4random() % 20 == 1){
+                [soundEffect pushing];
+            }
             heroPushSprite.visible=YES;
         }
     }

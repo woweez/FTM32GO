@@ -1,3 +1,4 @@
+
 /*
  Copyright (c) 2010 Steve Oldmeadow
 
@@ -128,7 +129,7 @@ static CDBufferManager *bufferManager = nil;
 
 -(ALuint) playEffect:(NSString*) filePath loop:(BOOL)loop
 {
-	return [self playEffect:filePath pitch:1.0f pan:0.0f gain:1.0f loop:loop];
+	return [self playEffect:filePath pitch:1.0f pan:0.0f gain:0.5f loop:loop]; //kamran
 }
 
 -(ALuint) playEffect:(NSString*) filePath pitch:(Float32) pitch pan:(Float32) pan gain:(Float32) gain loop:(BOOL)loop

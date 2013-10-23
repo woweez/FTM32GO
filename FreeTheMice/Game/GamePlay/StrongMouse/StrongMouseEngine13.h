@@ -35,6 +35,7 @@
     sound *soundEffect;
     Trigo *trigo;
     b2World* world;
+    BOOL isWaterEffectPlaying;
 //    HudLayer *hudLayer;
     CGSize winSize;
 	GLESDebugDraw *m_debugDraw;

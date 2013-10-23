@@ -13,7 +13,7 @@
 #import "LevelCompleteScreen.h"
 #import "FTMUtil.h"
 #import "DB.h"
-
+#import "FTMConstants.h"
 enum {
     kTagParentNode = 1,
 };
@@ -84,6 +84,9 @@ GameEngine12Menu *layer12;
         
         self.tileMap = [CCTMXTiledMap tiledMapWithTMXFile:@"bridge_background.tmx"];
         self.background = [_tileMap layerNamed:@"bridge_background"];
+        if (RETINADISPLAY == 2) {
+            self.background.scale = RETINADISPLAY;
+        }
         [self addChild:_tileMap z:-1 tag:1];
         
         
@@ -254,11 +257,17 @@ GameEngine12Menu *layer12;
         
         tileWaterFull=[CCTMXTiledMap tiledMapWithTMXFile:@"water_full.tmx"];
         self.background = [tileWaterFull layerNamed:@"water_full"];
+        if (RETINADISPLAY == 2) {
+            self.background.scale = RETINADISPLAY;
+        }
         [self addChild:tileWaterFull z:10 tag:1];
         tileWaterFull.position=ccp(0,-500);
         
         tileWaterFull2=[CCTMXTiledMap tiledMapWithTMXFile:@"water_full.tmx"];
         self.background = [tileWaterFull2 layerNamed:@"water_full"];
+        if (RETINADISPLAY == 2) {
+            self.background.scale = RETINADISPLAY;
+        }
         [self addChild:tileWaterFull2 z:10 tag:1];
         
         for(int i=0;i<2;i++){
@@ -564,7 +573,9 @@ GameEngine12Menu *layer12;
     
     if(levelFloddedValue<levelFloddedValue2)
         levelFloddedValue+=0.25;
-    
+    if (arc4random() %100 == 2) {
+        [soundEffect flooding];
+    }
     tileWaterFull.position=ccp(0-waterAnimationValue,-600.0+levelFloddedValue);
     tileWaterFull2.position=ccp(0-waterAnimationValue2,-600.0+levelFloddedValue);
     
@@ -602,6 +613,7 @@ GameEngine12Menu *layer12;
                     iceQubePos[i][1]=[trigo circley:25 a:180-(iceQubeCount[i]-230)]+410;
                 }else if(iceQubeCount[i]>50&&iceQubeCount[i]<230){
                     if(iceQubeCount[i]==51 || iceQubeCount[i] == 52){
+                        [soundEffect ice_cubes_appear];
                         iceBlastAnimationCount=1;
                         iceBlastAtlas.position=ccp(iceQubePos[i][0]-80,iceQubePos[i][1]-15);
                     }
@@ -630,6 +642,7 @@ GameEngine12Menu *layer12;
                 iceQubeCount[3]=-39;
             }
             if(iceQubeCount[i]>480&&iceQubeCount[i]<=482){
+                [soundEffect ice_cubes_fall];
                 iceBlastAnimationCount=1;
                 iceBlastAtlas.position=ccp(iceQubePos[i][0]-95,iceQubePos[i][1]-16);
             }
@@ -686,6 +699,7 @@ GameEngine12Menu *layer12;
             iceQubeCount2[3]=1;
         }
         if(iceQubeCount2[i]>=300&&iceQubeCount2[i]<302){
+            [soundEffect ice_cubes_fall];
             iceBlastAnimationCount2=1;
             iceBlastAtlas2.position=ccp(iceQubePos2[i][0]-97,iceQubePos2[i][1]-25);
         }
@@ -756,21 +770,44 @@ GameEngine12Menu *layer12;
     }
 }
 -(void)switchFunc{
-    if(gameFunc.switchStatusChe)
+    if(gameFunc.switchStatusChe){
+        if ([[switchAtlas[0] string] isEqualToString:@"0"]){
+            [soundEffect switchSound];
+        }
         [switchAtlas[0] setString:@"1"];
-    else
+    }
+    else{
+        if ([[switchAtlas[0] string] isEqualToString:@"1"]){
+            [soundEffect correct_switch];
+        }
         [switchAtlas[0] setString:@"0"];
+    }
     
-    if(gameFunc.switchStatusChe2)
+    if(gameFunc.switchStatusChe2){
+        if ([[switchAtlas[1] string] isEqualToString:@"0"]){
+            [soundEffect switchSound];
+        }
         [switchAtlas[1] setString:@"1"];
-    else
+    }
+    else{
+        if ([[switchAtlas[1] string] isEqualToString:@"1"]){
+            [soundEffect correct_switch];
+        }
         [switchAtlas[1] setString:@"0"];
+    }
     
-    if(gameFunc.switchStatusChe3)
+    if(gameFunc.switchStatusChe3){
+        if ([[switchAtlas[2] string] isEqualToString:@"0"]){
+            [soundEffect switchSound];
+        }
         [switchAtlas[2] setString:@"1"];
-    else
+    }
+    else{
+        if ([[switchAtlas[2] string] isEqualToString:@"1"]){
+            [soundEffect correct_switch];
+        }
         [switchAtlas[2] setString:@"0"];
-    
+    }
     
     if(screenMoveChe){
         if(screenMovementFindValue==0){
@@ -1192,22 +1229,7 @@ GameEngine12Menu *layer12;
 
 
 -(void)heroAnimationFunc:(int)fValue animationType:(NSString *)type{
-    NSString *fStr=@"";
-    if([type isEqualToString:@"jump"]){
-        if(fValue!=9)
-            fStr=[NSString stringWithFormat:@"mother_jump0%d.png",fValue+1];
-        else
-            fStr=[NSString stringWithFormat:@"mother_jump%d.png",fValue+1];
-    }else if([type isEqualToString:@"stand"])
-        fStr=[NSString stringWithFormat:@"mother_stand0%d.png",fValue+1];
-    else if([type isEqualToString:@"win"])
-        fStr=@"mother_win01.png";
-    
-    [spriteSheet removeChild:heroSprite cleanup:YES];
-    heroSprite = [CCSprite spriteWithSpriteFrameName:fStr];
-    heroSprite.position = ccp(platformX, platformY);
-    heroSprite.scale=0.8;
-    [spriteSheet addChild:heroSprite z:10];
+    [self mamaAnimationWithType:fValue animationType:type];
     [self heroUpdateForwardPosFunc];
 }
 -(void)heroUpdateForwardPosFunc{

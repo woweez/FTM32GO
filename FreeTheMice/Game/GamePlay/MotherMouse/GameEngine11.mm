@@ -13,6 +13,7 @@
 #import "LevelCompleteScreen.h"
 #import "FTMUtil.h"
 #import "DB.h"
+#import "FTMConstants.h"
 
 enum {
     kTagParentNode = 1,
@@ -82,6 +83,9 @@ GameEngine11Menu *layer11;
         
         self.tileMap = [CCTMXTiledMap tiledMapWithTMXFile:@"bridge_background.tmx"];
         self.background = [_tileMap layerNamed:@"bridge_background"];
+        if (RETINADISPLAY == 2) {
+            self.background.scale = RETINADISPLAY;
+        }
         [self addChild:_tileMap z:-1 tag:1];
         
         cache = [CCSpriteFrameCache sharedSpriteFrameCache];
@@ -535,20 +539,27 @@ GameEngine11Menu *layer11;
     //Left Ice Cube
     for(int i=0;i<4;i++){
         if(iceQubeCount[i]!=0){
-            if (i ==0) {
-                [soundEffect ice_cubes_appear];
-            }
+            
             if(iceQubeCount[i]<244){
+                if (iceQubeCount[i] == 21) {
+                    [soundEffect ice_cubes_appear];
+                }
                 iceQubeCount[i]+=2.0;
                 iceQubePos[i][0]=[trigo circlex:iceQubeCount[i] a:270]+440;
                 iceQubePos[i][1]=[trigo circley:iceQubeCount[i] a:270]+483;
             }else{
+                if (iceQubeCount[i] == 35) {
+                    [soundEffect ice_cubes_appear];
+                }
                 iceQubeCount[i]+=1.0;
                 iceQubePos[i][0]=[trigo circlex:iceQubeCount[i] a:359]+144;
                 iceQubePos[i][1]=[trigo circley:iceQubeCount[i] a:359]+178;
             }
         }
         if(iceQubeCount[1]==0&&iceQubeCount[0]>=50){
+//            if (i ==0) {
+//                [soundEffect ice_cubes_appear];
+//            }
             iceQubeCount[1]=1;
         }else if(iceQubeCount[2]==0&&iceQubeCount[1]>=50){
             iceQubeCount[2]=1;
@@ -556,14 +567,14 @@ GameEngine11Menu *layer11;
             iceQubeCount[3]=1;
         }
         if(iceQubeCount[i]>=244&&iceQubeCount[i]<246){
-            
+            [soundEffect ice_cubes_fall];
             iceBlastAnimationCount=1;
             iceBlastAtlas.position=ccp(iceQubePos[i][0]-90,iceQubePos[i][1]-14);
         }
         if(iceQubeCount[i]>=400&&iceQubeCount[i]<=403){
-            if (i == 2) {
-                [soundEffect ice_cubes_fall];
-            }
+//            if (i == 2) {
+//                [soundEffect ice_cubes_fall];
+//            }
             
             iceBlastAnimationCount=1;
             iceBlastAtlas.position=ccp(iceQubePos[i][0]-95,iceQubePos[i][1]-10);
@@ -584,11 +595,12 @@ GameEngine11Menu *layer11;
     //Right Ice Cube
     for(int i=0;i<4;i++){
         if(iceQubeCount2[i]!=0){
-            if (i == 3) {
-                [soundEffect ice_cubes_appear];
-            }
             
             if(iceQubeCount2[i]<160){
+                if (iceQubeCount[i] > 2 && iceQubeCount[i] < 5) {
+                    [soundEffect ice_cubes_appear];
+                }
+
                 iceQubeCount2[i]+=2.0;
                 iceQubePos2[i][0]=[trigo circlex:iceQubeCount2[i] a:270]+980;
                 iceQubePos2[i][1]=[trigo circley:iceQubeCount2[i] a:270]+383;
@@ -599,6 +611,9 @@ GameEngine11Menu *layer11;
             }
         }
         if(iceQubeCount2[1]==0&&iceQubeCount2[0]>=50){
+//            if (i == 3) {
+//                [soundEffect ice_cubes_appear];
+//            }
             iceQubeCount2[1]=1;
         }else if(iceQubeCount2[2]==0&&iceQubeCount2[1]>=50){
             iceQubeCount2[2]=1;
@@ -606,14 +621,11 @@ GameEngine11Menu *layer11;
             iceQubeCount2[3]=1;
         }
         if(iceQubeCount2[i]>=160&&iceQubeCount2[i]<162){
+            [soundEffect ice_cubes_fall];
             iceBlastAnimationCount2=1;
             iceBlastAtlas2.position=ccp(iceQubePos2[i][0]-90,iceQubePos2[i][1]-8);
         }
         if(iceQubeCount2[i]>=410&&iceQubeCount2[i]<415){
-            if (i == 3) {
-                [soundEffect ice_cubes_fall];
-            }
-            
             iceBlastAnimationCount2=1;
             iceBlastAtlas2.position=ccp(iceQubePos2[i][0]-75,iceQubePos2[i][1]-10);
             iceQubeCount2[i]=415;
@@ -676,8 +688,12 @@ GameEngine11Menu *layer11;
 -(void)switchFunc{
     if(screenMoveChe&&gameFunc.switchCount==1)
         gameFunc.switchCount=0;
-    if(gameFunc.moveCount2!=0||gameFunc.switchHitValue!=0)
+    if(gameFunc.moveCount2!=0||gameFunc.switchHitValue!=0){
+        if ([[switchAtlas string] isEqualToString:@"0"]){
+            [soundEffect switchSound];
+        }
         [switchAtlas setString:@"1"];
+    }
     
     if(gameFunc.switchHitValue>=2){
         gameFunc.switchHitValue+=1;
@@ -1088,22 +1104,7 @@ GameEngine11Menu *layer11;
 
 
 -(void)heroAnimationFunc:(int)fValue animationType:(NSString *)type{
-    NSString *fStr=@"";
-    if([type isEqualToString:@"jump"]){
-        if(fValue!=9)
-            fStr=[NSString stringWithFormat:@"mother_jump0%d.png",fValue+1];
-        else
-            fStr=[NSString stringWithFormat:@"mother_jump%d.png",fValue+1];
-    }else if([type isEqualToString:@"stand"])
-        fStr=[NSString stringWithFormat:@"mother_stand0%d.png",fValue+1];
-    else if([type isEqualToString:@"win"])
-        fStr=@"mother_win01.png";
-    
-    [spriteSheet removeChild:heroSprite cleanup:YES];
-    heroSprite = [CCSprite spriteWithSpriteFrameName:fStr];
-    heroSprite.position = ccp(platformX, platformY);
-    heroSprite.scale=0.8;
-    [spriteSheet addChild:heroSprite z:10];
+    [self mamaAnimationWithType:fValue animationType:type];
     [self heroUpdateForwardPosFunc];
 }
 -(void)heroUpdateForwardPosFunc{

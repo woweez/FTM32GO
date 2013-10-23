@@ -84,6 +84,9 @@ GameEngine09Menu *layer09;
         
         self.tileMap = [CCTMXTiledMap tiledMapWithTMXFile:@"background.tmx"];
         self.background = [_tileMap layerNamed:@"background"];
+        if (RETINADISPLAY == 2) {
+            self.background.scale = RETINADISPLAY;
+        }
         [self addChild:_tileMap z:-1 tag:1];
         
         cache = [CCSpriteFrameCache sharedSpriteFrameCache];
@@ -662,21 +665,44 @@ GameEngine09Menu *layer09;
 }
 -(void)switchFunc{
     
-    if(gameFunc.switchStatusChe)
+    if(gameFunc.switchStatusChe){
+       if ([[switchAtlas[0] string] isEqualToString:@"0"]){
+           [soundEffect switchSound];
+        }
         [switchAtlas[0] setString:@"1"];
-    else
+        
+    }
+    else{
+        if ([[switchAtlas[0] string] isEqualToString:@"1"]){
+            [soundEffect correct_switch];
+        }
         [switchAtlas[0] setString:@"0"];
+    }
     
-    if(gameFunc.switchStatusChe2)
+    if(gameFunc.switchStatusChe2){
+        if ([[switchAtlas[1] string] isEqualToString:@"0"]){
+            [soundEffect switchSound];
+        }
         [switchAtlas[1] setString:@"1"];
-    else
+    }
+    else{
+        if ([[switchAtlas[1] string] isEqualToString:@"1"]){
+            [soundEffect correct_switch];
+        }
         [switchAtlas[1] setString:@"0"];
-    
-    if(gameFunc.switchStatusChe3)
+    }
+    if(gameFunc.switchStatusChe3){
+        if ([[switchAtlas[2] string] isEqualToString:@"0"]){
+            [soundEffect switchSound];
+        }
         [switchAtlas[2] setString:@"1"];
-    else
+    }
+    else{
+        if ([[switchAtlas[2] string] isEqualToString:@"1"]){
+            [soundEffect correct_switch];
+        }
         [switchAtlas[2] setString:@"0"];
-    
+    }
     
     if(screenMoveChe){
         if(gameFunc.switchStatusChe){
@@ -1165,22 +1191,7 @@ GameEngine09Menu *layer09;
 
 
 -(void)heroAnimationFunc:(int)fValue animationType:(NSString *)type{
-    NSString *fStr=@"";
-    if([type isEqualToString:@"jump"]){
-        if(fValue!=9)
-            fStr=[NSString stringWithFormat:@"mother_jump0%d.png",fValue+1];
-        else
-            fStr=[NSString stringWithFormat:@"mother_jump%d.png",fValue+1];
-    }else if([type isEqualToString:@"stand"])
-        fStr=[NSString stringWithFormat:@"mother_stand0%d.png",fValue+1];
-    else if([type isEqualToString:@"win"])
-        fStr=@"mother_win01.png";
-    
-    [spriteSheet removeChild:heroSprite cleanup:YES];
-    heroSprite = [CCSprite spriteWithSpriteFrameName:fStr];
-    heroSprite.position = ccp(platformX, platformY);
-    heroSprite.scale=0.8;
-    [spriteSheet addChild:heroSprite z:10];
+    [self mamaAnimationWithType:fValue animationType:type];
     [self heroUpdateForwardPosFunc];
 }
 -(void)heroUpdateForwardPosFunc{

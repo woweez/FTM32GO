@@ -44,7 +44,7 @@ NSString * const kCDN_AudioManagerInitialised = @"kCDN_AudioManagerInitialised";
 -(id) init {
 	if ((self = [super init])) {
 		state = kLAS_Init;
-		volume = 1.0f;
+		volume = 0.5f; //kamran
 		mute = NO;
 		enabled_ = YES;
 	}

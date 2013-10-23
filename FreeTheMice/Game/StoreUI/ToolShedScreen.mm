@@ -104,6 +104,7 @@ NSString *const ToolShedUpdateProductPurchasedNotification = @"ToolShedUpdatePro
             [[CCDirector sharedDirector] replaceScene:[StoreScreen node]];
 //            open up the store here for inApp..
 		}];
+        
         [buyCheeseItem setScaleX:xScale];
         [buyCheeseItem setScaleY:yScale];
         
@@ -117,12 +118,18 @@ NSString *const ToolShedUpdateProductPurchasedNotification = @"ToolShedUpdatePro
             [[CCDirector sharedDirector] replaceScene:[MenuScreen scene]];
             
 		}];
-        [backMenuItem setScaleX:0.3 *scaleFactorX];
-        [backMenuItem setScaleY:0.3 *scaleFactorY];
         CCMenu *menu = [CCMenu menuWithItems: backMenuItem,  nil];
         [menu alignItemsVerticallyWithPadding:30.0];
         menu.position=ccp(205 *scaleFactorX, 15 *scaleFactorY);
         [self addChild: menu z:100];
+        
+        if (RETINADISPLAY == 2) {
+            [backMenuItem setScaleX:0.6 *scaleFactorX];
+            [backMenuItem setScaleY:0.6 *scaleFactorY];
+            menu.position=ccp(205 *scaleFactorX, 18 *scaleFactorY);
+        }
+        
+       
 
         powerUpItem = [CCMenuItemImage itemWithNormalImage:@"powerups_btn.png" selectedImage:@"powerups_btn_disable.png" disabledImage:@"powerups_btn_disable.png"  block:^(id sender) {
             [soundEffect button_1];

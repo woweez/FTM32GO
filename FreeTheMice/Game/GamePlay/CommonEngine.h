@@ -57,6 +57,8 @@
     int clockIntervalCounter;
     
     }
+@property (nonatomic, retain) CCTMXTiledMap *tileMap;
+@property (nonatomic, retain) CCTMXLayer *background;
 
 -(void)addAnimation:(NSString *) plistName noOfFrames:(int) frames startingFrameName:(NSString *) startFrame;
 -(void)updateAnimationOnCurrentType:(int)frameToLoad animationType:(NSString *)type;
@@ -74,7 +76,8 @@
 -(void) mouseTrapped;
 -(void) playIceCubeApprearSound;
 -(void) playIceCubeFallSound;
-
+-(void) mamaAnimationWithType:(int)fValue animationType:(NSString *)type;
+-(void) girlAnimationWithType:(int)fValue animationType:(NSString *)type;
 //-(void)playMamaKniveHitAnimation;
 //-(void)playStrongKniveHitAnimation;
 //-(void)playGirlKniveHitAnimation;

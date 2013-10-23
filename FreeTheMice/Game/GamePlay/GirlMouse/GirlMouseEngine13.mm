@@ -9,7 +9,7 @@
 // Import the interfaces
 #import "GirlMouseEngine13.h"
 #import "LevelScreen.h"
-
+#import "FTMConstants.h"
 
 // Needed to obtain the Navigation Controller
 #import "AppDelegate.h"
@@ -80,6 +80,9 @@ GirlMouseEngineMenu13 *gLayer13;
         
         self.tileMap = [CCTMXTiledMap tiledMapWithTMXFile:@"background.tmx"];
         self.background = [_tileMap layerNamed:@"background"];
+        if (RETINADISPLAY == 2) {
+            self.background.scale = RETINADISPLAY;
+        }
         _tileMap.position=ccp(0,-158);
         _tileMap.scaleY=1.3;
         [self addChild:_tileMap z:-1 tag:1];
@@ -949,7 +952,7 @@ GirlMouseEngineMenu13 *gLayer13;
     [catSpriteSheet removeChild:catSprite cleanup:YES];
     catSprite = [CCSprite spriteWithSpriteFrameName:fStr];
     catSprite.position = ccp(catX,catY);
-    catSprite.scale=0.6;
+    catSprite.scale=CAT_SCALE;
     if(!catForwardChe){
         catSprite.flipX=0;
     }else{
@@ -969,7 +972,7 @@ GirlMouseEngineMenu13 *gLayer13;
     [catSpriteSheet removeChild:catSprite2 cleanup:YES];
     catSprite2 = [CCSprite spriteWithSpriteFrameName:fStr];
     catSprite2.position = ccp(catX2,catY2);
-    catSprite2.scale=0.6;
+    catSprite2.scale=CAT_SCALE;
     if(!catForwardChe2){
         catSprite2.flipX=0;
     }else{
@@ -989,7 +992,7 @@ GirlMouseEngineMenu13 *gLayer13;
     [catSpriteSheet removeChild:catSprite3 cleanup:YES];
     catSprite3 = [CCSprite spriteWithSpriteFrameName:fStr];
     catSprite3.position = ccp(catX3,catY3);
-    catSprite3.scale=0.6;
+    catSprite3.scale=CAT_SCALE;
     if(!catForwardChe3){
         catSprite3.flipX=0;
     }else{
@@ -1019,12 +1022,18 @@ GirlMouseEngineMenu13 *gLayer13;
     
     if(hx-iValue>460 &&hx-iValue<520 &&hy>210 &&hy<250 &&screenMovementFindValue==0){
         screenMovementFindValue=1;
+        if ([[switchAtlas string] isEqualToString:@"0"]){
+            [soundEffect switchSound];
+        }
         [switchAtlas setString:@"1"];
         waterIntervalTimeCount=300;
     }
     
     if(hx-iValue<50&&hy>480 &&hy<510 &&screenMovementFindValue2==0){
         screenMovementFindValue2=1;
+        if ([[switchAtlas2 string] isEqualToString:@"0"]){
+            [soundEffect switchSound];
+        }
         [switchAtlas2 setString:@"1"];
         
         screenMoveChe=YES;
@@ -1036,6 +1045,9 @@ GirlMouseEngineMenu13 *gLayer13;
     
     if(hx-iValue>365 &&hx-iValue<=400 && hy==228 &&gameFunc.moveCount==0){
         gameFunc.moveCount=-0.1;
+        if ([[combButtonAtlas string] isEqualToString:@"0"]){
+            [soundEffect switchSound];
+        }
         [combButtonAtlas setString:@"1"];
     }
     
@@ -1085,6 +1097,9 @@ GirlMouseEngineMenu13 *gLayer13;
         for(int i=0;i<4;i++){
             if(iceQubeCount[i]!=-40){
                 if(iceQubeCount[i]<=25){
+                    if (iceQubeCount[i] > 2 && iceQubeCount[i] < 4) {
+                        [soundEffect ice_cubes_appear];
+                    }
                     iceQubeCount[i]+=1.5;
                     iceQubePos[i][0]=[trigo circlex:120 a:180-(iceQubeCount[i]-230)]+100;
                     iceQubePos[i][1]=[trigo circley:120 a:180-(iceQubeCount[i]-230)]+160;
@@ -1094,6 +1109,9 @@ GirlMouseEngineMenu13 *gLayer13;
                     iceQubePos[i][1]=[trigo circley:iceQubeCount[i] a:359]+223;
                 }
                 if(iceQubeCount[i]>26&&iceQubeCount[i]<=28){
+                    if (iceQubeCount[i] > 26 && iceQubeCount[i] < 28) {
+                        [soundEffect ice_cubes_fall];
+                    }
                     iceBlastAnimationCount=1;
                     iceBlastAtlas.position=ccp(iceQubePos[i][0]-82,iceQubePos[i][1]-16);
                 }
@@ -1139,6 +1157,13 @@ GirlMouseEngineMenu13 *gLayer13;
     for(int i=0;i<5;i++){
         for(int j=0;j<2;j++){
             if(iceSmokingCount[i][j]!=0){
+                if (!isWaterEffectPlaying) {
+                    if (iceSmokingCount[0][0] > 1 && iceSmokingCount[0][0] <3 ) {
+                        
+                        [soundEffect water_falling_from_vase];
+                        isWaterEffectPlaying = YES;
+                    }
+                }
                 int xx=0;
                 int yy=0;
                 xx=[trigo circlex:iceSmokingCount[i][j] a:255+(j*12)]+423;
@@ -1148,6 +1173,7 @@ GirlMouseEngineMenu13 *gLayer13;
                 iceSmokingSprite[i][j].scale=(iceSmokingCount[i][j]/70.0)+0.1;
                 iceSmokingCount[i][j]+=1.2;
                 if(iceSmokingCount[i][j]>=46){
+                    isWaterEffectPlaying = NO;
                     iceSmokingCount[i][j]=0;
                     iceSmokingSprite[i][j].position=ccp(-200,100);
                 }
@@ -1156,6 +1182,7 @@ GirlMouseEngineMenu13 *gLayer13;
     }
     
     if(waterIntervalTimeCount<300){
+        
         iceSmokingReleaseCount+=1;
         if(iceSmokingReleaseCount>=8){
             iceSmokingReleaseCount=0;
@@ -1416,6 +1443,7 @@ GirlMouseEngineMenu13 *gLayer13;
             }
             
             if(trappedTypeValue == 2){
+                [soundEffect water_sink_splash];
                 heroTrappedSprite = [CCSprite spriteWithFile:@"gm_mist_0.png"];
                 heroTrappedSprite.scale=0.5;
                 if(!forwardChe)
@@ -1615,19 +1643,7 @@ GirlMouseEngineMenu13 *gLayer13;
 }
 
 -(void)heroAnimationFunc:(int)fValue animationType:(NSString *)type{
-    NSString *fStr=@"";
-    if([type isEqualToString:@"jump"])
-        fStr=[NSString stringWithFormat:@"girl_jump%d.png",fValue+1];
-    else if([type isEqualToString:@"stand"]){
-        fStr=[NSString stringWithFormat:@"girl_stand%d.png",fValue+1];
-    }else if([type isEqualToString:@"win"])
-        fStr=@"girl_win1.png";
-    
-    [spriteSheet removeChild:heroSprite cleanup:YES];
-    heroSprite = [CCSprite spriteWithSpriteFrameName:fStr];
-    heroSprite.position = ccp(platformX, platformY);
-    heroSprite.scale=0.65;
-    [spriteSheet addChild:heroSprite z:10];
+    [self girlAnimationWithType:fValue animationType:type];
     [self heroUpdateForwardPosFunc];
     
     if([type isEqualToString:@"jump"]){

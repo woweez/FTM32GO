@@ -84,6 +84,9 @@ GameEngine10Menu *layer10;
         
         self.tileMap = [CCTMXTiledMap tiledMapWithTMXFile:@"bridge_background.tmx"];
         self.background = [_tileMap layerNamed:@"bridge_background"];
+        if (RETINADISPLAY == 2) {
+            self.background.scale = RETINADISPLAY;
+        }
         [self addChild:_tileMap z:-1 tag:1];
         
         cache = [CCSpriteFrameCache sharedSpriteFrameCache];
@@ -652,6 +655,9 @@ GameEngine10Menu *layer10;
         [self startClockTimer];
         clockArrowSprite.position=ccp(450,258);
         clockBackgroundSprite.position=ccp(450,258);
+        if ([[switchAtlas string] isEqualToString:@"0"]){
+            [soundEffect switchSound];
+        }
         [switchAtlas setString:@"1"];
     }else if(gameFunc.switchCount>=1){
         gameFunc.switchCount+=1;
@@ -661,6 +667,9 @@ GameEngine10Menu *layer10;
             clockBackgroundSprite.position=ccp(-100,258);
             clockArrowSprite.position=ccp(-100,258);
             gameFunc.switchCount=0;
+            if ([[switchAtlas string] isEqualToString:@"1"]){
+                [soundEffect correct_switch];
+            }
             [switchAtlas setString:@"0"];
         }
     }
@@ -1072,22 +1081,7 @@ GameEngine10Menu *layer10;
 
 
 -(void)heroAnimationFunc:(int)fValue animationType:(NSString *)type{
-    NSString *fStr=@"";
-    if([type isEqualToString:@"jump"]){
-        if(fValue!=9)
-            fStr=[NSString stringWithFormat:@"mother_jump0%d.png",fValue+1];
-        else
-            fStr=[NSString stringWithFormat:@"mother_jump%d.png",fValue+1];
-    }else if([type isEqualToString:@"stand"])
-        fStr=[NSString stringWithFormat:@"mother_stand0%d.png",fValue+1];
-    else if([type isEqualToString:@"win"])
-        fStr=@"mother_win01.png";
-    
-    [spriteSheet removeChild:heroSprite cleanup:YES];
-    heroSprite = [CCSprite spriteWithSpriteFrameName:fStr];
-    heroSprite.position = ccp(platformX, platformY);
-    heroSprite.scale=0.8;
-    [spriteSheet addChild:heroSprite z:10];
+    [self mamaAnimationWithType:fValue animationType:type];
     [self heroUpdateForwardPosFunc];
 }
 -(void)heroUpdateForwardPosFunc{
@@ -1319,6 +1313,9 @@ GameEngine10Menu *layer10;
                 screenShowY=platformY;
                 screenShowX2=233;
                 screenShowY2=platformY;
+                if ([[switchAtlas string] isEqualToString:@"0"]){
+                    [soundEffect switchSound];
+                }
                 [switchAtlas setString:@"1"];
             }
         }
