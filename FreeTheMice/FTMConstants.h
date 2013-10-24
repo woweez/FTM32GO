@@ -10,7 +10,7 @@
 //#define PTM_RATIO (isIPad ? 64 : 32)
 #define DEVICESCALE (isIPad ? 2 : 1)
 
-#define RETINADISPLAY       0 //Kamran
+#define RETINADISPLAY       2 //bhai
 //convenience measurements
 #define SCREEN [[CCDirector sharedDirector] winSize]
 #define CURTIME CACurrentMediaTime()
@@ -92,6 +92,8 @@
 #define MAMA_PUSH_SCALE         0.8
 #define CAT_SCALE               0.6
 #endif
+
+
 
 #define STRONG_SHOCK_ANIM     1
 #define STRONG_WATER_ANIM     2

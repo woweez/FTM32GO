@@ -136,7 +136,7 @@ int counter;
         CCLabelAtlas *currentLevelLabel = [CCLabelAtlas labelWithString:[NSString stringWithFormat:@"%d/14", mamaCurrentLvl] charMapFile:@"numbers.png" itemWidth:15 itemHeight:20 startCharMap:'.'];
         currentLevelLabel.position=ccp(72*scaleFactorX,38*scaleFactorY);
         if (RETINADISPLAY == 2) {
-            currentLevelLabel.visible = NO;
+            currentLevelLabel.visible = YES;
         }
         CCMenuItem *motherMenuItem=[CCMenuItemImage itemWithNormalImage:@"mother_levels_unlocked.png" selectedImage:@"mother_levels_unlocked.png" target:self selector:@selector(clickMouse:)];
         [motherMenuItem setScale:cScale];
@@ -147,7 +147,7 @@ int counter;
         currentLevelLabel = [CCLabelAtlas labelWithString:[NSString stringWithFormat:@"%d/14", strongCurrentLvl] charMapFile:@"numbers.png" itemWidth:15 itemHeight:20 startCharMap:'.'];
         currentLevelLabel.position=ccp(78*scaleFactorX,44*scaleFactorY);
         if (RETINADISPLAY == 2) {
-            currentLevelLabel.visible = NO;
+            currentLevelLabel.visible = YES;
         }
         if(currentMouse == 2 || currentMouse == 3){
             strongMenuItem = [CCMenuItemImage itemWithNormalImage:@"strong_levels_unlocked.png" selectedImage:@"strong_levels_unlocked.png" target:self selector:@selector(clickMouse:)];
@@ -155,7 +155,7 @@ int counter;
         }
         else{
             strongMenuItem = [CCMenuItemImage itemWithNormalImage:@"strong_levels_locked.png" selectedImage:@"strong_levels_locked.png" target:self selector:@selector(clickMouse:)];
-            strongMenuItem.isEnabled = FALSE;
+            strongMenuItem.isEnabled = NO;
         }
         [strongMenuItem setScale:cScale];
         strongMenuItem.tag=2;
@@ -164,7 +164,7 @@ int counter;
         currentLevelLabel = [CCLabelAtlas labelWithString:[NSString stringWithFormat:@"%d/14", girlCurrentLvl] charMapFile:@"numbers.png" itemWidth:15 itemHeight:20 startCharMap:'.'];
         currentLevelLabel.position=ccp(80*scaleFactorX,51*scaleFactorY);
         if (RETINADISPLAY == 2) {
-            currentLevelLabel.visible = NO;
+            currentLevelLabel.visible = YES;
         }
         if(currentMouse == 3){
             girlMenuItem=[CCMenuItemImage itemWithNormalImage:@"girl_levels_unlocked.png" selectedImage:@"girl_levels_unlocked.png" target:self selector:@selector(clickMouse:)];
@@ -172,7 +172,7 @@ int counter;
         }
         else{
             girlMenuItem=[CCMenuItemImage itemWithNormalImage:@"girl_levels_locked.png" selectedImage:@"girl_levels_locked.png" target:self selector:@selector(clickMouse:)];
-            girlMenuItem.isEnabled = FALSE;
+            girlMenuItem.isEnabled = NO;
         }
         [girlMenuItem setScale:cScale];
         girlMenuItem.tag=3;

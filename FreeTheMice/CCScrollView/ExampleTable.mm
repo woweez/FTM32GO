@@ -96,6 +96,22 @@ NSString *const ToolShedUpdateProductPurchasedNotification = @"ToolShedUpdatePro
     
     [cell addChild:powrUpSpr];
     
+    CCSprite *bg = [CCSprite spriteWithFile:[self getAppropriateBgPathWithItemID:itemId]];
+    bg.position = ccp([ExampleCell cellSize].width/2, [ExampleCell cellSize].height/2);
+    if (itemId == BARKING_DOG_ITEM_ID) {
+        bg.position = ccp([ExampleCell cellSize].width, [ExampleCell cellSize].height/2);
+    }
+    if (RETINADISPLAY == 2) {
+        bg.scaleX = cScale * 1.19;
+        bg.scaleY = cScale * 1.01;
+    }
+    
+//    bg.tag = itemId;
+    if (itemId == MAGNIFIER_ITEM_ID || itemId == SLOWDOWN_TIME_ITEM_ID) {
+        [cell addChild:bg z:-1];
+    }else{
+        [cell addChild:bg z:-2];
+    }
     
     CCMenuItem *buyItem = [CCMenuItemImage itemWithNormalImage:@"buy-btn.png" selectedImage:@"buy-btn-press.png" block:^(id sender) {
         [soundEffect button_1];
@@ -120,16 +136,18 @@ NSString *const ToolShedUpdateProductPurchasedNotification = @"ToolShedUpdatePro
     }
     buyItem.tag = itemId;
     CCMenu *buyItemMenu = [CCMenu menuWithItems:buyItem, nil];
-    buyItemMenu.position = ccp(powrUpSpr.position.x + 87 *scaleFactorX, powrUpSpr.position.y *1.26);
+    buyItemMenu.position = ccp(powrUpSpr.position.x + 90 *scaleFactorX, powrUpSpr.position.y *1.26);
     buyItemMenu.tag = itemId;
     buyItemMenu.contentSize = CGSizeMake(buyItem.contentSize.width/4 *scaleFactorX ,buyItem.contentSize.height/4 *scaleFactorY);
     [cell addChild:buyItemMenu];
     
-    CCLabelAtlas *cost = [CCLabelAtlas labelWithString:[NSString stringWithFormat:@"%d", [self getCostWithItemID:itemId]] charMapFile:@"numbers.png" itemWidth:15 itemHeight:20 startCharMap:'.'];
+    CCLabelBMFont *cost = [CCLabelBMFont labelWithString:[NSString stringWithFormat: @"Cost:%d", [self getCostWithItemID:itemId]] fntFile:@"font1.fnt"];
     cost.position= ccp(buyItemMenu.position.x -15 *scaleFactorX, buyItemMenu.position.y - 28 *scaleFactorY);
     cost.scale=cScale;
     if (RETINADISPLAY == 2) {
-        cost.visible = NO;
+        cost.visible = YES;
+        cost.scale=cScale * 0.7;
+        cost.position= [self getAppropriateCostPosWithItemID:itemId andPoint:buyItemMenu.position];
     }
     [cell addChild:cost z:0];
     
@@ -156,16 +174,23 @@ NSString *const ToolShedUpdateProductPurchasedNotification = @"ToolShedUpdatePro
 //    //    }
 //    name.scale = 0.4;
 //    
-    CCLabelAtlas *multiplier = [CCLabelAtlas labelWithString:@"3" charMapFile:@"numbers.png" itemWidth:15 itemHeight:20 startCharMap:'.'];
-    multiplier.position= ccp(powrUpSpr.position.x + 21*scaleFactorX, powrUpSpr.position.y - 20 *scaleFactorY);
+    CCLabelBMFont *multiplier = [CCLabelBMFont labelWithString:[NSString stringWithFormat: @"x%d", [self getMultiplierWithItemID:itemId]] fntFile:@"font1.fnt"];
+    multiplier.position= ccp(powrUpSpr.position.x + 34*scaleFactorX, powrUpSpr.position.y - 3.5 *scaleFactorY);
     multiplier.scale=cScale;
     [cell addChild:multiplier z:0];
     if (RETINADISPLAY == 2) {
-        multiplier.visible = NO;
+        multiplier.visible = YES;
+        multiplier.scale=cScale * 0.7;
     }
     CCSprite *cheeseSpr = [CCSprite spriteWithFile:@"cheese_bite.png"];
-    cheeseSpr.position = ccp(cost.position.x + 32*scaleFactorX, powrUpSpr.position.y - 15 *scaleFactorY);;
-    cheeseSpr.scale = cScale;
+    cheeseSpr.position = ccp(cost.position.x + 29*scaleFactorX, powrUpSpr.position.y - 12 *scaleFactorY);
+    if (RETINADISPLAY == 2) {
+         cheeseSpr.scale = cScale *1.3;
+        if (itemId == SPECIAL_CHEESE_ITEM_ID || itemId == MASTER_KEY_ITEM_ID || itemId == BARKING_DOG_ITEM_ID) {
+            cheeseSpr.position = ccp(cost.position.x + 32*scaleFactorX, powrUpSpr.position.y - 12 *scaleFactorY);
+        }
+    }
+   
     cheeseSpr.tag = itemId;
     [cell addChild:cheeseSpr];
     
@@ -179,28 +204,28 @@ NSString *const ToolShedUpdateProductPurchasedNotification = @"ToolShedUpdatePro
 -(CGPoint) getNameAppropriatePosWithItemID:(int) itemId{
     switch(itemId){
         case MAGNIFIER_ITEM_ID:
-            return ccp([self getAppropriatePosWithItemID : itemId].x + 28*scaleFactorX, [self getAppropriatePosWithItemID : itemId].y - 27 *scaleFactorY);
+            return ccp([self getAppropriatePosWithItemID : itemId].x + 31*scaleFactorX, [self getAppropriatePosWithItemID : itemId].y - 27 *scaleFactorY);
             break;
         case BOOTS_ITEM_ID:
-            return ccp([self getAppropriatePosWithItemID : itemId].x - 2*scaleFactorX, [self getAppropriatePosWithItemID : itemId].y - 25 *scaleFactorY);
+            return ccp([self getAppropriatePosWithItemID : itemId].x + 1*scaleFactorX, [self getAppropriatePosWithItemID : itemId].y - 25 *scaleFactorY);
             break;
         case SPEEDUP_ITEM_ID:
-            return ccp([self getAppropriatePosWithItemID : itemId].x + 42*scaleFactorX, [self getAppropriatePosWithItemID : itemId].y - 25 *scaleFactorY);
+            return ccp([self getAppropriatePosWithItemID : itemId].x + 45*scaleFactorX, [self getAppropriatePosWithItemID : itemId].y - 25 *scaleFactorY);
             break;
         case SPECIAL_CHEESE_ITEM_ID:
-            return ccp([self getAppropriatePosWithItemID : itemId].x + 25*scaleFactorX, [self getAppropriatePosWithItemID : itemId].y - 24 *scaleFactorY);
+            return ccp([self getAppropriatePosWithItemID : itemId].x + 28*scaleFactorX, [self getAppropriatePosWithItemID : itemId].y - 24 *scaleFactorY);
             break;
         case SLOWDOWN_TIME_ITEM_ID:
-            return ccp([self getAppropriatePosWithItemID : itemId].x + 37*scaleFactorX, [self getAppropriatePosWithItemID : itemId].y - 27 *scaleFactorY);
+            return ccp([self getAppropriatePosWithItemID : itemId].x + 40*scaleFactorX, [self getAppropriatePosWithItemID : itemId].y - 27 *scaleFactorY);
             break;
         case MASTER_KEY_ITEM_ID:
-            return ccp([self getAppropriatePosWithItemID : itemId].x + 23*scaleFactorX, [self getAppropriatePosWithItemID : itemId].y - 24 *scaleFactorY);
+            return ccp([self getAppropriatePosWithItemID : itemId].x + 26*scaleFactorX, [self getAppropriatePosWithItemID : itemId].y - 24 *scaleFactorY);
             break;
         case BARKING_DOG_ITEM_ID:
-            return ccp([self getAppropriatePosWithItemID : itemId].x + 25*scaleFactorX, [self getAppropriatePosWithItemID : itemId].y - 25 *scaleFactorY);
+            return ccp([self getAppropriatePosWithItemID : itemId].x + 28*scaleFactorX, [self getAppropriatePosWithItemID : itemId].y - 25 *scaleFactorY);
             break;
         default:
-            return ccp([self getAppropriatePosWithItemID : itemId].x + 21*scaleFactorX, [self getAppropriatePosWithItemID : itemId].y - 27 *scaleFactorY);
+            return ccp([self getAppropriatePosWithItemID : itemId].x + 24*scaleFactorX, [self getAppropriatePosWithItemID : itemId].y - 27 *scaleFactorY);
             break;
     }
     
@@ -210,31 +235,92 @@ NSString *const ToolShedUpdateProductPurchasedNotification = @"ToolShedUpdatePro
 -(CGPoint) getAppropriatePosWithItemID:(int) itemId{
     switch(itemId){
         case MAGNIFIER_ITEM_ID:
-            return ccp(30 *scaleFactorX, 35 *scaleFactorY);//28
+            return ccp(27 *scaleFactorX, 35 *scaleFactorY);//28
             break;
         case BOOTS_ITEM_ID:
-            return ccp(30 *scaleFactorX, 35 *scaleFactorY);
+            return ccp(27 *scaleFactorX, 35 *scaleFactorY);
             break;
         case SPEEDUP_ITEM_ID:
-            return ccp(30 *scaleFactorX, 35 *scaleFactorY);
+            return ccp(27 *scaleFactorX, 35 *scaleFactorY);
             break;
         case SPECIAL_CHEESE_ITEM_ID:
-            return ccp(30 *scaleFactorX, 35 *scaleFactorY);
+            return ccp(27 *scaleFactorX, 35 *scaleFactorY);
             break;
         case SLOWDOWN_TIME_ITEM_ID:
-            return ccp(30 *scaleFactorX, 35 *scaleFactorY);
+            return ccp(27 *scaleFactorX, 35 *scaleFactorY);
             break;
         case MASTER_KEY_ITEM_ID:
-            return ccp(30 *scaleFactorX, 35*scaleFactorY );
+            return ccp(27 *scaleFactorX, 35*scaleFactorY );
             break;
         case BARKING_DOG_ITEM_ID:
-            return ccp(30 *scaleFactorX, 35 *scaleFactorY);
+            return ccp(27 *scaleFactorX, 37 *scaleFactorY);
             break;
         default:
-            return ccp(30 *scaleFactorX, 35 *scaleFactorY);
+            return ccp(27 *scaleFactorX, 37 *scaleFactorY);
             break;
     }
     
+}
+
+-(CGPoint) getAppropriateCostPosWithItemID:(int) itemId andPoint:(CGPoint) point{
+    switch(itemId){
+        case MAGNIFIER_ITEM_ID:
+            return ccp(point.x -15 *scaleFactorX, point.y - 12 *scaleFactorY);
+            break;
+        case BOOTS_ITEM_ID:
+            return ccp(point.x -15 *scaleFactorX, point.y - 12 *scaleFactorY);
+            break;
+        case SPEEDUP_ITEM_ID:
+            return ccp(point.x -15 *scaleFactorX, point.y - 12 *scaleFactorY);
+            break;
+        case SPECIAL_CHEESE_ITEM_ID:
+            return ccp(point.x -18 *scaleFactorX, point.y - 12 *scaleFactorY);
+            break;
+        case SLOWDOWN_TIME_ITEM_ID:
+            return ccp(point.x -15 *scaleFactorX, point.y - 12 *scaleFactorY);
+            break;
+        case MASTER_KEY_ITEM_ID:
+            return ccp(point.x -18 *scaleFactorX, point.y - 12 *scaleFactorY);
+            break;
+        case BARKING_DOG_ITEM_ID:
+            return ccp(point.x -18 *scaleFactorX, point.y - 12 *scaleFactorY);
+            break;
+        default:
+            return ccp(point.x -15 *scaleFactorX, point.y - 12 *scaleFactorY);
+            break;
+    }
+    
+}
+
+
+-(int) getMultiplierWithItemID:(int) itemId{
+    
+    switch(itemId){
+        case MAGNIFIER_ITEM_ID:
+            return 3;
+            break;
+        case BOOTS_ITEM_ID:
+            return 3;
+            break;
+        case SPEEDUP_ITEM_ID:
+            return 3;
+            break;
+        case SPECIAL_CHEESE_ITEM_ID:
+            return 2;
+            break;
+        case SLOWDOWN_TIME_ITEM_ID:
+            return 3;
+            break;
+        case MASTER_KEY_ITEM_ID:
+            return 1;
+            break;
+        case BARKING_DOG_ITEM_ID:
+            return 3;
+            break;
+        default:
+            return 0;
+            break;
+    }
 }
 
 -(int) getCostWithItemID:(int) itemId{
@@ -297,6 +383,37 @@ NSString *const ToolShedUpdateProductPurchasedNotification = @"ToolShedUpdatePro
             break;
     }
 }
+
+-(NSString *) getAppropriateBgPathWithItemID:(int) itemId{
+    
+    switch(itemId){
+        case MAGNIFIER_ITEM_ID:
+            return @"drawer1.png";
+            break;
+        case BOOTS_ITEM_ID:
+            return @"drawer2.png";
+            break;
+        case SPEEDUP_ITEM_ID:
+            return @"drawer5.png";
+            break;
+        case SPECIAL_CHEESE_ITEM_ID:
+            return @"drawer3.png";
+            break;
+        case SLOWDOWN_TIME_ITEM_ID:
+            return @"drawer4.png";
+            break;
+        case MASTER_KEY_ITEM_ID:
+            return @"drawer6.png";
+            break;
+        case BARKING_DOG_ITEM_ID:
+            return @"drawer7.png";
+            break;
+        default:
+            return @"drawer1.png";
+            break;
+    }
+}
+
 
 -(NSString *) getItemNameWithID:(int) itemId{
     

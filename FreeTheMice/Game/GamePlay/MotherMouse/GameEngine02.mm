@@ -308,6 +308,11 @@ GameEngine02Menu *layer02;
                 CCSpriteFrame *frame = [cache spriteFrameByName:[NSString stringWithFormat:@"jump_tut_%d.png",i]];
                 [animFrames2 addObject:frame];
             }
+            
+            if (RETINADISPLAY == 2) {
+                tutorialHand.scale = 2;
+                tutorialText.scale = 2;
+            }
             CCAnimation *animation2 = [CCAnimation animationWithSpriteFrames:animFrames2 delay:0.05f];
             [tutorialHand runAction:[CCRepeatForever actionWithAction: [CCAnimate actionWithAnimation:animation2]]];
             [self addChild:tutorialHand];

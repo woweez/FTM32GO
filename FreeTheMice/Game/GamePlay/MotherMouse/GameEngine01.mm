@@ -261,6 +261,11 @@ GameEngine01Menu *layer01;
                 CCSpriteFrame *frame = [cache spriteFrameByName:[NSString stringWithFormat:@"hand_%d.png",i]];
                 [animFrames2 addObject:frame];
             }
+            if (RETINADISPLAY == 2) {
+                tutorialArrow.scale = 2;
+                tutorialCircle.scale = 2;
+                pressImage.scale = 2;
+            }
             CCAnimation *animation2 = [CCAnimation animationWithSpriteFrames:animFrames2 delay:0.05f];
             [tutorialCircle runAction:[CCRepeatForever actionWithAction: [CCAnimate actionWithAnimation:animation2]]];
             [layer01 addChild:tutorialCircle];
@@ -1134,6 +1139,9 @@ GameEngine01Menu *layer01;
                     [pressImage removeFromParentAndCleanup:YES];
                     pressImage = [CCSprite spriteWithFile:@"move_left_text.png"];
                     pressImage.position = ccp(240 *scaleFactorX, 40 *scaleFactorY);
+                    if (RETINADISPLAY == 2) {
+                        pressImage.scale = 2;
+                    }
                     [layer01 addChild:pressImage];
                 }
                 
