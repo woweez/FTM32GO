@@ -119,7 +119,12 @@
     if(RETINADISPLAY == 2){
         levelsMenuItem.position = ccp(-5 *scaleFactorX, 11 *scaleFactorY);
     }else{
-        levelsMenuItem.position = ccp(-9 *scaleFactorX, 10 *scaleFactorY);
+        if ([FTMUtil sharedInstance].isIphone5) {
+            levelsMenuItem.position = ccp(-6 *scaleFactorX, 10 *scaleFactorY);
+        }else{
+            levelsMenuItem.position = ccp(-16 *scaleFactorX, 10 *scaleFactorY);
+        }
+        
     }
     
     menu = [CCMenu menuWithItems: levelsMenuItem,  nil];
@@ -176,7 +181,11 @@
     if(RETINADISPLAY == 2){
         nextLevelMenuItem.position = ccp(105 *scaleFactorX, 10 *scaleFactorY);
     }else{
-        nextLevelMenuItem.position = ccp(112 *scaleFactorX, 10 *scaleFactorY);
+        if ([FTMUtil sharedInstance].isIphone5) {
+            nextLevelMenuItem.position = ccp(106 *scaleFactorX, 10 *scaleFactorY);
+        }else{
+            nextLevelMenuItem.position = ccp(112 *scaleFactorX, 10 *scaleFactorY);
+        }
     }
     [menu addChild:nextLevelMenuItem];
     

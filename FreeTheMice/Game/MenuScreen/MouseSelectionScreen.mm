@@ -132,11 +132,16 @@ int counter;
         int girlCurrentLvl = [[db getSettingsFor:@"girlCurrLvl"] intValue];
         [db release];
         
+        int width = 15;
+        int height = 20;
+        
         // need to add check for iPhone 4s/5.
-        CCLabelAtlas *currentLevelLabel = [CCLabelAtlas labelWithString:[NSString stringWithFormat:@"%d/14", mamaCurrentLvl] charMapFile:@"numbers.png" itemWidth:15 itemHeight:20 startCharMap:'.'];
+        CCLabelAtlas *currentLevelLabel = [CCLabelAtlas labelWithString:[NSString stringWithFormat:@"%d/14", mamaCurrentLvl] charMapFile:@"numbers.png" itemWidth:width itemHeight:height startCharMap:'.'];
         currentLevelLabel.position=ccp(72*scaleFactorX,38*scaleFactorY);
         if (RETINADISPLAY == 2) {
             currentLevelLabel.visible = YES;
+            currentLevelLabel.scale = 0.5;
+            currentLevelLabel.position=ccp(36*scaleFactorX,19*scaleFactorY);
         }
         CCMenuItem *motherMenuItem=[CCMenuItemImage itemWithNormalImage:@"mother_levels_unlocked.png" selectedImage:@"mother_levels_unlocked.png" target:self selector:@selector(clickMouse:)];
         [motherMenuItem setScale:cScale];
@@ -144,10 +149,12 @@ int counter;
         motherMenuItem.tag=1;
         
         CCMenuItem *strongMenuItem = NULL;
-        currentLevelLabel = [CCLabelAtlas labelWithString:[NSString stringWithFormat:@"%d/14", strongCurrentLvl] charMapFile:@"numbers.png" itemWidth:15 itemHeight:20 startCharMap:'.'];
+        currentLevelLabel = [CCLabelAtlas labelWithString:[NSString stringWithFormat:@"%d/14", strongCurrentLvl] charMapFile:@"numbers.png" itemWidth:width itemHeight:height startCharMap:'.'];
         currentLevelLabel.position=ccp(78*scaleFactorX,44*scaleFactorY);
         if (RETINADISPLAY == 2) {
             currentLevelLabel.visible = YES;
+            currentLevelLabel.scale = 0.5;
+            currentLevelLabel.position=ccp(39*scaleFactorX,22*scaleFactorY);
         }
         if(currentMouse == 2 || currentMouse == 3){
             strongMenuItem = [CCMenuItemImage itemWithNormalImage:@"strong_levels_unlocked.png" selectedImage:@"strong_levels_unlocked.png" target:self selector:@selector(clickMouse:)];
@@ -161,10 +168,12 @@ int counter;
         strongMenuItem.tag=2;
         
         CCMenuItem *girlMenuItem = NULL;
-        currentLevelLabel = [CCLabelAtlas labelWithString:[NSString stringWithFormat:@"%d/14", girlCurrentLvl] charMapFile:@"numbers.png" itemWidth:15 itemHeight:20 startCharMap:'.'];
+        currentLevelLabel = [CCLabelAtlas labelWithString:[NSString stringWithFormat:@"%d/14", girlCurrentLvl] charMapFile:@"numbers.png" itemWidth:width itemHeight:height startCharMap:'.'];
         currentLevelLabel.position=ccp(80*scaleFactorX,51*scaleFactorY);
         if (RETINADISPLAY == 2) {
             currentLevelLabel.visible = YES;
+            currentLevelLabel.scale = 0.5;
+            currentLevelLabel.position=ccp(40*scaleFactorX,25*scaleFactorY);
         }
         if(currentMouse == 3){
             girlMenuItem=[CCMenuItemImage itemWithNormalImage:@"girl_levels_unlocked.png" selectedImage:@"girl_levels_unlocked.png" target:self selector:@selector(clickMouse:)];
