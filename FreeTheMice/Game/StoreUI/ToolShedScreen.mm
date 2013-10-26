@@ -67,6 +67,10 @@ NSString *const ToolShedUpdateProductPurchasedNotification = @"ToolShedUpdatePro
         totalCheese = [CCLabelAtlas labelWithString:[NSString stringWithFormat:@"%d", cheese] charMapFile:@"numbers.png" itemWidth:15 itemHeight:20 startCharMap:'.'];
         totalCheese.position= ccp(155 *scaleFactorX, 294 *scaleFactorY);
         totalCheese.scale=cScale;
+        if (RETINADISPLAY == 2) {
+            totalCheese.position= ccp(155 *scaleFactorX, 294 *scaleFactorY);
+            totalCheese.scale=cScale/2;
+        }
         [self addChild:totalCheese z:11];
         
         CCSprite *mrToolBag = [CCSprite spriteWithFile: @"mr_tool_bag.png"];

@@ -55,6 +55,9 @@ NSString *const StoreUpdateProductPurchasedNotification = @"StoreUpdateProductPu
         totalCheese = [CCLabelAtlas labelWithString:[NSString stringWithFormat:@"%d", cheese] charMapFile:@"numbers.png" itemWidth:15 itemHeight:20 startCharMap:'.'];
         totalCheese.position= ccp(225 *scaleFactorX, 38 *scaleFactorY);
         totalCheese.scale = 0.8;
+        if (RETINADISPLAY == 2) {
+            totalCheese.scale = cScale/2;
+        }
         [self addChild:totalCheese z:0];
         soundEffect = [[sound alloc] init];
         CCMenuItem *backButtonItem = [CCMenuItemImage itemWithNormalImage:@"back_button_1.png" selectedImage:@"back_button_2.png" block:^(id sender) {

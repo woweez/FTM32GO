@@ -152,6 +152,10 @@ enum {
         
         CCLabelAtlas *currentLevelLabel = [CCLabelAtlas labelWithString:[NSString stringWithFormat:@"%d/14", currentLvl] charMapFile:@"numbers.png" itemWidth:15 itemHeight:20 startCharMap:'.'];
         currentLevelLabel.position=ccp(21 *scaleFactorX, 33 *scaleFactorY);
+        if (RETINADISPLAY == 2) {
+            currentLevelLabel.scale = 0.5;
+            currentLevelLabel.position=ccp(10 *scaleFactorX, 16 *scaleFactorY);
+        }
         [mouseCurrentLevelAndImageViewer addChild: currentLevelLabel z:10];
         
         for(int i=0;i<15;i++){
