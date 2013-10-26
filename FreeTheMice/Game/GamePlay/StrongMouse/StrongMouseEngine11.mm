@@ -307,7 +307,7 @@ StrongMouseEngineMenu11 *sLayer11;
         [self addChild:freezeWindowSprite z:0];
         
         CCSprite *iceBoxSprite=[CCSprite spriteWithFile:@"bridge_ice_box2.png"];
-        iceBoxSprite.position=ccp(243,242);
+        iceBoxSprite.position=ccp(200,265);
         [self addChild:iceBoxSprite z:0];
         
         iceBoxSprite=[CCSprite spriteWithFile:@"bridge_ice_box.png"];
@@ -733,9 +733,8 @@ StrongMouseEngineMenu11 *sLayer11;
         heroRunSprite.visible=NO;
     }
     if(gameFunc.trappedChe){
-        if(heroTrappedChe&&heroTrappedCount>=100&&heroTrappedMove==0){
-            menu2.visible=YES;
-            mouseTrappedBackground.visible=YES;
+        if(heroTrappedChe&&heroTrappedCount ==100 &&heroTrappedMove==0){
+            [self showLevelFailedUI:motherLevel];
         }
     }
     

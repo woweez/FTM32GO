@@ -73,6 +73,7 @@
 -(void)progressBarFunc;
 -(void) startClockTimer;
 -(void) levelCompleted : (int) tag;
+-(void) showLevelFailedUI : (int) tag;
 -(void) mouseTrapped;
 -(void) playIceCubeApprearSound;
 -(void) playIceCubeFallSound;

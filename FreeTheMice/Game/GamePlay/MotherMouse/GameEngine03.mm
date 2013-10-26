@@ -741,9 +741,8 @@ GameEngine03Menu *layer03;
     }
     
     if(gameFunc.trappedChe){
-        if(heroTrappedChe&&heroTrappedCount>=100){
-            menu2.visible=YES;
-            mouseTrappedBackground.visible=YES;
+        if(heroTrappedChe&&heroTrappedCount ==100){
+            [self showLevelFailedUI:3];
         }
     }
 }
@@ -845,7 +844,6 @@ GameEngine03Menu *layer03;
 -(void)heroTrappedFunc{
     
     if(heroTrappedChe){
-        [soundEffect playLoseMusic];
         heroTrappedCount+=1;
         if(heroTrappedCount==10){
             mouseDragSprite.visible=NO;

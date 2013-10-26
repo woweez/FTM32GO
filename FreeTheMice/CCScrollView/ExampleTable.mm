@@ -70,21 +70,7 @@ NSString *const ToolShedUpdateProductPurchasedNotification = @"ToolShedUpdatePro
 
     }
     soundEffect = [[sound alloc] init];
-    //configure the sprite.. do all kinds of super cool things you can do with cocos2d.
-    CCSprite *temp = [CCSprite node];
-    GLubyte *buffer = (GLubyte *) malloc(sizeof(GLubyte)*4);
-    for (int i=0;i<4;i++) {buffer[i]=128;}
-    CGSize size = [ExampleCell cellSize];
-    CCTexture2D *tex = [[CCTexture2D alloc] initWithData:buffer pixelFormat:kCCTexture2DPixelFormat_RGBA8888 pixelsWide:1 pixelsHigh:1 contentSize:size];
-    [temp setTexture:tex];
-    free(buffer);
-    
-    temp.color = ccc3(random_range(10, 100), random_range(10, 100), random_range(10, 100));
-    temp.textureRect = CGRectMake(0, 0, size.width *scaleFactorX, size.height *scaleFactorY);
-    temp.opacity = 128;
 
-    temp.anchorPoint = CGPointZero;
-    [cell addChild:temp];
     int itemId = ++idx;
     NSString *path = [self getAppropriateImagePathWithItemID:itemId];
     CGPoint pos = [self getAppropriatePosWithItemID:itemId];
@@ -93,23 +79,20 @@ NSString *const ToolShedUpdateProductPurchasedNotification = @"ToolShedUpdatePro
     powrUpSpr.position = pos;
     powrUpSpr.scale = cScale;
     powrUpSpr.tag = itemId;
-    
+        
     [cell addChild:powrUpSpr];
-    
-    CCSprite *bg = [CCSprite spriteWithFile:[self getAppropriateBgPathWithItemID:itemId]];
-    bg.position = ccp([ExampleCell cellSize].width/2, [ExampleCell cellSize].height/2);
-    if (itemId == BARKING_DOG_ITEM_ID) {
-        bg.position = ccp([ExampleCell cellSize].width, [ExampleCell cellSize].height/2);
-    }
-    if (RETINADISPLAY == 2) {
+    if (itemId == BARKING_DOG_ITEM_ID || itemId == MAGNIFIER_ITEM_ID || itemId == BOOTS_ITEM_ID) {
+        CCSprite *bg = [CCSprite spriteWithFile:[self getAppropriateBgPathWithItemID:itemId]];
+        int dividend = RETINADISPLAY == 2 ? 2: 4;
+        bg.position = ccp([ExampleCell cellSize].width, bg.contentSize.height/dividend -5);
+        if (itemId == BARKING_DOG_ITEM_ID) {
+            bg.position = ccp([ExampleCell cellSize].width, [ExampleCell cellSize].height/2);
+        }else if (itemId == BOOTS_ITEM_ID){
+            bg.position = ccp([ExampleCell cellSize].width, -3);
+        }
         bg.scaleX = cScale * 1.19;
         bg.scaleY = cScale * 1.01;
-    }
-    
-//    bg.tag = itemId;
-    if (itemId == MAGNIFIER_ITEM_ID || itemId == SLOWDOWN_TIME_ITEM_ID) {
-        [cell addChild:bg z:-1];
-    }else{
+        
         [cell addChild:bg z:-2];
     }
     
@@ -142,22 +125,21 @@ NSString *const ToolShedUpdateProductPurchasedNotification = @"ToolShedUpdatePro
     [cell addChild:buyItemMenu];
     
     CCLabelBMFont *cost = [CCLabelBMFont labelWithString:[NSString stringWithFormat: @"Cost:%d", [self getCostWithItemID:itemId]] fntFile:@"font1.fnt"];
-    cost.position= ccp(buyItemMenu.position.x -15 *scaleFactorX, buyItemMenu.position.y - 28 *scaleFactorY);
-    cost.scale=cScale;
+    cost.position= [self getAppropriateCostPosWithItemID:itemId andPoint:buyItemMenu.position];
+    cost.scale = cScale * 0.7;
     if (RETINADISPLAY == 2) {
-        cost.visible = YES;
         cost.scale=cScale * 0.7;
-        cost.position= [self getAppropriateCostPosWithItemID:itemId andPoint:buyItemMenu.position];
     }
     [cell addChild:cost z:0];
     
     CCLabelBMFont *name = [CCLabelBMFont labelWithString:[self getItemNameWithID:itemId] fntFile:@"font.fnt"];//Title_Yellow.fnt
     name.position= [self getNameAppropriatePosWithItemID:itemId];
-    if ([FTMUtil sharedInstance].isIphone5) {
+    if (scaleFactorX > 1) {
+        name.scale = cScale * 0.4;
         name.position= ccp(name.position.x - 12, name.position.y + 6);
     }
     else{
-        name.position= ccp(name.position.x, name.position.y + 6);
+        name.position= ccp(name.position.x - 2, name.position.y + 6);
     }
     if (RETINADISPLAY == 2) {
         name.scale = cScale * 0.8;
@@ -165,30 +147,24 @@ NSString *const ToolShedUpdateProductPurchasedNotification = @"ToolShedUpdatePro
     }else{
         name.scale = 0.4;
     }
-//    name.color = ccc3(255, 0, 0);
+    
     [cell addChild:name z:99999];
-    //yoooo font.
-//    
-//    //    if ([FTMUtil sharedInstance].isIphone5) {
-//    name.position= ccp(name.position.x - 8, name.position.y +8);
-//    //    }
-//    name.scale = 0.4;
-//    
+
     CCLabelBMFont *multiplier = [CCLabelBMFont labelWithString:[NSString stringWithFormat: @"x%d", [self getMultiplierWithItemID:itemId]] fntFile:@"font1.fnt"];
     multiplier.position= ccp(powrUpSpr.position.x + 34*scaleFactorX, powrUpSpr.position.y - 3.5 *scaleFactorY);
-    multiplier.scale=cScale;
+    multiplier.scale = cScale *0.7;
     [cell addChild:multiplier z:0];
-    if (RETINADISPLAY == 2) {
-        multiplier.visible = YES;
-        multiplier.scale=cScale * 0.7;
-    }
+
     CCSprite *cheeseSpr = [CCSprite spriteWithFile:@"cheese_bite.png"];
     cheeseSpr.position = ccp(cost.position.x + 29*scaleFactorX, powrUpSpr.position.y - 12 *scaleFactorY);
+    cheeseSpr.scale = cScale;
+    
+    if (itemId == SPECIAL_CHEESE_ITEM_ID || itemId == MASTER_KEY_ITEM_ID || itemId == BARKING_DOG_ITEM_ID) {
+        cheeseSpr.position = ccp(cost.position.x + 32*scaleFactorX, powrUpSpr.position.y - 12 *scaleFactorY);
+    }
+    
     if (RETINADISPLAY == 2) {
          cheeseSpr.scale = cScale *1.3;
-        if (itemId == SPECIAL_CHEESE_ITEM_ID || itemId == MASTER_KEY_ITEM_ID || itemId == BARKING_DOG_ITEM_ID) {
-            cheeseSpr.position = ccp(cost.position.x + 32*scaleFactorX, powrUpSpr.position.y - 12 *scaleFactorY);
-        }
     }
    
     cheeseSpr.tag = itemId;
@@ -388,10 +364,10 @@ NSString *const ToolShedUpdateProductPurchasedNotification = @"ToolShedUpdatePro
     
     switch(itemId){
         case MAGNIFIER_ITEM_ID:
-            return @"drawer1.png";
+            return @"Drawers_1.png";
             break;
         case BOOTS_ITEM_ID:
-            return @"drawer2.png";
+            return @"Drawers_2.png";
             break;
         case SPEEDUP_ITEM_ID:
             return @"drawer5.png";

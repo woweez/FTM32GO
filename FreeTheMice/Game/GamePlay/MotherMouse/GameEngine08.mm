@@ -696,10 +696,9 @@ GameEngine08Menu *layer08;
     }
     
     if(gameFunc.trappedChe){
-        if(heroTrappedChe&&heroTrappedCount>=100){
+        if(heroTrappedChe&&heroTrappedCount ==100){
             runningChe = NO;
-            menu2.visible=YES;
-            mouseTrappedBackground.visible=YES;
+            [self showLevelFailedUI:motherLevel];
         }
     }
 }

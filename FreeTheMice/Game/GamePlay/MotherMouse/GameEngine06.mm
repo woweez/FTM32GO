@@ -107,7 +107,7 @@ GameEngine06Menu *layer06;
         
         catRunSprite = [CCSprite spriteWithSpriteFrameName:@"cat_run1.png"];
         catRunSprite.position = ccp(380, 390);
-        catRunSprite.scale=0.7;
+        catRunSprite.scale=CAT_SCALE;
         [catSpriteSheet addChild:catRunSprite z:0];
        
         NSMutableArray *animFrames4 = [NSMutableArray array];
@@ -647,7 +647,7 @@ GameEngine06Menu *layer06;
     
     CCSprite *knockedOutSprite = [CCSprite spriteWithSpriteFrameName:@"kitten_knockedout1_0.png"];
     knockedOutSprite.position = ccp([catRunSprite position].x, [catRunSprite position].y);
-    knockedOutSprite.scale=0.6;
+    knockedOutSprite.scale=CAT_SCALE;
     [catKnockedSpriteSheet addChild:knockedOutSprite];
     catRunSprite.visible = NO;
     catTurnSprite.visible = NO;
@@ -675,7 +675,7 @@ GameEngine06Menu *layer06;
     
     CCSprite *knockedOutSprite = [CCSprite spriteWithSpriteFrameName:@"kitten_knocked_out2_0.png"];
     knockedOutSprite.position = ccp([catRunSprite position].x, [catRunSprite position].y);
-    knockedOutSprite.scale=0.6;
+    knockedOutSprite.scale=CAT_SCALE;
     [catKnockedSpriteSheet2 addChild:knockedOutSprite];
   
     if(!catForwardChe){
@@ -813,9 +813,8 @@ GameEngine06Menu *layer06;
     
     
     if(gameFunc.trappedChe){
-        if(heroTrappedChe&&heroTrappedCount>=100){
-            menu2.visible=YES;
-            mouseTrappedBackground.visible=YES;
+        if(heroTrappedChe&&heroTrappedCount ==100){
+            [self showLevelFailedUI:motherLevel];
         }
     }
 }

@@ -18,6 +18,7 @@
 #import "InAppUtils.h"
 #import "FTMUtil.h"
 #import "FTMConstants.h"
+#import "LevelFailedScreen.h"
 
 enum {
 	kTagParentNode = 1,
@@ -158,8 +159,7 @@ enum {
         [self addGilMouseEyesAnimation];
         [self addAboutSelectionMenu];
         [self addSettingsSelectionMenu];
-    
-		[self scheduleUpdate];
+
 	}
 	return self;
 }
@@ -505,9 +505,7 @@ enum {
     [self unschedule:@selector(startMenuMusic)];
     [soundEffect playMenuMusic];
 }
--(void) update: (ccTime) dt {
-    
-}
+
 
 
 -(void)ccTouchesMoved:(NSSet *)touches withEvent:(UIEvent *)event {

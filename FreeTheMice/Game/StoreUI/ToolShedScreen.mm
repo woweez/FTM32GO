@@ -48,7 +48,8 @@ NSString *const ToolShedUpdateProductPurchasedNotification = @"ToolShedUpdatePro
             cScale = 0.5;
         }
         
-        
+        self.isTouchEnabled = YES;
+        self.isAccelerometerEnabled = YES;
         CCSprite *shedBg = [CCSprite spriteWithFile: @"shed_bg.png"];
         shedBg.position = ccp(240 *scaleFactorX, 160 *scaleFactorY);
         shedBg.scaleX = xScale;
@@ -127,6 +128,9 @@ NSString *const ToolShedUpdateProductPurchasedNotification = @"ToolShedUpdatePro
             [backMenuItem setScaleX:0.6 *scaleFactorX];
             [backMenuItem setScaleY:0.6 *scaleFactorY];
             menu.position=ccp(205 *scaleFactorX, 18 *scaleFactorY);
+        }else{
+            backMenuItem.scale = 0.3;
+//            [backMenuItem setScaleY:0.6 *scaleFactorY];
         }
         
        
@@ -166,12 +170,12 @@ NSString *const ToolShedUpdateProductPurchasedNotification = @"ToolShedUpdatePro
         [self addChild:costumesMenu z:10];
         
         [self addScrollVIew];
+        [self addScrollBar];
 //        [self addPowerUpsUi];
-        
+
     }
     return self;
 }
-
 
 -(void) updateCheeseCount :(NSString *) notifier{
     int cheese = [[NSUserDefaults standardUserDefaults] integerForKey:@"currentCheese"];
@@ -182,7 +186,7 @@ NSString *const ToolShedUpdateProductPurchasedNotification = @"ToolShedUpdatePro
     ExampleTable *exampleTable = [[ExampleTable alloc] init];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateCheeseCount:) name:ToolShedUpdateProductPurchasedNotification object:nil];
     CGSize tSize = CGSizeMake(288 *scaleFactorX, 202 *scaleFactorY);//195
-    SWMultiColumnTableView *myTable = [SWMultiColumnTableView viewWithDataSource:exampleTable size:tSize];
+    myTable = [SWMultiColumnTableView viewWithDataSource:exampleTable size:tSize];
     myTable.position = ccp(52 *scaleFactorX, 42 *scaleFactorY);
     myTable.delegate = exampleTable; //set if you need touch detection on cells.
     myTable.colCount = 2;
@@ -191,6 +195,72 @@ NSString *const ToolShedUpdateProductPurchasedNotification = @"ToolShedUpdatePro
     myTable.direction = SWScrollViewDirectionVertical;
     [self addChild:myTable];
     [myTable reloadData];
+}
+
+- (void)ccTouchesBegan:(NSSet *)touches withEvent:(UIEvent *)event{
+    UITouch *myTouch = [touches anyObject];
+    CGPoint location = [myTouch locationInView:[myTouch view]];
+    initialPos= [[CCDirector sharedDirector] convertToGL:location];
+    
+}
+
+- (void)ccTouchesMoved:(NSSet *)touches withEvent:(UIEvent *)event {
+    
+    UITouch *myTouch = [touches anyObject];
+    CGPoint location = [myTouch locationInView:[myTouch view]];
+    location = [[CCDirector sharedDirector] convertToGL:location];
+    if (initialPos.x > movingBar.position.x +10 && initialPos.x < movingBar.position.x +10+ myTable.contentSize.width
+        &&  initialPos.y > 45 && initialPos.y < 240) {
+        
+        if (location.x > movingBar.position.x +10 && location.x < movingBar.position.x +10+ myTable.contentSize.width) {
+            if(initialPos.y < location.y){
+                if (movingBar.position.y < 180 ) {
+                    return;
+                }
+                movingBar.position = ccp(movingBar.position.x, movingBar.position.y - 2);
+            }else{
+                if (movingBar.position.y > 210 ) {
+                    return;
+                }
+                movingBar.position = ccp(movingBar.position.x, movingBar.position.y + 2);
+            }
+        }
+        
+    }
+}
+
+-(void) addScrollBar{
+    
+    CCSprite * scrollBas = [CCSprite spriteWithFile:@"scroll_base.png"];
+    scrollBas.position = ccp( 44 *scaleFactorX, 163 * scaleFactorY);
+    [self addChild:scrollBas z:10000];
+    
+    int dividend = RETINADISPLAY == 2 ? 2:4;
+    CCSprite * upArrow = [CCSprite spriteWithFile:@"up_arrow_btn.png"];
+    upArrow.position = ccp( 44 *scaleFactorX, (168 + scrollBas.contentSize.height/dividend)  * scaleFactorY);
+    [self addChild:upArrow z:10000];
+    
+    CCSprite * downArrow = [CCSprite spriteWithFile:@"down_arrow_btn.png"];
+    downArrow.position = ccp( 44 *scaleFactorX, (158  - scrollBas.contentSize.height/dividend) * scaleFactorY);
+    [self addChild:downArrow z:10000];
+    
+    movingBar = [CCSprite spriteWithFile:@"scroll_bar_btn.png"];
+    movingBar.position = ccp( 44 *scaleFactorX, (163 + scrollBas.contentSize.height/dividend -movingBar.contentSize.height/dividend) * scaleFactorY);
+    
+    if (RETINADISPLAY == 2) {
+        scrollBas.scaleX = xScale;
+        upArrow.scaleX = xScale;
+        downArrow.scaleX = xScale;
+        movingBar.scaleY = yScale/2;
+    }else{
+        scrollBas.scale = cScale;
+        upArrow.scale = cScale;
+        downArrow.scale = cScale;
+        movingBar.scaleX = cScale;
+        movingBar.scaleY = cScale/2;
+    }
+    
+    [self addChild:movingBar z:10000];
 }
 
 //-(void) addPowerUpsUi {

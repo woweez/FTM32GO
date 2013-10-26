@@ -788,9 +788,8 @@ GameEngineMenu05 *layer05;
         }
     }
     if(gameFunc.trappedChe ){//&& ![FTMUtil sharedInstance].isRespawnMice
-        if(heroTrappedChe&&heroTrappedCount == 50){
-            menu2.visible=YES;
-            mouseTrappedBackground.visible=YES;
+        if(heroTrappedChe&&heroTrappedCount ==100){
+            [self showLevelFailedUI:motherLevel];
         }
     }
 }

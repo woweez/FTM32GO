@@ -13,7 +13,8 @@
 #import "cocos2d.h"
 @implementation FTMUtil
 
-@synthesize mouseClicked ;
+@synthesize mouseClicked;
+@synthesize offsetY;
 @synthesize isIphone5;
 @synthesize isSlowDownTimer;
 @synthesize isRespawnMice;

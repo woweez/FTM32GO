@@ -62,7 +62,7 @@ NSString *const StoreUpdateProductPurchasedNotification = @"StoreUpdateProductPu
             [[CCDirector sharedDirector] replaceScene:[ToolShedScreen scene]];
         }];
         
-        [backButtonItem setScale:cScale];
+        [backButtonItem setScale:cScale* 0.7];
         CCMenu *backMenu = [CCMenu menuWithItems:backButtonItem, nil];
         backMenu.position = ccp(50 *scaleFactorX, 40 *scaleFactorY);
         [self addChild:backMenu];

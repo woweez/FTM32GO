@@ -272,7 +272,7 @@ GirlMouseEngineMenu11 *gLayer11;
         [self addChild:bridgeSprite z:0];
         
         CCSprite *iceBoxSprite=[CCSprite spriteWithFile:@"bridge_ice_box2.png"];
-        iceBoxSprite.position=ccp(275,263);
+        iceBoxSprite.position=ccp(200,263);
         [self addChild:iceBoxSprite z:0];
         
         iceBoxSprite=[CCSprite spriteWithFile:@"bridge_ice_box.png"];
@@ -738,9 +738,8 @@ GirlMouseEngineMenu11 *gLayer11;
         heroRunSprite.visible=NO;
     }
     if(gameFunc.trappedChe){
-        if(heroTrappedChe&&heroTrappedCount>=100&&heroTrappedMove==0){
-            menu2.visible=YES;
-            mouseTrappedBackground.visible=YES;
+        if(heroTrappedChe&&heroTrappedCount ==100 &&heroTrappedMove==0){
+            [self showLevelFailedUI:motherLevel];
         }
     }
 }

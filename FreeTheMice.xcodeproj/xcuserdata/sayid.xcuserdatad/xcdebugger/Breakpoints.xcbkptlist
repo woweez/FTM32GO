@@ -16,31 +16,5 @@
          landmarkName = "-heroJumpingFunc"
          landmarkType = "5">
       </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "Yes"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         filePath = "FreeTheMice/Game/GamePlay/MotherMouse/GameEngine05.mm"
-         timestampString = "404214564.123438"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "1245"
-         endingLineNumber = "1245"
-         landmarkName = "-heroJumpingFunc"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "Yes"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         filePath = "FreeTheMice/Game/GamePlay/MotherMouse/GameEngine05.mm"
-         timestampString = "404214564.123438"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "1214"
-         endingLineNumber = "1214"
-         landmarkName = "-heroJumpingFunc"
-         landmarkType = "5">
-      </FileBreakpoint>
    </FileBreakpoints>
 </Bucket>

@@ -13,6 +13,7 @@
 }
 
 @property (readwrite) int mouseClicked;
+@property (readwrite) int offsetY;
 @property (readwrite) BOOL isFirstTutorial;
 @property (readwrite) BOOL isSecondTutorial;
 @property (readwrite) BOOL isIphone5;

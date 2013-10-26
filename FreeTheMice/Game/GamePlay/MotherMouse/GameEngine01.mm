@@ -271,6 +271,7 @@ GameEngine01Menu *layer01;
             [layer01 addChild:tutorialCircle];
             
         }
+        
         [self scheduleUpdate];
     }
     return self;
@@ -282,7 +283,6 @@ GameEngine01Menu *layer01;
     hudLayer.tag = 1;
     [layer01 addChild: hudLayer z:2000];
     [hudLayer updateNoOfCheeseCollected:0 andMaxValue:[cheeseSetValue[motherLevel-1] intValue]];
-    
 //    [cache addSpriteFramesWithFile:@"cat_default.plist"];
 //    CCSpriteBatchNode *catSpriteSheet = [CCSpriteBatchNode batchNodeWithFile:@"cat_default.png"];
 //    [self addChild:catSpriteSheet z:10];

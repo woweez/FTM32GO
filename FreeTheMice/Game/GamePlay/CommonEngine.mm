@@ -15,6 +15,8 @@
 #import "FTMUtil.h"
 #import "SimpleAudioEngine.h"
 #import "LevelCompleteScreen.h"
+#import "LevelFailedScreen.h"
+
 
 @implementation CommonEngine
 
@@ -576,6 +578,14 @@
     [[[CCDirector sharedDirector] runningScene] addChild: lvlCompleteLayer z:2000];
 }
 
+-(void) showLevelFailedUI : (int) tag{
+    hudLayer.visible = NO;
+    LevelFailedScreen *lvlFailedLayer = [[LevelFailedScreen alloc] init];
+    [lvlFailedLayer setIfNextBtnDisable:tag];
+    lvlFailedLayer.tag = tag;
+    lvlFailedLayer.visible = YES;
+    [[[CCDirector sharedDirector] runningScene] addChild: lvlFailedLayer z:999999];
+}
 -(void) playIceCubeApprearSound{
     [soundManager ice_cubes_appear];
 }

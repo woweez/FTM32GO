@@ -12,6 +12,8 @@
 #import "GLES-Render.h"
 #import "SWScrollView.h"
 #import "sound.h"
+#import "SWMultiColumnTableView.h"
+
 @interface ToolShedScreen : CCLayer{
 
 float scaleFactorX;
@@ -21,7 +23,9 @@ float scaleFactorY;
     CCMenuItem *costumesItem;
     CCLabelAtlas *totalCheese;
     sound *soundEffect;
-    
+    CCSprite * movingBar;
+    SWMultiColumnTableView *myTable;
+    CGPoint initialPos;
     float xScale;
     float yScale;
     float cScale;
