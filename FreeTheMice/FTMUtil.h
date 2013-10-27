@@ -21,6 +21,8 @@
 @property (readwrite) BOOL isRespawnMice;
 @property (readwrite) BOOL isBoostPowerUpEnabled;
 @property (readwrite) BOOL isGameSoundOn;
+@property (readwrite) BOOL isIphone4;
+@property (readwrite) BOOL isRetinaDisplay;
 
 + (FTMUtil*) sharedInstance;
 - (NSString *)getModel;

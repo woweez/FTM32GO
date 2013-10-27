@@ -85,7 +85,7 @@ int counter;
         float scaleFactorX = winSize.width/480;
         float scaleFactorY = winSize.height/320;
         
-        if (RETINADISPLAY == 2) {
+        if ([FTMUtil sharedInstance].isRetinaDisplay) {
             xScale = 1 * scaleFactorX;
             yScale = 1 * scaleFactorY;
             cScale = 1;
@@ -138,7 +138,7 @@ int counter;
         // need to add check for iPhone 4s/5.
         CCLabelAtlas *currentLevelLabel = [CCLabelAtlas labelWithString:[NSString stringWithFormat:@"%d/14", mamaCurrentLvl] charMapFile:@"numbers.png" itemWidth:width itemHeight:height startCharMap:'.'];
         currentLevelLabel.position=ccp(72*scaleFactorX,38*scaleFactorY);
-        if (RETINADISPLAY == 2) {
+        if ([FTMUtil sharedInstance].isRetinaDisplay) {
             currentLevelLabel.visible = YES;
             currentLevelLabel.scale = 0.5;
             currentLevelLabel.position=ccp(36*scaleFactorX,19*scaleFactorY);
@@ -151,7 +151,7 @@ int counter;
         CCMenuItem *strongMenuItem = NULL;
         currentLevelLabel = [CCLabelAtlas labelWithString:[NSString stringWithFormat:@"%d/14", strongCurrentLvl] charMapFile:@"numbers.png" itemWidth:width itemHeight:height startCharMap:'.'];
         currentLevelLabel.position=ccp(78*scaleFactorX,44*scaleFactorY);
-        if (RETINADISPLAY == 2) {
+        if ([FTMUtil sharedInstance].isRetinaDisplay) {
             currentLevelLabel.visible = YES;
             currentLevelLabel.scale = 0.5;
             currentLevelLabel.position=ccp(39*scaleFactorX,22*scaleFactorY);
@@ -170,7 +170,7 @@ int counter;
         CCMenuItem *girlMenuItem = NULL;
         currentLevelLabel = [CCLabelAtlas labelWithString:[NSString stringWithFormat:@"%d/14", girlCurrentLvl] charMapFile:@"numbers.png" itemWidth:width itemHeight:height startCharMap:'.'];
         currentLevelLabel.position=ccp(80*scaleFactorX,51*scaleFactorY);
-        if (RETINADISPLAY == 2) {
+        if ([FTMUtil sharedInstance].isRetinaDisplay) {
             currentLevelLabel.visible = YES;
             currentLevelLabel.scale = 0.5;
             currentLevelLabel.position=ccp(40*scaleFactorX,25*scaleFactorY);

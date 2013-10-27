@@ -67,6 +67,9 @@
     if (self) {
         self.isTouchEnabled = YES;
 		self.isAccelerometerEnabled = YES;
+        ccColor4B color = {0,0,0,128};
+        CCLayerColor *colorLayer = [CCLayerColor layerWithColor:color];
+        [self addChild:colorLayer z:-1];
         
         soundEffect=[[sound alloc] init];
         [soundEffect playLoseMusic];
@@ -74,7 +77,7 @@
         scaleFactorX = winSize.width/480;
         scaleFactorY = winSize.height/320;
         
-        if (RETINADISPLAY == 2) {
+        if ([FTMUtil sharedInstance].isRetinaDisplay) {
             xScale = 1 * scaleFactorX;
             yScale = 1 * scaleFactorY;
             cScale = 1;
@@ -116,13 +119,13 @@
     }];
     [levelsMenuItem setScale:cScale];
 
-    if(RETINADISPLAY == 2){
-        levelsMenuItem.position = ccp(-5 *scaleFactorX, 11 *scaleFactorY);
+    if([FTMUtil sharedInstance].isRetinaDisplay){
+        levelsMenuItem.position = ccp(-4 *scaleFactorX, 12 *scaleFactorY);
     }else{
         if ([FTMUtil sharedInstance].isIphone5) {
-            levelsMenuItem.position = ccp(-6 *scaleFactorX, 10 *scaleFactorY);
+            levelsMenuItem.position = ccp(-6 *scaleFactorX, 11 *scaleFactorY);
         }else{
-            levelsMenuItem.position = ccp(-16 *scaleFactorX, 10 *scaleFactorY);
+            levelsMenuItem.position = ccp(-14 *scaleFactorX, 11 *scaleFactorY);
         }
         
     }
@@ -152,7 +155,7 @@
         }
     }];
     [retryMenuItem setScale:cScale];
-    retryMenuItem.position = ccp(51 *scaleFactorX, 10 *scaleFactorY);
+    retryMenuItem.position = ccp(53 *scaleFactorX, 11 *scaleFactorY);
     [menu addChild:retryMenuItem];
 }
 
@@ -178,13 +181,13 @@
     }];
     [nextLevelMenuItem setScale:cScale];
 
-    if(RETINADISPLAY == 2){
+    if([FTMUtil sharedInstance].isRetinaDisplay){
         nextLevelMenuItem.position = ccp(105 *scaleFactorX, 10 *scaleFactorY);
     }else{
         if ([FTMUtil sharedInstance].isIphone5) {
             nextLevelMenuItem.position = ccp(106 *scaleFactorX, 10 *scaleFactorY);
         }else{
-            nextLevelMenuItem.position = ccp(112 *scaleFactorX, 10 *scaleFactorY);
+            nextLevelMenuItem.position = ccp(117 *scaleFactorX, 10 *scaleFactorY);
         }
     }
     [menu addChild:nextLevelMenuItem];

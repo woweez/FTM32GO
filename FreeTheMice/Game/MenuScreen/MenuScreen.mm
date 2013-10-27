@@ -19,6 +19,7 @@
 #import "FTMUtil.h"
 #import "FTMConstants.h"
 #import "LevelFailedScreen.h"
+#import "LevelCompleteScreen.h"
 
 enum {
 	kTagParentNode = 1,
@@ -52,7 +53,7 @@ enum {
         CGSize winSize = [CCDirector sharedDirector].winSize;
         scaleFactorX = winSize.width/480;
         scaleFactorY = winSize.height/320;
-        if (RETINADISPLAY == 2) {
+        if ([FTMUtil sharedInstance].isRetinaDisplay) {
             xScale = 1 * scaleFactorX;
             yScale = 1 * scaleFactorY;
             cScale = 1;
@@ -110,9 +111,18 @@ enum {
 //            [[CCDirector sharedDirector] replaceScene:[AboutScreen scene]];
 		}];
         [aboutMenuItem setScale:cScale];
+                
         CCMenu *aboutBtnMenu = [CCMenu menuWithItems:aboutMenuItem, nil];
         aboutBtnMenu.position = ccp(455*scaleFactorX, 26*scaleFactorY);
         [self addChild:aboutBtnMenu z:10];
+        
+        if ([FTMUtil sharedInstance].isRetinaDisplay || scaleFactorX > 1) {
+            [aboutMenuItem setScale:cScale *scaleFactorX];
+            [optionMenuItem setScale:cScale *scaleFactorX];
+            aboutBtnMenu.position = ccp(455*scaleFactorX, 28*scaleFactorY);
+            optionBtnMenu.position = ccp(25 *scaleFactorX, 28*scaleFactorY);
+        }
+
         
         CCMenuItem *storeMenuItem = [CCMenuItemImage itemWithNormalImage:@"store.png" selectedImage:@"store_press.png" block:^(id sender) {
             [soundEffect button_1];
@@ -130,6 +140,9 @@ enum {
             
 		}];
         [storeMenuItem setScale:cScale];
+        if ([FTMUtil sharedInstance].isRetinaDisplay || scaleFactorX > 1) {
+            [storeMenuItem setScale:cScale *scaleFactorX];
+        }
         CCMenu *storeBtnMenu = [CCMenu menuWithItems:storeMenuItem, nil];
         storeBtnMenu.position = ccp(25 *scaleFactorX, 300 *scaleFactorY);
         [self addChild:storeBtnMenu z:10];
@@ -146,6 +159,9 @@ enum {
             }];
 		}];
         [gameCenterMenuItem setScale:cScale];
+        if ([FTMUtil sharedInstance].isRetinaDisplay || scaleFactorX > 1) {
+            [gameCenterMenuItem setScale:cScale *scaleFactorX];
+        }
         CCMenu *gameCenterBtnMenu = [CCMenu menuWithItems:gameCenterMenuItem, nil];
         gameCenterBtnMenu.position = ccp(455*scaleFactorX, 300*scaleFactorY);
         [self addChild:gameCenterBtnMenu z:10];
@@ -159,7 +175,11 @@ enum {
         [self addGilMouseEyesAnimation];
         [self addAboutSelectionMenu];
         [self addSettingsSelectionMenu];
-
+//
+//        LevelCompleteScreen *lvlCompleteLayer = [[LevelCompleteScreen alloc] init];
+//        [lvlCompleteLayer playStarImageAnimationAgainstLevel:12];
+//        lvlCompleteLayer.tag = 12;
+//        [self addChild: lvlCompleteLayer z:2000];
 	}
 	return self;
 }
@@ -350,9 +370,9 @@ enum {
     
     slidingBgForAbout = [CCSprite spriteWithFile:@"button_base.png"];
     [slidingBgForAbout setScaleX:0.0001f];
-    [slidingBgForAbout setScaleY:yScale];
+    [slidingBgForAbout setScaleY:xScale];
     [slidingBgForAbout setAnchorPoint:ccp(1, 0)];
-    slidingBgForAbout.position = ccp(464*scaleFactorX, 4*scaleFactorY);
+    slidingBgForAbout.position = ccp(467*scaleFactorX, 4*scaleFactorY);
     [slidingBgForAbout setTag:121];
     [self addChild: slidingBgForAbout z:0];
     
@@ -363,7 +383,7 @@ enum {
     }];
 
     CCMenu *twitterBtnMenu = [CCMenu menuWithItems:twitterMenuItem, nil];
-    if (RETINADISPLAY == 2) {
+    if ([FTMUtil sharedInstance].isRetinaDisplay) {
         twitterBtnMenu.position = ccp(80*scaleFactorX, 20 *scaleFactorY);
     }else{
         twitterBtnMenu.position = ccp(165*scaleFactorX, 40 *scaleFactorY);
@@ -376,7 +396,7 @@ enum {
     }];
 
     CCMenu *facebookBtnMenu = [CCMenu menuWithItems:facebookMenuItem, nil];
-    if (RETINADISPLAY == 2) {
+    if ([FTMUtil sharedInstance].isRetinaDisplay) {
         facebookBtnMenu.position = ccp(35 *scaleFactorX, 22 *scaleFactorY);
     }else{
         facebookBtnMenu.position = ccp(70 *scaleFactorX, 43 *scaleFactorY);
@@ -387,9 +407,14 @@ enum {
 -(void) addSettingsSelectionMenu{
     slidingBgForSettings = [CCSprite spriteWithFile:@"button_base.png"];
     [slidingBgForSettings setScaleX:0.0001f];
-    [slidingBgForSettings setScaleY:yScale];
+    [slidingBgForSettings setScaleY:xScale];
     [slidingBgForSettings setAnchorPoint:ccp(0, 1)];
-    slidingBgForSettings.position = ccp(17 *scaleFactorX, 48*scaleFactorY);
+    if ([FTMUtil sharedInstance].isRetinaDisplay) {
+        slidingBgForSettings.position = ccp(14 *scaleFactorX, 53*scaleFactorY);
+    }else{
+        slidingBgForSettings.position = ccp(14 *scaleFactorX, 49*scaleFactorY);
+    }
+    
     [slidingBgForSettings setTag:123];
     [self addChild: slidingBgForSettings z:0];
     
@@ -436,7 +461,7 @@ enum {
     
     CGSize winSize = [CCDirector sharedDirector].winSize;
     CCMenu *soundBtnMenu = [CCMenu menuWithItems:soundOn, soundOff, nil];
-    if (RETINADISPLAY == 2) {
+    if ([FTMUtil sharedInstance].isRetinaDisplay) {
         soundBtnMenu.position = ccp(60*scaleFactorX, 21*scaleFactorY);
     }else{
         if (winSize.width > 480 && winSize.height < 1100) {
@@ -455,7 +480,7 @@ enum {
     
     CCMenu *infoBtnMenu = [CCMenu menuWithItems:infoMenuItem, nil];
     
-    if (RETINADISPLAY == 2) {
+    if ([FTMUtil sharedInstance].isRetinaDisplay) {
         infoBtnMenu.position = ccp(110 * scaleFactorX, 21 *scaleFactorY);
     }else{
         if(winSize.width > 480 && winSize.height < 1100)
@@ -471,11 +496,11 @@ enum {
 }
 -(void) addAboutSlidingAnimation{
     if(slidingBgForAbout.tag == 121){
-        CCScaleTo *scaleAction = [CCScaleTo actionWithDuration:0.03 scaleX:xScale scaleY:yScale];
+        CCScaleTo *scaleAction = [CCScaleTo actionWithDuration:0.03 scaleX:xScale scaleY:xScale];
         [slidingBgForAbout runAction:scaleAction];
         [slidingBgForAbout setTag:122];
     }else if (slidingBgForAbout.tag == 122){
-        CCScaleTo *scaleAction = [CCScaleTo actionWithDuration:0.03 scaleX:0.0001 scaleY:yScale];
+        CCScaleTo *scaleAction = [CCScaleTo actionWithDuration:0.03 scaleX:0.0001 scaleY:xScale];
         [slidingBgForAbout runAction:scaleAction];
         [slidingBgForAbout setTag:121];
 
@@ -487,11 +512,11 @@ enum {
 
 -(void) addSettingsSlidingAnimation{
     if(slidingBgForSettings.tag ==123){
-        CCScaleTo *scaleAction = [CCScaleTo actionWithDuration:0.03 scaleX:xScale scaleY:yScale];
+        CCScaleTo *scaleAction = [CCScaleTo actionWithDuration:0.03 scaleX:xScale scaleY:xScale];
         [slidingBgForSettings runAction:scaleAction];
         [slidingBgForSettings setTag:124];
     }else if (slidingBgForSettings.tag == 124){
-        CCScaleTo *scaleAction = [CCScaleTo actionWithDuration:0.03 scaleX:0.0001 scaleY:yScale];
+        CCScaleTo *scaleAction = [CCScaleTo actionWithDuration:0.03 scaleX:0.0001 scaleY:xScale];
         [slidingBgForSettings runAction:scaleAction];
         [slidingBgForSettings setTag:123];
     }

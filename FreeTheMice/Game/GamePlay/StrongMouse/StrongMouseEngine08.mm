@@ -75,8 +75,8 @@ StrongMouseEngineMenu08 *sLayer08;
         
         self.tileMap = [CCTMXTiledMap tiledMapWithTMXFile:@"background.tmx"];
         self.background = [_tileMap layerNamed:@"background"];
-        if (RETINADISPLAY == 2) {
-            self.background.scale = RETINADISPLAY;
+        if ([FTMUtil sharedInstance].isRetinaDisplay) {
+            self.background.scale = 2;
         }
         [self addChild:_tileMap z:-1 tag:1];
         
@@ -96,7 +96,7 @@ StrongMouseEngineMenu08 *sLayer08;
         
         mouseDragSprite=[CCSprite spriteWithFile:@"mouse_drag.png"];
         mouseDragSprite.position=ccp(platformX+2,platformY+3);
-        mouseDragSprite.scale=0.6;
+        mouseDragSprite.scale=MICE_TAIL_SCALE;
         mouseDragSprite.visible=NO;
         mouseDragSprite.anchorPoint=ccp(0.99f, 0.9f);
         [self addChild:mouseDragSprite z:9];
@@ -1816,7 +1816,7 @@ StrongMouseEngineMenu08 *sLayer08;
         mouseDragSprite.position=ccp(platformX + DRAG_SPRITE_OFFSET_X/2 +heroForwardX,platformY-DRAG_SPRITE_OFFSET_Y/2);
     
     mouseDragSprite.rotation=(180-angle)-170;
-    mouseDragSprite.scale=0.3+(jumpPower/40.0);
+    mouseDragSprite.scale=MICE_TAIL_SCALE/2+(jumpPower/40.0);
     
     
 }

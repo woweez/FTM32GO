@@ -85,8 +85,8 @@ GameEngine02Menu *layer02;
         
         self.tileMap = [CCTMXTiledMap tiledMapWithTMXFile:@"background.tmx"];
         self.background = [_tileMap layerNamed:@"background"];
-        if (RETINADISPLAY == 2) {
-            self.background.scale = RETINADISPLAY;
+        if ([FTMUtil sharedInstance].isRetinaDisplay) {
+            self.background.scale = 2;
         }
         [self addChild:_tileMap z:-1 tag:1];
         
@@ -110,7 +110,7 @@ GameEngine02Menu *layer02;
         
         mouseDragSprite=[CCSprite spriteWithFile:@"mouse_drag.png"];
         mouseDragSprite.position=ccp(platformX+2,platformY+3);
-        mouseDragSprite.scale=0.6;
+        mouseDragSprite.scale=MICE_TAIL_SCALE;
         mouseDragSprite.visible=NO;
         mouseDragSprite.anchorPoint=ccp(0.99f, 0.9f);
         [self addChild:mouseDragSprite z:9];
@@ -309,7 +309,7 @@ GameEngine02Menu *layer02;
                 [animFrames2 addObject:frame];
             }
             
-            if (RETINADISPLAY == 2) {
+            if ([FTMUtil sharedInstance].isRetinaDisplay) {
                 tutorialHand.scale = 2;
                 tutorialText.scale = 2;
             }
@@ -978,7 +978,7 @@ GameEngine02Menu *layer02;
     }
     
     mouseDragSprite.rotation=(180-angle)-170;
-    mouseDragSprite.scale=0.6+(jumpPower/40.0);
+    mouseDragSprite.scale=MICE_TAIL_SCALE+(jumpPower/40.0);
     
     
 }
@@ -1076,20 +1076,7 @@ GameEngine02Menu *layer02;
     UITouch *myTouch = [touches anyObject];
     CGPoint location = [myTouch locationInView:[myTouch view]];
     location = [[CCDirector sharedDirector] convertToGL:location];
-//    if (location.x > self.position.x && location.y > self.position.y) {
-//        self.position = ccp(self.position.x + (location.x -self.position.x), self.position.y + (location.y -self.position.y));
-//    }
-//    else if (location.x < self.position.x && location.y < self.position.y){
-//        self.position = ccp(self.position.x - (self.position.x - location.x), self.position.y - (self.position.y - location.y ));
-//    }
-//    else if (location.x > self.position.x && location.y < self.position.y){
-//        self.position = ccp(self.position.x + (location.x - self.position.x ), self.position.y - (self.position.y - location.y ));
-//    }
-//    else if (location.x < self.position.x && location.y > self.position.y){
-//        self.position = ccp(self.position.x - (self.position.x - location.x ), self.position.y + (location.y - self.position.y  ));
-//    }
     
-
     int forwadeValue=(!forwardChe?0:heroForwardX);
     if(location.x>=screenHeroPosX-60+forwadeValue && location.x <= screenHeroPosX+40+forwadeValue && location.y>screenHeroPosY-30&&location.y<screenHeroPosY+18){
         if(!jumpingChe&&!dragChe&&!runningChe&&heroStandChe){

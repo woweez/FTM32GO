@@ -13,6 +13,7 @@
 #import "Utilities.h"
 #import "InAppUtils.h"
 #import "FTMUtil.h"
+#import "FTMConstants.h"
 @implementation AppController
 
 @synthesize window=window_, navController=navController_, director=director_;
@@ -57,11 +58,28 @@
 	// 2D projection
 	[director_ setProjection:kCCDirectorProjection2D];
 	//	[director setProjection:kCCDirectorProjection3D];
-	
 	// Enables High Res mode (Retina Display) on iPhone 4 and maintains low res on all other devices
-	if( ! [director_ enableRetinaDisplay:YES]) //bhai
-		CCLOG(@"Retina Display Not supported");
-	
+    if (isIPad) {
+        
+        [FTMUtil sharedInstance].isRetinaDisplay = YES;
+        if( ! [director_ enableRetinaDisplay:YES]) //bhai
+            CCLOG(@"Retina Display Not supported");
+    }else{
+        if (IS_RETINA_SUPPORT ) {
+            [FTMUtil sharedInstance].isRetinaDisplay = YES;
+            if (director_.winSize.height > 480 || director_.winSize.width > 480) {
+                [FTMUtil sharedInstance].isIphone5 = YES;
+            }else{
+                [FTMUtil sharedInstance].isIphone4 = YES;
+            }
+            if( ! [director_ enableRetinaDisplay:YES]) //bhai
+                CCLOG(@"Retina Display Not supported");
+            
+        }else{
+            if( ! [director_ enableRetinaDisplay:NO]) //bhai
+                CCLOG(@"Retina Display Not supported");
+        }
+    }
 	// Default texture format for PNG/BMP/TIFF/JPEG/GIF images
 	// It can be RGBA8888, RGBA4444, RGB5_A1, RGB565
 	// You can change anytime.

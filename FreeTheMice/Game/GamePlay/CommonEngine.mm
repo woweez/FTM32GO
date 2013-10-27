@@ -211,7 +211,7 @@
     }else{
         trappingAnimationSprite.position = ccp(heroSprite.position.x-heroSprite.contentSize.width/4, heroSprite.position.y -heroSprite.contentSize.height/3);
     }
-    if (RETINADISPLAY == 2) {
+    if ([FTMUtil sharedInstance].isRetinaDisplay) {
         trappingAnimationSprite.scale = 1;
     }else{
         trappingAnimationSprite.scale=0.5;
@@ -362,7 +362,7 @@
         return;
     }
     isScheduledTime = YES;
-    if (RETINADISPLAY == 2) {
+    if ([FTMUtil sharedInstance].isRetinaDisplay) {
         heroRunSprite.scale = 1.6;
         heroPushSprite.scale = 1.6;
         heroSprite.scale = 1.6;

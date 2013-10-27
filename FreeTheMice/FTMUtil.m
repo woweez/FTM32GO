@@ -22,6 +22,8 @@
 @synthesize isGameSoundOn;
 @synthesize isSecondTutorial;
 @synthesize isBoostPowerUpEnabled;
+@synthesize isIphone4;
+@synthesize isRetinaDisplay;
 
 static FTMUtil *sharedInstance =nil;
 

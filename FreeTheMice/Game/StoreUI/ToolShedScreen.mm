@@ -38,7 +38,7 @@ NSString *const ToolShedUpdateProductPurchasedNotification = @"ToolShedUpdatePro
         scaleFactorX = screenSize.width/480;
         scaleFactorY = screenSize.height/320;
         
-        if (RETINADISPLAY == 2) {
+        if ([FTMUtil sharedInstance].isRetinaDisplay) {
             xScale = 1 * scaleFactorX;
             yScale = 1 * scaleFactorY;
             cScale = 1;
@@ -67,7 +67,7 @@ NSString *const ToolShedUpdateProductPurchasedNotification = @"ToolShedUpdatePro
         totalCheese = [CCLabelAtlas labelWithString:[NSString stringWithFormat:@"%d", cheese] charMapFile:@"numbers.png" itemWidth:15 itemHeight:20 startCharMap:'.'];
         totalCheese.position= ccp(155 *scaleFactorX, 294 *scaleFactorY);
         totalCheese.scale=cScale;
-        if (RETINADISPLAY == 2) {
+        if ([FTMUtil sharedInstance].isRetinaDisplay) {
             totalCheese.position= ccp(155 *scaleFactorX, 294 *scaleFactorY);
             totalCheese.scale=cScale/2;
         }
@@ -75,7 +75,7 @@ NSString *const ToolShedUpdateProductPurchasedNotification = @"ToolShedUpdatePro
         
         CCSprite *mrToolBag = [CCSprite spriteWithFile: @"mr_tool_bag.png"];
         
-        if (RETINADISPLAY == 2) {
+        if ([FTMUtil sharedInstance].isRetinaDisplay) {
             mrToolBag.position = ccp(395 *scaleFactorX, 60 *scaleFactorY + mrToolBag.contentSize.height/4);
         }else{
             if([FTMUtil sharedInstance].isIphone5){
@@ -90,7 +90,7 @@ NSString *const ToolShedUpdateProductPurchasedNotification = @"ToolShedUpdatePro
         
         CCSprite *tapPowerupInfo = [CCSprite spriteWithFile: @"tap_powerup_popup.png"];
         
-        if (RETINADISPLAY == 2) {
+        if ([FTMUtil sharedInstance].isRetinaDisplay) {
             tapPowerupInfo.position = ccp(410 *scaleFactorX, 132 *scaleFactorY + mrToolBag.contentSize.height/2);
         }else{
             if([FTMUtil sharedInstance].isIphone5){
@@ -128,7 +128,7 @@ NSString *const ToolShedUpdateProductPurchasedNotification = @"ToolShedUpdatePro
         menu.position=ccp(205 *scaleFactorX, 15 *scaleFactorY);
         [self addChild: menu z:100];
         
-        if (RETINADISPLAY == 2) {
+        if ([FTMUtil sharedInstance].isRetinaDisplay) {
             [backMenuItem setScaleX:0.6 *scaleFactorX];
             [backMenuItem setScaleY:0.6 *scaleFactorY];
             menu.position=ccp(205 *scaleFactorX, 18 *scaleFactorY);
@@ -239,7 +239,7 @@ NSString *const ToolShedUpdateProductPurchasedNotification = @"ToolShedUpdatePro
     scrollBas.position = ccp( 44 *scaleFactorX, 163 * scaleFactorY);
     [self addChild:scrollBas z:10000];
     
-    int dividend = RETINADISPLAY == 2 ? 2:4;
+    int dividend = [FTMUtil sharedInstance].isRetinaDisplay ? 2:4;
     CCSprite * upArrow = [CCSprite spriteWithFile:@"up_arrow_btn.png"];
     upArrow.position = ccp( 44 *scaleFactorX, (168 + scrollBas.contentSize.height/dividend)  * scaleFactorY);
     [self addChild:upArrow z:10000];
@@ -251,7 +251,7 @@ NSString *const ToolShedUpdateProductPurchasedNotification = @"ToolShedUpdatePro
     movingBar = [CCSprite spriteWithFile:@"scroll_bar_btn.png"];
     movingBar.position = ccp( 44 *scaleFactorX, (163 + scrollBas.contentSize.height/dividend -movingBar.contentSize.height/dividend) * scaleFactorY);
     
-    if (RETINADISPLAY == 2) {
+    if ([FTMUtil sharedInstance].isRetinaDisplay) {
         scrollBas.scaleX = xScale;
         upArrow.scaleX = xScale;
         downArrow.scaleX = xScale;

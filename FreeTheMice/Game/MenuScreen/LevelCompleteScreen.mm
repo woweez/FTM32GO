@@ -74,13 +74,17 @@ enum {
 		self.isTouchEnabled = YES;
 		self.isAccelerometerEnabled = YES;
         
+        ccColor4B color = {0,0,0,128};
+        CCLayerColor *colorLayer = [CCLayerColor layerWithColor:color];
+        [self addChild:colorLayer z:-1];
+        
         soundEffect=[[sound alloc] init];
         [soundEffect PlayWinMusic];
         CGSize winSize = [CCDirector sharedDirector].winSize;
         scaleFactorX = winSize.width/480;
         scaleFactorY = winSize.height/320;
         
-        if (RETINADISPLAY == 2) {
+        if ([FTMUtil sharedInstance].isRetinaDisplay) {
             xScale = 1 * scaleFactorX;
             yScale = 1 * scaleFactorY;
             cScale = 1;
@@ -89,7 +93,6 @@ enum {
             yScale = 0.5 * scaleFactorY;
             cScale = 0.5;
         }
-        
         
 		levelCompleteBg = [CCSprite spriteWithFile:@"level_complete_bg.png"];
         levelCompleteBg.position = ccp(240 *scaleFactorX, 160*scaleFactorY);
@@ -125,11 +128,11 @@ enum {
         [[CCDirector sharedDirector] replaceScene:[LevelScreen scene]];
     }];
     [levelsMenuItem setScale:cScale];
-    CGSize winSize = [CCDirector sharedDirector].winSize;
-    if(winSize.width >480 && winSize.height < 1100){
-        levelsMenuItem.position = ccp(0 *scaleFactorX, 10 *scaleFactorY);
+    
+    if([FTMUtil sharedInstance].isRetinaDisplay){
+        levelsMenuItem.position = ccp(-4 *scaleFactorX, 11 *scaleFactorY);
     }else{
-        levelsMenuItem.position = ccp(-9 *scaleFactorX, 10 *scaleFactorY);
+        levelsMenuItem.position = ccp(-14 *scaleFactorX, 11 *scaleFactorY);
     }
     
     menu = [CCMenu menuWithItems: levelsMenuItem,  nil];
@@ -157,7 +160,7 @@ enum {
         }
     }];
     [retryMenuItem setScale:cScale];
-    retryMenuItem.position = ccp(53 *scaleFactorX, 10 *scaleFactorY);
+    retryMenuItem.position = ccp(53 *scaleFactorX, 11 *scaleFactorY);
     [menu addChild:retryMenuItem];
 }
 
@@ -182,11 +185,10 @@ enum {
         }
     }];
     [nextLevelMenuItem setScale:cScale];
-    CGSize winSize = [CCDirector sharedDirector].winSize;
-    if(winSize.width >480 && winSize.height < 1100){
-        nextLevelMenuItem.position = ccp(102 *scaleFactorX, 10 *scaleFactorY);
+    if([FTMUtil sharedInstance].isRetinaDisplay){
+        nextLevelMenuItem.position = ccp(103 *scaleFactorX, 11 *scaleFactorY);
     }else{
-        nextLevelMenuItem.position = ccp(112 *scaleFactorX, 10 *scaleFactorY);
+        nextLevelMenuItem.position = ccp(113 *scaleFactorX, 11 *scaleFactorY);
     }
     [menu addChild:nextLevelMenuItem];
 
@@ -375,7 +377,7 @@ enum {
     [self addChild:spriteSheet z:10];
     
     CCSprite *starSprite = [CCSprite spriteWithSpriteFrameName:[NSString stringWithFormat:@"%d_star_0.png", level]];
-    if (RETINADISPLAY == 2) {
+    if ([FTMUtil sharedInstance].isRetinaDisplay) {
         starSprite.scale = 2;
     }
 

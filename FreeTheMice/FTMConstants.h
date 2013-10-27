@@ -10,7 +10,20 @@
 //#define PTM_RATIO (isIPad ? 64 : 32)
 #define DEVICESCALE (isIPad ? 2 : 1)
 
-#define RETINADISPLAY       2 //bhai
+#ifndef FreeTheMice_FTMConstants_h
+#define FreeTheMice_FTMConstants_h
+
+
+#define IS_RETINA_SUPPORT ([[UIScreen mainScreen] respondsToSelector:@selector(displayLinkWithTarget:selector:)] && ([UIScreen mainScreen].scale == 2.0))
+
+#define STRONG_SCALE (([[UIScreen mainScreen] respondsToSelector:@selector(displayLinkWithTarget:selector:)] && ([UIScreen mainScreen].scale == 2.0)) ? 1.3 : 0.65)
+#define MAMA_SCALE (([[UIScreen mainScreen] respondsToSelector:@selector(displayLinkWithTarget:selector:)] && ([UIScreen mainScreen].scale == 2.0)) ? 1.6 : 0.8)
+#define GIRL_SCALE (([[UIScreen mainScreen] respondsToSelector:@selector(displayLinkWithTarget:selector:)] && ([UIScreen mainScreen].scale == 2.0)) ? 1.3 : 0.65)
+#define MAMA_RUN_SCALE (([[UIScreen mainScreen] respondsToSelector:@selector(displayLinkWithTarget:selector:)] && ([UIScreen mainScreen].scale == 2.0)) ? 1.6 : 0.8)
+#define MAMA_PUSH_SCALE (([[UIScreen mainScreen] respondsToSelector:@selector(displayLinkWithTarget:selector:)] && ([UIScreen mainScreen].scale == 2.0)) ? 1.6 : 0.8)
+#define CAT_SCALE (([[UIScreen mainScreen] respondsToSelector:@selector(displayLinkWithTarget:selector:)] && ([UIScreen mainScreen].scale == 2.0)) ? 1.2 : 0.6)
+#define MICE_TAIL_SCALE (([[UIScreen mainScreen] respondsToSelector:@selector(displayLinkWithTarget:selector:)] && ([UIScreen mainScreen].scale == 2.0)) ? 1.2 : 0.6)
+//bhai
 //convenience measurements
 #define SCREEN [[CCDirector sharedDirector] winSize]
 #define CURTIME CACurrentMediaTime()
@@ -21,8 +34,7 @@
 #define frandom_range(low,high) ((high-low)*frandom)+low
 
 
-#ifndef FreeTheMice_FTMConstants_h
-#define FreeTheMice_FTMConstants_h
+
 
 #define FTM_MAMA_MICE_ID     1
 #define FTM_STRONG_MICE_ID   2
@@ -75,23 +87,29 @@
 
 
 
+//#if (IS_RETINA)
+//#define RETINADISPLAY       2
+//#endif
 
-#if(RETINADISPLAY == 2)
-//HD Scales
-#define STRONG_SCALE            1.3 //0.7 for no HD.
-#define MAMA_SCALE              1.6
-#define GIRL_SCALE              1.3
-#define MAMA_RUN_SCALE          1.6
-#define MAMA_PUSH_SCALE         1.6
-#define CAT_SCALE               1.2
-#else
-#define STRONG_SCALE            0.65 //0.7 for no HD.
-#define GIRL_SCALE              0.65
-#define MAMA_SCALE              0.8
-#define MAMA_RUN_SCALE          0.8
-#define MAMA_PUSH_SCALE         0.8
-#define CAT_SCALE               0.6
-#endif
+//
+//#if(RETINADISPLAY == 2)
+////HD Scales
+//#define STRONG_SCALE            1.3 //0.7 for no HD.
+//#define MAMA_SCALE              1.6
+//#define GIRL_SCALE              1.3
+//#define MAMA_RUN_SCALE          1.6
+//#define MAMA_PUSH_SCALE         1.6
+//#define CAT_SCALE               1.2
+//#define MICE_TAIL_SCALE         1.2
+//#else
+//#define STRONG_SCALE            0.65 //0.7 for no HD.
+//#define GIRL_SCALE              0.65
+//#define MAMA_SCALE              0.8
+//#define MAMA_RUN_SCALE          0.8
+//#define MAMA_PUSH_SCALE         0.8
+//#define CAT_SCALE               0.6
+//#define MICE_TAIL_SCALE         0.6
+//#endif
 
 
 

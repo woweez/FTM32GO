@@ -11,7 +11,7 @@
 #import <StoreKit/StoreKit.h>
 #import "InAppUtils.h"
 #import "FTMConstants.h"
-
+#import "FTMUtil.h"
 @implementation StoreScreen
 
 NSString *const StoreUpdateProductPurchasedNotification = @"StoreUpdateProductPurchasedNotification";
@@ -35,7 +35,7 @@ NSString *const StoreUpdateProductPurchasedNotification = @"StoreUpdateProductPu
         scaleFactorX = screenSize.width/480;
         scaleFactorY = screenSize.height/320;
         
-        if (RETINADISPLAY == 2) {
+        if ([FTMUtil sharedInstance].isRetinaDisplay) {
             xScale = 1 * scaleFactorX;
             yScale = 1 * scaleFactorY;
             cScale = 1;
@@ -55,7 +55,7 @@ NSString *const StoreUpdateProductPurchasedNotification = @"StoreUpdateProductPu
         totalCheese = [CCLabelAtlas labelWithString:[NSString stringWithFormat:@"%d", cheese] charMapFile:@"numbers.png" itemWidth:15 itemHeight:20 startCharMap:'.'];
         totalCheese.position= ccp(225 *scaleFactorX, 38 *scaleFactorY);
         totalCheese.scale = 0.8;
-        if (RETINADISPLAY == 2) {
+        if ([FTMUtil sharedInstance].isRetinaDisplay) {
             totalCheese.scale = cScale/2;
         }
         [self addChild:totalCheese z:0];

@@ -70,7 +70,7 @@
         scaleFactorX = winSize.width/480;
         scaleFactorY = winSize.height/320;
         
-        if (RETINADISPLAY == 2) {
+        if ([FTMUtil sharedInstance].isRetinaDisplay) {
             xScale = 1 * scaleFactorX;
             yScale = 1 * scaleFactorY;
             cScale = 1;
@@ -88,7 +88,7 @@
         
         timer = [CCSprite spriteWithFile:@"color_meter.png"];
         [timer setScale:cScale];
-        if (RETINADISPLAY == 2) {
+        if ([FTMUtil sharedInstance].isRetinaDisplay) {
             timer.position = ccp(timerBg.position.x - timerBg.contentSize.width/4 - 47*scaleFactorX, 306*scaleFactorY);
         }else{
             timer.position = ccp(timerBg.position.x - timerBg.contentSize.width/4 + 7*scaleFactorX, 306*scaleFactorY);
@@ -348,7 +348,7 @@
     CCMenu *resumeMenu = [CCMenu menuWithItems:resumeMenuItem, nil];
     CGSize winSize = [CCDirector sharedDirector].winSize;
     
-    if (RETINADISPLAY == 2) {
+    if ([FTMUtil sharedInstance].isRetinaDisplay) {
         resumeMenu.position = ccp(56 *scaleFactorX, 107 *scaleFactorY);
     }else{
         if(winSize.width >480 && winSize.height < 1100){
@@ -361,7 +361,7 @@
     
     CCMenu *pauseMenu = [CCMenu menuWithItems:homeMenuItem,soundOn,levelsMenuItem, nil];
     [pauseMenu alignItemsVerticallyWithPadding:30 * scaleFactorY];
-    if (RETINADISPLAY == 2) {
+    if ([FTMUtil sharedInstance].isRetinaDisplay) {
         pauseMenu.position = ccp(30 *scaleFactorX, 110 *scaleFactorY);
     }else{
         pauseMenu.position = ccp(60 *scaleFactorX, 220 *scaleFactorY);
@@ -370,7 +370,7 @@
     
     CCMenu *soundOffMenu = [CCMenu menuWithItems:soundOff, nil];
     [soundOffMenu alignItemsVerticallyWithPadding:30 * scaleFactorY];
-    if (RETINADISPLAY == 2) {
+    if ([FTMUtil sharedInstance].isRetinaDisplay) {
         soundOffMenu.position = ccp(30 *scaleFactorX, 110 *scaleFactorY);
     }
     else{

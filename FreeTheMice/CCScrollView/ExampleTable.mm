@@ -49,7 +49,7 @@ NSString *const ToolShedUpdateProductPurchasedNotification = @"ToolShedUpdatePro
     scaleFactorX = [CCDirector sharedDirector].winSize.width/480;
     scaleFactorY = [CCDirector sharedDirector].winSize.height/320;
     
-    if (RETINADISPLAY == 2) {
+    if ([FTMUtil sharedInstance].isRetinaDisplay) {
         xScale = 1 * scaleFactorX;
         yScale = 1 * scaleFactorY;
         cScale = 1;
@@ -83,10 +83,10 @@ NSString *const ToolShedUpdateProductPurchasedNotification = @"ToolShedUpdatePro
     [cell addChild:powrUpSpr];
     if (itemId == BARKING_DOG_ITEM_ID || itemId == MAGNIFIER_ITEM_ID || itemId == BOOTS_ITEM_ID) {
         CCSprite *bg = [CCSprite spriteWithFile:[self getAppropriateBgPathWithItemID:itemId]];
-        int dividend = RETINADISPLAY == 2 ? 2: 4;
+        int dividend = [FTMUtil sharedInstance].isRetinaDisplay ? 2: 4;
         bg.position = ccp([ExampleCell cellSize].width, bg.contentSize.height/dividend -5);
         if (itemId == BARKING_DOG_ITEM_ID) {
-            bg.position = ccp([ExampleCell cellSize].width, [ExampleCell cellSize].height/2);
+            bg.position = ccp([ExampleCell cellSize].width -1, [ExampleCell cellSize].height/2);
         }else if (itemId == BOOTS_ITEM_ID){
             bg.position = ccp([ExampleCell cellSize].width, -3);
         }
@@ -112,7 +112,7 @@ NSString *const ToolShedUpdateProductPurchasedNotification = @"ToolShedUpdatePro
     
     }];
     
-    if (RETINADISPLAY == 2) {
+    if ([FTMUtil sharedInstance].isRetinaDisplay) {
         [buyItem setScale: 1];
     }else{
         [buyItem setScale:0.45];
@@ -127,7 +127,7 @@ NSString *const ToolShedUpdateProductPurchasedNotification = @"ToolShedUpdatePro
     CCLabelBMFont *cost = [CCLabelBMFont labelWithString:[NSString stringWithFormat: @"Cost:%d", [self getCostWithItemID:itemId]] fntFile:@"font1.fnt"];
     cost.position= [self getAppropriateCostPosWithItemID:itemId andPoint:buyItemMenu.position];
     cost.scale = cScale * 0.7;
-    if (RETINADISPLAY == 2) {
+    if ([FTMUtil sharedInstance].isRetinaDisplay) {
         cost.scale=cScale * 0.7;
     }
     [cell addChild:cost z:0];
@@ -141,7 +141,7 @@ NSString *const ToolShedUpdateProductPurchasedNotification = @"ToolShedUpdatePro
     else{
         name.position= ccp(name.position.x - 2, name.position.y + 6);
     }
-    if (RETINADISPLAY == 2) {
+    if ([FTMUtil sharedInstance].isRetinaDisplay) {
         name.scale = cScale * 0.8;
         name.position= ccp(name.position.x, name.position.y );
     }else{
@@ -163,7 +163,7 @@ NSString *const ToolShedUpdateProductPurchasedNotification = @"ToolShedUpdatePro
         cheeseSpr.position = ccp(cost.position.x + 32*scaleFactorX, powrUpSpr.position.y - 12 *scaleFactorY);
     }
     
-    if (RETINADISPLAY == 2) {
+    if ([FTMUtil sharedInstance].isRetinaDisplay) {
          cheeseSpr.scale = cScale *1.3;
     }
    

@@ -92,7 +92,7 @@ enum {
         float scaleFactorX = winSize.width/480;
         float scaleFactorY = winSize.height/320;
 
-        if (RETINADISPLAY == 2) {
+        if ([FTMUtil sharedInstance].isRetinaDisplay) {
             xScale = 1 * scaleFactorX;
             yScale = 1 * scaleFactorY;
             cScale = 1;
@@ -152,7 +152,7 @@ enum {
         
         CCLabelAtlas *currentLevelLabel = [CCLabelAtlas labelWithString:[NSString stringWithFormat:@"%d/14", currentLvl] charMapFile:@"numbers.png" itemWidth:15 itemHeight:20 startCharMap:'.'];
         currentLevelLabel.position=ccp(21 *scaleFactorX, 33 *scaleFactorY);
-        if (RETINADISPLAY == 2) {
+        if ([FTMUtil sharedInstance].isRetinaDisplay) {
             currentLevelLabel.scale = 0.5;
             currentLevelLabel.position=ccp(10 *scaleFactorX, 16 *scaleFactorY);
         }
@@ -173,7 +173,7 @@ enum {
                 levelMenu=[CCMenuItemImage itemWithNormalImage:[NSString stringWithFormat:@"%d_%d.png",i+1,1] selectedImage:[NSString stringWithFormat:@"%d_%d.png",i+1,2] target:self selector:@selector(clickLevel:)];
                 [levelMenu addChild:[self getAppropriateStarImageAgainstLevel:2]];
             }
-            if (RETINADISPLAY == 2) {
+            if ([FTMUtil sharedInstance].isRetinaDisplay) {
                 [levelMenu setScale:cScale];
             }else{
                 [levelMenu setScale: 0.65];
@@ -183,7 +183,7 @@ enum {
             
             CCMenu *menu2 = [CCMenu menuWithItems: levelMenu,  nil];
             levelMenu.tag=i+1;
-            if (RETINADISPLAY == 2) {
+            if ([FTMUtil sharedInstance].isRetinaDisplay) {
                 if(i<=4)
                     menu2.position=ccp(140 *scaleFactorX+(i*55 *scaleFactorX),220 *scaleFactorY);
                 else if(i>4 &&i<=9)
@@ -349,7 +349,7 @@ enum {
     float scaleFactorX = winSize.width/480;
     float scaleFactorY = winSize.height/320;
     
-    if (RETINADISPLAY == 2) {
+    if ([FTMUtil sharedInstance].isRetinaDisplay) {
         starImage.position = ccp(22 *scaleFactorX, 9 *scaleFactorY);
     }else{
         starImage.position = ccp(45 *scaleFactorX, 18 *scaleFactorY);

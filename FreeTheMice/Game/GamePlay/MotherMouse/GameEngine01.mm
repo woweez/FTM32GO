@@ -86,8 +86,8 @@ GameEngine01Menu *layer01;
         
         self.tileMap = [CCTMXTiledMap tiledMapWithTMXFile:@"level1.tmx"];
         self.background = [_tileMap layerNamed:@"level1"];
-        if (RETINADISPLAY == 2) {
-            self.background.scale = RETINADISPLAY;
+        if ([FTMUtil sharedInstance].isRetinaDisplay) {
+            self.background.scale = 2;
         }
         
         [self addChild:_tileMap z:-1 tag:1];
@@ -112,7 +112,7 @@ GameEngine01Menu *layer01;
         
         mouseDragSprite=[CCSprite spriteWithFile:@"mouse_drag.png"];
         mouseDragSprite.position=ccp(platformX+2,platformY+3);
-        mouseDragSprite.scale=0.6;
+        mouseDragSprite.scale = MICE_TAIL_SCALE;
         mouseDragSprite.visible=NO;
         mouseDragSprite.anchorPoint=ccp(0.99f, 0.9f);
         [self addChild:mouseDragSprite z:9];
@@ -261,7 +261,7 @@ GameEngine01Menu *layer01;
                 CCSpriteFrame *frame = [cache spriteFrameByName:[NSString stringWithFormat:@"hand_%d.png",i]];
                 [animFrames2 addObject:frame];
             }
-            if (RETINADISPLAY == 2) {
+            if ([FTMUtil sharedInstance].isRetinaDisplay) {
                 tutorialArrow.scale = 2;
                 tutorialCircle.scale = 2;
                 pressImage.scale = 2;
@@ -946,7 +946,7 @@ GameEngine01Menu *layer01;
     }
     
     mouseDragSprite.rotation=(180-angle)-170;
-    mouseDragSprite.scale=0.6+(jumpPower/40.0);
+    mouseDragSprite.scale=MICE_TAIL_SCALE+(jumpPower/40.0);
     
     
 }
@@ -1139,7 +1139,7 @@ GameEngine01Menu *layer01;
                     [pressImage removeFromParentAndCleanup:YES];
                     pressImage = [CCSprite spriteWithFile:@"move_left_text.png"];
                     pressImage.position = ccp(240 *scaleFactorX, 40 *scaleFactorY);
-                    if (RETINADISPLAY == 2) {
+                    if ([FTMUtil sharedInstance].isRetinaDisplay) {
                         pressImage.scale = 2;
                     }
                     [layer01 addChild:pressImage];

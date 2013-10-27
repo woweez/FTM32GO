@@ -10,7 +10,7 @@
 
 #import "AppDelegate.h"
 #import "LevelScreen.h"
-
+#import "FTMConstants.h"
 #import "DB.h"
 
 enum {
@@ -106,7 +106,7 @@ GameEngineMenu *layer2;
         
         mouseDragSprite=[CCSprite spriteWithFile:@"mouse_drag.png"];
         mouseDragSprite.position=ccp(platformX+2,platformY+3);
-        mouseDragSprite.scale=0.6;
+        mouseDragSprite.scale=MICE_TAIL_SCALE;
         mouseDragSprite.visible=NO;
         mouseDragSprite.anchorPoint=ccp(0.99f, 0.9f);
         [self addChild:mouseDragSprite z:9];
