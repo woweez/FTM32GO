@@ -147,6 +147,7 @@
     CGFloat waterDropsCount[20];
     int waterDropsReleaseCount;
     BOOL waterStopChe;
+    BOOL isHotPotSoundEnabled;
     
     int testAngle;
 }

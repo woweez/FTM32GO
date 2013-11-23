@@ -606,6 +606,9 @@ StrongMouseEngineMenu06 *sLayer06;
                 xx=[self platesMovingpath:iceQubeCount[i]-540 position:0]+575;
                 yy=[self platesMovingpath:iceQubeCount[i]-540 position:1]-103;
             }else{
+                if (iceQubeCount[i] > 625 && iceQubeCount[i] < 627) {
+                    [soundEffect plates_hitting_ground];
+                }
                 iceQubeCount[i]+=1.2;
                 xx=[trigo circlex:iceQubeCount[i] a:359]+105;
                 yy=[trigo circley:iceQubeCount[i] a:359]+273;

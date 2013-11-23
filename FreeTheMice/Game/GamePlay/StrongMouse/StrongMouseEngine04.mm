@@ -369,7 +369,7 @@ StrongMouseEngineMenu04 *sLayer04;
         [self addChild:dotSprite z:10];
         [self addHudLayerToTheScene];
         [self starCheeseSpriteInitilized];
-        
+        [self scheduleHotPotSmokeSound];
         [self scheduleUpdate];
     }
     return self;
@@ -403,6 +403,7 @@ StrongMouseEngineMenu04 *sLayer04;
     screenHeroPosX=platformX;
     screenHeroPosY=platformY;
     
+    isHotPotSoundEnabled = YES;
     jumpingChe=NO;
     heroStandChe=NO;
     heroStandAnimationCount=51;
@@ -611,7 +612,7 @@ StrongMouseEngineMenu04 *sLayer04;
     silverPotSprite.position=ccp(420+gameFunc.siverPotCount,593-gameFunc.siverPotCount2);
     
     if (gameFunc.siverPotCount2 == 278) {
-        [soundEffect pot_hitting_ground];
+        [soundEffect extinguish_pot];
     }
     toasterBreadSprite.position=ccp(300,369-gameFunc.toasterBreadCount);
     greyBoxSprite.position=ccp(415+gameFunc.boxCount,505-gameFunc.boxCount2);
@@ -676,6 +677,13 @@ StrongMouseEngineMenu04 *sLayer04;
         }
     }
     
+    if (waterStopChe && isHotPotSoundEnabled) {
+        isHotPotSoundEnabled = NO;
+        [self unScheduleHotPotSmokeSound];
+    }
+    else if (!waterStopChe && !isHotPotSoundEnabled){
+        [self scheduleHotPotSmokeSound];
+    }
     int iValue=(forwardChe?60:0);
     if(heroSprite.position.x-iValue>470 && heroSprite.position.x-iValue<= 550&& heroSprite.position.y>330&&heroSprite.position.y<=430&&!heroTrappedChe&&gameFunc.boxCount2!=40){
         gameFunc.trappedChe=YES;

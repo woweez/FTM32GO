@@ -99,7 +99,7 @@ GameEngine01Menu *layer01;
         
         heroRunSprite = [CCSprite spriteWithSpriteFrameName:@"mother_run01.png"];
         heroRunSprite.position = ccp(200, 200);
-        heroRunSprite.scale=0.8;
+        heroRunSprite.scale = MAMA_SCALE;
         [spriteSheet addChild:heroRunSprite];
         
         NSMutableArray *animFrames = [NSMutableArray array];
@@ -187,10 +187,13 @@ GameEngine01Menu *layer01;
             cheeseSprite2[i]=[CCSprite spriteWithFile:@"cheeseGlow.png"];
             cheeseSprite2[i].position=[gameFunc getCheesePosition:1 gameLevel:motherLevel iValue:i];
             [self addChild:cheeseSprite2[i] z:9];
-            
             cheeseSprite[i]=[CCSprite spriteWithFile:@"Cheese.png"];
             cheeseSprite[i].position=[gameFunc getCheesePosition:1 gameLevel:motherLevel iValue:i];
             [self addChild:cheeseSprite[i] z:9];
+            if (![FTMUtil sharedInstance].isRetinaDisplay) {
+                cheeseSprite2[i].scale = NON_RETINA_SCALE;
+                cheeseSprite[i].scale = NON_RETINA_SCALE;
+            }
         }
         
         
@@ -1139,7 +1142,8 @@ GameEngine01Menu *layer01;
                     [pressImage removeFromParentAndCleanup:YES];
                     pressImage = [CCSprite spriteWithFile:@"move_left_text.png"];
                     pressImage.position = ccp(240 *scaleFactorX, 40 *scaleFactorY);
-                    if ([FTMUtil sharedInstance].isRetinaDisplay) {
+                    if ([FTMUtil sharedInstance].isRetinaDisplay
+                        ) {
                         pressImage.scale = 2;
                     }
                     [layer01 addChild:pressImage];

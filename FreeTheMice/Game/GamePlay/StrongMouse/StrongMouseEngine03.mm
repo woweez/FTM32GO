@@ -249,6 +249,7 @@ StrongMouseEngineMenu03 *sLayer03;
         dotSprite.scale=0.2;
         [self addChild:dotSprite z:10];
         [self addHudLayerToTheScene];
+        [self scheduleHotPotSmokeSound];
         [self starCheeseSpriteInitilized];
         
         [self scheduleUpdate];
@@ -282,6 +283,7 @@ StrongMouseEngineMenu03 *sLayer03;
     screenHeroPosX=platformX;
     screenHeroPosY=platformY;
     
+    isHotPotSoundEnabled = YES;
     jumpingChe=NO;
     heroStandChe=NO;
     heroStandAnimationCount=51;
@@ -555,7 +557,13 @@ StrongMouseEngineMenu03 *sLayer03;
             hotSmokingRelease=0;
         }
     }
-    
+    if (waterStopChe && isHotPotSoundEnabled) {
+        isHotPotSoundEnabled = NO;
+        [self unScheduleHotPotSmokeSound];
+    }
+    else if (!waterStopChe && !isHotPotSoundEnabled){
+        [self scheduleHotPotSmokeSound];
+    }
     int iValue=(forwardChe?60:0);
     if(heroSprite.position.x-iValue>515 && heroSprite.position.x-iValue<= 600&& heroSprite.position.y>380&&heroSprite.position.y<=530&&!heroTrappedChe&&!waterStopChe){
         gameFunc.trappedChe=YES;

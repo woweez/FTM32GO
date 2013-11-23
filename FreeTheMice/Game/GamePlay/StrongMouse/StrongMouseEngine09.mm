@@ -662,6 +662,9 @@ StrongMouseEngineMenu09 *sLayer09;
         sValue[0]=0;
         boxSprite[1].position=ccp(620+[gameFunc getBox:1 pValue:0],410+[gameFunc getBox:1 pValue:1]);
         comBoxSprite[1].position=ccp(620+[gameFunc getBox:1 pValue:0]-2,410+[gameFunc getBox:1 pValue:1]);
+        if (boxSprite[1].position.y == 300) {
+            [soundEffect blocks_hitting_ground];
+        }
     }
     
     
@@ -675,6 +678,9 @@ StrongMouseEngineMenu09 *sLayer09;
         sValue[1]=0;
         boxSprite[2].position=ccp(720+[gameFunc getBox:2 pValue:0],410+[gameFunc getBox:2 pValue:1]);
         comBoxSprite[2].position=ccp(720+[gameFunc getBox:2 pValue:0]-2,410+[gameFunc getBox:2 pValue:1]);
+        if (boxSprite[2].position.y == 300) {
+            [soundEffect blocks_hitting_ground];
+        }
     }
     
     if(boxSprite[0].position.x>790 && boxSprite[0].position.x<830 ){
@@ -687,6 +693,9 @@ StrongMouseEngineMenu09 *sLayer09;
         sValue[2]=0;
         boxSprite[0].position=ccp(440+[gameFunc getBox:0 pValue:0],410+[gameFunc getBox:0 pValue:1]);
         comBoxSprite[0].position=ccp(440+[gameFunc getBox:0 pValue:0]-2,410+[gameFunc getBox:0 pValue:1]);
+        if (boxSprite[0].position.y == 300) {
+            [soundEffect blocks_hitting_ground];
+        }
     }
     
     if(sValue[0]==1&&sValue[1]==1&&sValue[2]==1)

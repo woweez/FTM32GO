@@ -346,13 +346,12 @@
     resumeMenuItem.position = ccp(10 *scaleFactorX, 10 *scaleFactorY);
     
     CCMenu *resumeMenu = [CCMenu menuWithItems:resumeMenuItem, nil];
-    CGSize winSize = [CCDirector sharedDirector].winSize;
     
-    if ([FTMUtil sharedInstance].isRetinaDisplay) {
+    if ([FTMUtil sharedInstance].isRetinaDisplay && [FTMUtil sharedInstance].isIphone5) {
         resumeMenu.position = ccp(56 *scaleFactorX, 107 *scaleFactorY);
     }else{
-        if(winSize.width >480 && winSize.height < 1100){
-            resumeMenu.position = ccp(123 *scaleFactorX, 223*scaleFactorY);
+        if([FTMUtil sharedInstance].isIphone4){
+            resumeMenu.position = ccp(69 *scaleFactorX, 107*scaleFactorY);
         }else{
             resumeMenu.position = ccp(146 *scaleFactorX, 223*scaleFactorY);
         }

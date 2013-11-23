@@ -55,6 +55,7 @@
 #import "GirlMouseEngine14.h"
 #import "FTMUtil.h"
 #import "FTMConstants.h"
+#import "LoadingLayer.h"
 
 // Needed to obtain the Navigation Controller
 #import "AppDelegate.h"
@@ -233,114 +234,9 @@ enum {
 }
 -(void)clickLevel:(CCMenuItem *)sender {
     [soundEffect button_1];
-    if(sender.tag==1){
-        if(currentMouse==1)
-            [[CCDirector sharedDirector] replaceScene:[GameEngine01 scene]];
-        else if(currentMouse ==2)
-            [[CCDirector sharedDirector] replaceScene:[StrongMouseEngine01 scene]];
-        else if(currentMouse==3)
-            [[CCDirector sharedDirector] replaceScene:[GirlMouseEngine01 scene]];
-        
-        
-    }else if(sender.tag==2){
-        if(currentMouse==1)
-            [[CCDirector sharedDirector] replaceScene:[GameEngine02 scene]];
-        else if(currentMouse==2)
-            [[CCDirector sharedDirector] replaceScene:[StrongMouseEngine02 scene]];
-        else if(currentMouse==3)
-            [[CCDirector sharedDirector] replaceScene:[GirlMouseEngine02 scene]];
-        
-    }else if(sender.tag==3){
-        if(currentMouse==1)
-            [[CCDirector sharedDirector] replaceScene:[GameEngine03 scene]];
-        else if(currentMouse==2)
-            [[CCDirector sharedDirector] replaceScene:[StrongMouseEngine03 scene]];
-        else if(currentMouse==3)
-            [[CCDirector sharedDirector] replaceScene:[GirlMouseEngine03 scene]];
-        
-    }else if(sender.tag==4){
-        if(currentMouse==1)
-            [[CCDirector sharedDirector] replaceScene:[GameEngine04 scene]];
-        else if(currentMouse==2)
-            [[CCDirector sharedDirector] replaceScene:[StrongMouseEngine04 scene]];
-        else if(currentMouse==3)
-            [[CCDirector sharedDirector] replaceScene:[GirlMouseEngine04 scene]];
-        
-    }else if(sender.tag==5){
-        if(currentMouse==1)
-            [[CCDirector sharedDirector] replaceScene:[GameEngine05 scene]];
-        else if(currentMouse==2)
-            [[CCDirector sharedDirector] replaceScene:[StrongMouseEngine05 scene]];
-        else if(currentMouse==3)
-            [[CCDirector sharedDirector] replaceScene:[GirlMouseEngine05 scene]];
-        
-    }else if(sender.tag==6){
-        if(currentMouse==1)
-            [[CCDirector sharedDirector] replaceScene:[GameEngine06 scene]];
-        else if(currentMouse==2)
-            [[CCDirector sharedDirector] replaceScene:[StrongMouseEngine06 scene]];
-        else if(currentMouse==3)
-            [[CCDirector sharedDirector] replaceScene:[GirlMouseEngine06 scene]];
-        
-        
-    }else if(sender.tag==7){
-        if(currentMouse==1)
-            [[CCDirector sharedDirector] replaceScene:[GameEngine07 scene]];
-        else if(currentMouse==2)
-            [[CCDirector sharedDirector] replaceScene:[StrongMouseEngine07 scene]];
-        else if(currentMouse==3)
-            [[CCDirector sharedDirector] replaceScene:[GirlMouseEngine07 scene]];
-    }else if(sender.tag==8){
-        if(currentMouse==1)
-            [[CCDirector sharedDirector] replaceScene:[GameEngine08 scene]];
-        else if(currentMouse==2)
-            [[CCDirector sharedDirector] replaceScene:[StrongMouseEngine08 scene]];
-        else if(currentMouse==3)
-            [[CCDirector sharedDirector] replaceScene:[GirlMouseEngine08 scene]];
-    }else if(sender.tag==9){
-        if(currentMouse==1)
-            [[CCDirector sharedDirector] replaceScene:[GameEngine09 scene]];
-        else if(currentMouse==2)
-            [[CCDirector sharedDirector] replaceScene:[StrongMouseEngine09 scene]];
-        else if(currentMouse==3)
-            [[CCDirector sharedDirector] replaceScene:[GirlMouseEngine09 scene]];
-    }else if(sender.tag==10){
-        if(currentMouse == 1)
-            [[CCDirector sharedDirector] replaceScene:[GameEngine10 scene]];
-        else if(currentMouse==2)
-            [[CCDirector sharedDirector] replaceScene:[StrongMouseEngine10 scene]];
-        else if(currentMouse==3)
-            [[CCDirector sharedDirector] replaceScene:[GirlMouseEngine10 scene]];
-    }else if(sender.tag==11){
-        if(currentMouse == 1)
-            [[CCDirector sharedDirector] replaceScene:[GameEngine11 scene]];
-        else if(currentMouse==2)
-            [[CCDirector sharedDirector] replaceScene:[StrongMouseEngine11 scene]];
-        else if(currentMouse==3)
-            [[CCDirector sharedDirector] replaceScene:[GirlMouseEngine11 scene]];
-    }else if(sender.tag==12){
-        if(currentMouse == 1)
-            [[CCDirector sharedDirector] replaceScene:[GameEngine12 scene]];
-        else if(currentMouse==2)
-            [[CCDirector sharedDirector] replaceScene:[StrongMouseEngine12 scene]];
-        else if(currentMouse==3)
-            [[CCDirector sharedDirector] replaceScene:[GirlMouseEngine12 scene]];
-    }else if(sender.tag==13){
-        if(currentMouse == 1)
-            [[CCDirector sharedDirector] replaceScene:[GameEngine13 scene]];
-        else if(currentMouse==2)
-            [[CCDirector sharedDirector] replaceScene:[StrongMouseEngine13 scene]];
-        else if(currentMouse==3)
-            [[CCDirector sharedDirector] replaceScene:[GirlMouseEngine13 scene]];
-    }else if(sender.tag==14){
-        if(currentMouse == 1)
-            [[CCDirector sharedDirector] replaceScene:[GameEngine14 scene]];
-        else if(currentMouse==2)
-            [[CCDirector sharedDirector] replaceScene:[StrongMouseEngine14 scene]];
-        else if(currentMouse==3)
-            [[CCDirector sharedDirector] replaceScene:[GirlMouseEngine14 scene]];
+    [[CCDirector sharedDirector] replaceScene:[LoadingLayer scene:sender.tag levelNo:currentMouse]];
+    
     }
-}
 
 -(CCSprite *) getAppropriateStarImageAgainstLevel: (int) level{
    // get the appropriate star image id here from the level: use db to get that. for now just 1;

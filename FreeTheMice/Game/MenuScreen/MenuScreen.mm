@@ -175,11 +175,7 @@ enum {
         [self addGilMouseEyesAnimation];
         [self addAboutSelectionMenu];
         [self addSettingsSelectionMenu];
-//
-//        LevelCompleteScreen *lvlCompleteLayer = [[LevelCompleteScreen alloc] init];
-//        [lvlCompleteLayer playStarImageAnimationAgainstLevel:12];
-//        lvlCompleteLayer.tag = 12;
-//        [self addChild: lvlCompleteLayer z:2000];
+
 	}
 	return self;
 }
@@ -409,8 +405,9 @@ enum {
     [slidingBgForSettings setScaleX:0.0001f];
     [slidingBgForSettings setScaleY:xScale];
     [slidingBgForSettings setAnchorPoint:ccp(0, 1)];
-    if ([FTMUtil sharedInstance].isRetinaDisplay) {
+    if ([FTMUtil sharedInstance].isRetinaDisplay && ![FTMUtil sharedInstance].isIphone4) {
         slidingBgForSettings.position = ccp(14 *scaleFactorX, 53*scaleFactorY);
+
     }else{
         slidingBgForSettings.position = ccp(14 *scaleFactorX, 49*scaleFactorY);
     }

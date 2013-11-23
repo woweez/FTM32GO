@@ -146,6 +146,7 @@
     int heroTrappedMove;
     int waterDropsReleaseCount;
     BOOL waterStopChe;
+    BOOL isHotPotSoundEnabled;
     int visibleCount;
     
 }

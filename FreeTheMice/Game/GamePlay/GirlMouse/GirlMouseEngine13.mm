@@ -1262,9 +1262,12 @@ GirlMouseEngineMenu13 *gLayer13;
     pulbCount+=1.0;
     pulbCount=(pulbCount>=250?0:pulbCount);
     if (pulbCount == 0) {
-        [soundEffect bulb_swaying];
+        [soundEffect Lamp_hit_sway];
     }
-    if (pulbCount >= 125 && pulbCount < 127) {
+    else if (pulbCount >= 125 && pulbCount < 127) {
+        [soundEffect Lamp_hit_sway];
+    }
+    else if (pulbCount > 62 && pulbCount < 64){
         [soundEffect bulb_swaying];
     }
     if(pulbCount<=125){

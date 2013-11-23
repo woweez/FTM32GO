@@ -347,6 +347,7 @@ StrongMouseEngineMenu12 *sLayer12;
         }
         [self addHudLayerToTheScene];
         [self starCheeseSpriteInitilized];
+        [self scheduleFridgeMotorFallSound];
         [self scheduleUpdate];
     }
     return self;

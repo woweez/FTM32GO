@@ -97,7 +97,7 @@ GameEngine12Menu *layer12;
         
         heroRunSprite = [CCSprite spriteWithSpriteFrameName:@"mother_run01.png"];
         heroRunSprite.position = ccp(200, 200);
-        heroRunSprite.scale=0.8;
+        heroRunSprite.scale = MAMA_SCALE;
         [spriteSheet addChild:heroRunSprite];
         
         NSMutableArray *animFrames = [NSMutableArray array];
@@ -180,6 +180,9 @@ GameEngine12Menu *layer12;
         
         movePlatformSprite=[CCSprite spriteWithFile:@"levelPlatformHole12.png"];
         movePlatformSprite.position=ccp(-220,512);
+        if (![FTMUtil sharedInstance].isRetinaDisplay) {
+            movePlatformSprite.scale = NON_RETINA_SCALE;
+        }
         [self addChild:movePlatformSprite z:9];
         
         for(int i=0;i<cheeseCount;i++){
@@ -191,36 +194,63 @@ GameEngine12Menu *layer12;
             cheeseSprite[i]=[CCSprite spriteWithFile:@"Cheese.png"];
             cheeseSprite[i].position=[gameFunc getCheesePosition:1 gameLevel:motherLevel iValue:i];
             [self addChild:cheeseSprite[i] z:9];
+            
+            if (![FTMUtil sharedInstance].isRetinaDisplay) {
+                cheeseSprite[i].scale = NON_RETINA_SCALE;
+                cheeseSprite2[i].scale = NON_RETINA_SCALE;
+            }
         }
         
+        int switchWidth = [FTMUtil sharedInstance].isRetinaDisplay ? 40: 80;
+        int switchHeight = [FTMUtil sharedInstance].isRetinaDisplay ? 103: 206;
         for(int i=0;i<3;i++){
-            switchAtlas[i] = [[CCLabelAtlas labelWithString:@"0" charMapFile:@"switch.png" itemWidth:40 itemHeight:103 startCharMap:'0'] retain];
+            switchAtlas[i] = [[CCLabelAtlas labelWithString:@"0" charMapFile:@"switch.png" itemWidth:switchWidth itemHeight:switchHeight startCharMap:'0'] retain];
             if(i==0)
                 switchAtlas[i].position=ccp(490,315);
             else if(i==1)
                 switchAtlas[i].position=ccp(540,445);
             else if(i==2)
                 switchAtlas[i].position=ccp(200,435);
-            switchAtlas[i].scale=0.7;
+            if (![FTMUtil sharedInstance].isRetinaDisplay) {
+                switchAtlas[i].scale = 0.35;
+            }else{
+                switchAtlas[i].scale = 0.7;
+            }
             [self addChild:switchAtlas[i] z:9];
         }
         
-        iceBlastAtlas = [[CCLabelAtlas labelWithString:@"0" charMapFile:@"ice_blast.png" itemWidth:100 itemHeight:50 startCharMap:'0'] retain];
+        int iceBlastWidth = [FTMUtil sharedInstance].isRetinaDisplay ? 100: 200;
+        int iceBlastHeight = [FTMUtil sharedInstance].isRetinaDisplay ? 50: 100;
+        iceBlastAtlas = [[CCLabelAtlas labelWithString:@"0" charMapFile:@"ice_blast.png" itemWidth:iceBlastWidth itemHeight:iceBlastHeight startCharMap:'0'] retain];
         iceBlastAtlas.position=ccp(-270,200);
+        if (![FTMUtil sharedInstance].isRetinaDisplay) {
+            iceBlastAtlas.scale = NON_RETINA_SCALE;
+        }
         [self addChild:iceBlastAtlas z:9];
         
-        iceBlastAtlas2 = [[CCLabelAtlas labelWithString:@"0" charMapFile:@"ice_blast.png" itemWidth:100 itemHeight:50 startCharMap:'0'] retain];
+        iceBlastAtlas2 = [[CCLabelAtlas labelWithString:@"0" charMapFile:@"ice_blast.png" itemWidth:iceBlastWidth itemHeight:iceBlastHeight startCharMap:'0'] retain];
         iceBlastAtlas2.position=ccp(-270,200);
+        if (![FTMUtil sharedInstance].isRetinaDisplay) {
+            iceBlastAtlas2.scale = NON_RETINA_SCALE;
+        }
         [self addChild:iceBlastAtlas2 z:9];
         
         clockBackgroundSprite=[CCSprite spriteWithFile:@"clock_background.png"];
         clockBackgroundSprite.position=ccp(-100,258);
-        clockBackgroundSprite.scale=0.5;
+        if (![FTMUtil sharedInstance].isRetinaDisplay) {
+            clockBackgroundSprite.scale = 0.25;
+        }else{
+            clockBackgroundSprite.scale = 0.5;
+        }
         [layer12 addChild:clockBackgroundSprite z:0];
         
         clockArrowSprite=[CCSprite spriteWithFile:@"clock_arrow.png"];
         clockArrowSprite.position=ccp(-100,258);
-        clockArrowSprite.scale=0.5;
+        if (![FTMUtil sharedInstance].isRetinaDisplay) {
+            clockArrowSprite.scale = 0.25;
+        }else{
+            clockArrowSprite.scale = 0.5;
+        }
         clockArrowSprite.anchorPoint=ccp(0.2f, 0.2f);
         clockArrowSprite.rotation=-40;
         [layer12 addChild:clockArrowSprite z:0];
@@ -241,11 +271,17 @@ GameEngine12Menu *layer12;
             iceQubeSprite[i]=[CCSprite spriteWithFile:@"ice_qube.png"];
             iceQubeSprite[i].position=ccp(-107,525);
             iceQubeSprite[i].rotation=arc4random() % 360 + 1;
+            if (![FTMUtil sharedInstance].isRetinaDisplay) {
+                iceQubeSprite[i].scale = NON_RETINA_SCALE;
+            }
             [self addChild:iceQubeSprite[i] z:10];
             
             iceQubeSprite2[i]=[CCSprite spriteWithFile:@"ice_qube.png"];
             iceQubeSprite2[i].position=ccp(-107,525);
             iceQubeSprite2[i].rotation=arc4random() % 360 + 1;
+            if (![FTMUtil sharedInstance].isRetinaDisplay) {
+                iceQubeSprite2[i].scale = NON_RETINA_SCALE;
+            }
             [self addChild:iceQubeSprite2[i] z:9];
         }
         
@@ -270,157 +306,272 @@ GameEngine12Menu *layer12;
         }
         [self addChild:tileWaterFull2 z:10 tag:1];
         
+        int bubbleWidth = [FTMUtil sharedInstance].isRetinaDisplay ? 25: 50;
+        int bubbleHeight = [FTMUtil sharedInstance].isRetinaDisplay ? 25: 50;
+        
         for(int i=0;i<2;i++){
-            waterBubbleAtlas[i] = [[CCLabelAtlas labelWithString:@"4" charMapFile:@"water_bubble.png" itemWidth:25 itemHeight:25 startCharMap:'0'] retain];
+            waterBubbleAtlas[i] = [[CCLabelAtlas labelWithString:@"4" charMapFile:@"water_bubble.png" itemWidth:bubbleWidth itemHeight:bubbleHeight startCharMap:'0'] retain];
             waterBubbleAtlas[i].position=ccp(-430,50);
-            waterBubbleAtlas[i].scaleX=2.5;
-            waterBubbleAtlas[i].scaleY=0.5;
+            if (![FTMUtil sharedInstance].isRetinaDisplay) {
+                waterBubbleAtlas[i].scaleX = 1.25;
+                waterBubbleAtlas[i].scaleY = 0.25;
+            }else{
+                waterBubbleAtlas[i].scaleX = 2.5;
+                waterBubbleAtlas[i].scaleY = 0.5;
+            }
             waterBubbleAtlas[i].opacity=200;
             [self addChild:waterBubbleAtlas[i] z:9];
         }
         
-        CCLabelAtlas *bridgeAtlas = [[CCLabelAtlas labelWithString:@"0" charMapFile:@"fridge_platform.png" itemWidth:395 itemHeight:49 startCharMap:'0'] retain];
+        int bridgeWidth = [FTMUtil sharedInstance].isRetinaDisplay ? 395: 790;
+        int bridgetHeight = [FTMUtil sharedInstance].isRetinaDisplay ? 49: 98;
+        
+        CCLabelAtlas *bridgeAtlas = [[CCLabelAtlas labelWithString:@"0" charMapFile:@"fridge_platform.png" itemWidth:bridgeWidth itemHeight:bridgetHeight startCharMap:'0'] retain];
         bridgeAtlas.position=ccp(-25,52);
         [self addChild:bridgeAtlas z:0];
-        bridgeAtlas = [[CCLabelAtlas labelWithString:@"0" charMapFile:@"fridge_platform.png" itemWidth:395 itemHeight:49 startCharMap:'0'] retain];
+        bridgeAtlas = [[CCLabelAtlas labelWithString:@"0" charMapFile:@"fridge_platform.png" itemWidth:bridgeWidth itemHeight:bridgetHeight startCharMap:'0'] retain];
         bridgeAtlas.position=ccp(349,52);
         [self addChild:bridgeAtlas z:0];
-        bridgeAtlas = [[CCLabelAtlas labelWithString:@"0" charMapFile:@"fridge_platform.png" itemWidth:395 itemHeight:49 startCharMap:'0'] retain];
+        bridgeAtlas = [[CCLabelAtlas labelWithString:@"0" charMapFile:@"fridge_platform.png" itemWidth:bridgeWidth itemHeight:bridgetHeight startCharMap:'0'] retain];
         bridgeAtlas.position=ccp(724,52);
         [self addChild:bridgeAtlas z:0];
         
         CCSprite *bridgeSprite=[CCSprite spriteWithFile:@"fridge_platform.png"];
         bridgeSprite.position=ccp(173,178);
+        if (![FTMUtil sharedInstance].isRetinaDisplay) {
+            bridgeSprite.scale = NON_RETINA_SCALE;
+        }
         [self addChild:bridgeSprite z:0];
         
         bridgeSprite=[CCSprite spriteWithFile:@"fridge_platform.png"];
         bridgeSprite.position=ccp(547,178);
+        if (![FTMUtil sharedInstance].isRetinaDisplay) {
+            bridgeSprite.scale = NON_RETINA_SCALE;
+        }
         [self addChild:bridgeSprite z:0];
         
         bridgeSprite=[CCSprite spriteWithFile:@"fridge_platform3.png"];
         bridgeSprite.position=ccp(807,178);
-        bridgeSprite.scaleX=1.05;
+        if (![FTMUtil sharedInstance].isRetinaDisplay) {
+            bridgeSprite.scaleY = NON_RETINA_SCALE;
+            bridgeSprite.scaleX = 0.505;
+        }else{
+            bridgeSprite.scaleX=1.05;
+        }
         [self addChild:bridgeSprite z:0];
         
         bridgeSprite=[CCSprite spriteWithFile:@"fridge_platform.png"];
         bridgeSprite.position=ccp(29,299);
+        if (![FTMUtil sharedInstance].isRetinaDisplay) {
+            bridgeSprite.scale = NON_RETINA_SCALE;
+        }
         [self addChild:bridgeSprite z:0];
         
         bridgeSprite=[CCSprite spriteWithFile:@"fridge_platform2.png"];
         bridgeSprite.position=ccp(500,299);
+        if (![FTMUtil sharedInstance].isRetinaDisplay) {
+            bridgeSprite.scale = NON_RETINA_SCALE;
+        }
         [self addChild:bridgeSprite z:0];
         
         bridgeSprite=[CCSprite spriteWithFile:@"fridge_platform2.png"];
         bridgeSprite.position=ccp(904,299);
+        if (![FTMUtil sharedInstance].isRetinaDisplay) {
+            bridgeSprite.scale = NON_RETINA_SCALE;
+        }
         [self addChild:bridgeSprite z:0];
         
         bridgeSprite=[CCSprite spriteWithFile:@"fridge_platform.png"];
         bridgeSprite.position=ccp(90,398);
+        if (![FTMUtil sharedInstance].isRetinaDisplay) {
+            bridgeSprite.scale = NON_RETINA_SCALE;
+        }
         [self addChild:bridgeSprite z:0];
         
         bridgeSprite=[CCSprite spriteWithFile:@"fridge_platform4.png"];
         bridgeSprite.position=ccp(550,412);
+        if (![FTMUtil sharedInstance].isRetinaDisplay) {
+            bridgeSprite.scale = NON_RETINA_SCALE;
+        }
         [self addChild:bridgeSprite z:0];
         
         CCSprite *combSprite=[CCSprite spriteWithFile:@"b.png"];
         combSprite.position=ccp(186,475);
-        combSprite.scale = 0.4;
+        if (![FTMUtil sharedInstance].isRetinaDisplay) {
+            combSprite.scale = 0.2;
+        }else{
+            combSprite.scale = 0.4;
+        }
         [self addChild:combSprite z:1];
         
         combSprite=[CCSprite spriteWithFile:@"a.png"];
         combSprite.position=ccp(528,484);
-        combSprite.scale = 0.4;
+        if (![FTMUtil sharedInstance].isRetinaDisplay) {
+            combSprite.scale = 0.2;
+        }else{
+            combSprite.scale = 0.4;
+        }
         [self addChild:combSprite z:1];
         
         combSprite=[CCSprite spriteWithFile:@"c.png"];
         combSprite.position=ccp(480,358);
-        combSprite.scale = 0.4;
+        if (![FTMUtil sharedInstance].isRetinaDisplay) {
+            combSprite.scale = 0.2;
+        }else{
+            combSprite.scale = 0.4;
+        }
         [self addChild:combSprite z:1];
         
         combSprite=[CCSprite spriteWithFile:@"d.png"];
         combSprite.position=ccp(864,518);
-        combSprite.scale = 0.4;
+        if (![FTMUtil sharedInstance].isRetinaDisplay) {
+            combSprite.scale = 0.2;
+        }else{
+            combSprite.scale = 0.4;
+        }
         [self addChild:combSprite z:1];
         
         combSprite=[CCSprite spriteWithFile:@"box.png"];
         combSprite.position=ccp(898,518);
+        if (![FTMUtil sharedInstance].isRetinaDisplay) {
+            combSprite.scale = NON_RETINA_SCALE;
+        }
         [self addChild:combSprite z:1];
         
         combSprite=[CCSprite spriteWithFile:@"c.png"];
         combSprite.position=ccp(884,519);
-        combSprite.scale = 0.4;
+        if (![FTMUtil sharedInstance].isRetinaDisplay) {
+            combSprite.scale = 0.2;
+        }else{
+            combSprite.scale = 0.4;
+        }
         [self addChild:combSprite z:1];
         
         combSprite=[CCSprite spriteWithFile:@"a.png"];
         combSprite.position=ccp(896,519);
-        combSprite.scale = 0.4;
+        if (![FTMUtil sharedInstance].isRetinaDisplay) {
+            combSprite.scale = 0.2;
+        }else{
+            combSprite.scale = 0.4;
+        }
         [self addChild:combSprite z:1];
         
         combSprite=[CCSprite spriteWithFile:@"b.png"];
         combSprite.position=ccp(909,519);
-        combSprite.scale = 0.4;
+        if (![FTMUtil sharedInstance].isRetinaDisplay) {
+            combSprite.scale = 0.2;
+        }else{
+            combSprite.scale = 0.4;
+        }
         [self addChild:combSprite z:1];
         
         CCSprite *sprite=[CCSprite spriteWithFile:@"bridge_ice_box3.png"];
         sprite.position=ccp(503,218);
+        if (![FTMUtil sharedInstance].isRetinaDisplay) {
+            sprite.scale = NON_RETINA_SCALE;
+        }
         [self addChild:sprite z:0];
         
         sprite=[CCSprite spriteWithFile:@"ice_box2__11.png"];
         sprite.position=ccp(503,190);
+        if (![FTMUtil sharedInstance].isRetinaDisplay) {
+            sprite.scale = NON_RETINA_SCALE;
+        }
         sprite.opacity=50;
         [self addChild:sprite z:10];
         
         CCSprite *objectSprite=[CCSprite spriteWithFile:@"bridge_object8.png"];
         objectSprite.position=ccp(910,348);
-        objectSprite.scale=0.9;
+        if (![FTMUtil sharedInstance].isRetinaDisplay) {
+            objectSprite.scale = 0.45;
+        }else{
+            objectSprite.scale=0.9;
+        }
         [self addChild:objectSprite z:0];
         
         objectSprite=[CCSprite spriteWithFile:@"box.png"];
         objectSprite.position=ccp(585,438);
+        if (![FTMUtil sharedInstance].isRetinaDisplay) {
+            objectSprite.scale = NON_RETINA_SCALE;
+        }
         [self addChild:objectSprite z:0];
         
         objectSprite=[CCSprite spriteWithFile:@"bridge_object7.png"];
         objectSprite.position=ccp(565,328);
-        objectSprite.scale=0.6;
+        if (![FTMUtil sharedInstance].isRetinaDisplay) {
+            objectSprite.scale = 0.3;
+        }else{
+            objectSprite.scale = 0.6;
+        }
+
         [self addChild:objectSprite z:0];
         
         objectSprite=[CCSprite spriteWithFile:@"object5.png"];
         objectSprite.position=ccp(40,220);
+        if (![FTMUtil sharedInstance].isRetinaDisplay) {
+            objectSprite.scale = NON_RETINA_SCALE;
+        }
         [self addChild:objectSprite z:0];
         
         objectSprite=[CCSprite spriteWithFile:@"green_box.png"];
         objectSprite.position=ccp(100,330);
-        objectSprite.scale=0.7;
+        if (![FTMUtil sharedInstance].isRetinaDisplay) {
+            objectSprite.scale = 0.35;
+        }else{
+            objectSprite.scale = 0.7;
+        }
         [self addChild:objectSprite z:0];
         
         objectSprite=[CCSprite spriteWithFile:@"fish3.png"];
         objectSprite.position=ccp(120,420);
-        objectSprite.scale=0.7;
+        if (![FTMUtil sharedInstance].isRetinaDisplay) {
+            objectSprite.scale = 0.35;
+        }else{
+            objectSprite.scale = 0.7;
+        }
         [self addChild:objectSprite z:0];
         
         objectSprite=[CCSprite spriteWithFile:@"bridge_object1.png"];
         objectSprite.position=ccp(120,115);
-        objectSprite.scale=0.6;
+        if (![FTMUtil sharedInstance].isRetinaDisplay) {
+            objectSprite.scale = 0.3;
+        }else{
+            objectSprite.scale = 0.6;
+        }
         [self addChild:objectSprite z:0];
         
         objectSprite=[CCSprite spriteWithFile:@"bridge_object4.png"];
         objectSprite.position=ccp(520,115);
-        objectSprite.scale=0.7;
+        if (![FTMUtil sharedInstance].isRetinaDisplay) {
+            objectSprite.scale = 0.35;
+        }else{
+            objectSprite.scale = 0.7;
+        }
         [self addChild:objectSprite z:0];
         
         for(int i=0;i<20;i++){
             heroPimpleSprite[i]=[CCSprite spriteWithFile:@"dotted.png"];
             heroPimpleSprite[i].position=ccp(-100,160);
-            heroPimpleSprite[i].scale=0.3;
+            if (![FTMUtil sharedInstance].isRetinaDisplay) {
+                heroPimpleSprite[i].scale = 0.15;
+            }else{
+                heroPimpleSprite[i].scale = 0.3;
+            }
             [self addChild:heroPimpleSprite[i] z:10];
         }
         
         dotSprite=[CCSprite spriteWithFile:@"dotted.png"];
         dotSprite.position=ccp(875,164);
-        dotSprite.scale=0.3;
+        if (![FTMUtil sharedInstance].isRetinaDisplay) {
+            dotSprite.scale=0.15;
+        }else{
+            dotSprite.scale=0.3;
+        }
+        
         [self addChild:dotSprite z:10 ];
         [self addHudLayerToTheScene];        
         [self starCheeseSpriteInitilized];
+        [self scheduleFridgeMotorFallSound];
         [self scheduleUpdate];
         
         for(int i=0;i<0;i++){

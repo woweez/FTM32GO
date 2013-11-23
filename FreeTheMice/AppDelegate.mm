@@ -28,6 +28,7 @@
     [Utilities createEditableCopyOfDatabaseIfNeeded];
     
 	// Create an CCGLView with a RGB565 color buffer, and a depth buffer of 0-bits
+    
 	CCGLView *glView = [CCGLView viewWithFrame:[window_ bounds]
 								   pixelFormat:kEAGLColorFormatRGB565	//kEAGLColorFormatRGBA8
 								   depthFormat:0	//GL_DEPTH_COMPONENT24_OES
@@ -48,7 +49,6 @@
 	
 	// set FPS at 60
 	[director_ setAnimationInterval:1.0/60];
-	
 	// attach the openglView to the director
 	[director_ setView:glView];
 	
@@ -59,11 +59,19 @@
 	[director_ setProjection:kCCDirectorProjection2D];
 	//	[director setProjection:kCCDirectorProjection3D];
 	// Enables High Res mode (Retina Display) on iPhone 4 and maintains low res on all other devices
+    
     if (isIPad) {
-        
-        [FTMUtil sharedInstance].isRetinaDisplay = YES;
-        if( ! [director_ enableRetinaDisplay:YES]) //bhai
+        if (IS_RETINA_SUPPORT ) {
+            [FTMUtil sharedInstance].isRetinaDisplay = YES;
+            [FTMUtil sharedInstance].isIphone4 = YES;
+            if( ! [director_ enableRetinaDisplay:YES]) //bhai
             CCLOG(@"Retina Display Not supported");
+        }else{
+//            [FTMUtil sharedInstance].isRetinaDisplay = YES;
+//            [FTMUtil sharedInstance].isIphone4 = YES;
+            if(! [director_ enableRetinaDisplay:NO]) //bhai
+                CCLOG(@"Retina Display Not supported");
+        }
     }else{
         if (IS_RETINA_SUPPORT ) {
             [FTMUtil sharedInstance].isRetinaDisplay = YES;
@@ -92,8 +100,8 @@
 	CCFileUtils *sharedFileUtils = [CCFileUtils sharedFileUtils];
 	[sharedFileUtils setEnableFallbackSuffixes:NO];				// Default: NO. No fallback suffixes are going to be used
 	[sharedFileUtils setiPhoneRetinaDisplaySuffix:@"-hd"];		// Default on iPhone RetinaDisplay is "-hd"
-	[sharedFileUtils setiPadSuffix:@"-ipad"];					// Default on iPad is "ipad"
-	[sharedFileUtils setiPadRetinaDisplaySuffix:@"-ipadhd"];	// Default on iPad RetinaDisplay is "-ipadhd"
+	[sharedFileUtils setiPadSuffix:@"-hd"];					// Default on iPad is "ipad"
+	[sharedFileUtils setiPadRetinaDisplaySuffix:@"-hd"];	// Default on iPad RetinaDisplay is "-ipadhd"
 	
 	// Assume that PVR images have premultiplied alpha
     

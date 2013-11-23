@@ -129,7 +129,7 @@ enum {
     }];
     [levelsMenuItem setScale:cScale];
     
-    if([FTMUtil sharedInstance].isRetinaDisplay){
+    if([FTMUtil sharedInstance].isRetinaDisplay && [FTMUtil sharedInstance].isIphone5){
         levelsMenuItem.position = ccp(-4 *scaleFactorX, 11 *scaleFactorY);
     }else{
         levelsMenuItem.position = ccp(-14 *scaleFactorX, 11 *scaleFactorY);
@@ -185,7 +185,7 @@ enum {
         }
     }];
     [nextLevelMenuItem setScale:cScale];
-    if([FTMUtil sharedInstance].isRetinaDisplay){
+    if([FTMUtil sharedInstance].isRetinaDisplay && [FTMUtil sharedInstance].isIphone5){
         nextLevelMenuItem.position = ccp(103 *scaleFactorX, 11 *scaleFactorY);
     }else{
         nextLevelMenuItem.position = ccp(113 *scaleFactorX, 11 *scaleFactorY);

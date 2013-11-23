@@ -590,10 +590,22 @@
     [soundManager ice_cubes_appear];
 }
 
--(void) playIceCubeFallSound{
-    [soundManager ice_cubes_fall];
+-(void) scheduleFridgeMotorFallSound{
+    [self schedule:@selector(playFridgeMotorSound) interval:1];
 }
 
+-(void) scheduleHotPotSmokeSound{
+    [self schedule:@selector(playHotPotSound) interval:2];
+}
+-(void) unScheduleHotPotSmokeSound{
+    [self unschedule:@selector(playHotPotSound)];
+}
+-(void) playFridgeMotorSound{
+    [soundManager fridge_motor_loop];
+}
+-(void) playHotPotSound{
+    [soundManager hot_pot_smoke];
+}
 -(void) mouseTrapped{
     
 }

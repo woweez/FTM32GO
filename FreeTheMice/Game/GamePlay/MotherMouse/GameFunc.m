@@ -251,7 +251,7 @@
     if(level==1)
         platformPosition=ccp(-50,160);
     else if(level==2)
-        platformPosition=ccp(-50,230);
+        platformPosition=ccp(-50,211);//bhai
     else if(level==3)
         platformPosition=ccp(-50,353);
     else if(level==4)

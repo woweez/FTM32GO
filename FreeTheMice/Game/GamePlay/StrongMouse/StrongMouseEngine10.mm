@@ -384,6 +384,7 @@ StrongMouseEngineMenu10 *sLayer10;
         [self addChild:dotSprite z:10];
         [self addHudLayerToTheScene];
         [self starCheeseSpriteInitilized];
+        [self scheduleFridgeMotorFallSound];
         
         [self scheduleUpdate];
     }

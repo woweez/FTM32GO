@@ -126,9 +126,9 @@ NSString *const ToolShedUpdateProductPurchasedNotification = @"ToolShedUpdatePro
     
     CCLabelBMFont *cost = [CCLabelBMFont labelWithString:[NSString stringWithFormat: @"Cost:%d", [self getCostWithItemID:itemId]] fntFile:@"font1.fnt"];
     cost.position= [self getAppropriateCostPosWithItemID:itemId andPoint:buyItemMenu.position];
-    cost.scale = cScale * 0.7;
+    cost.scale = cScale * 0.6;
     if ([FTMUtil sharedInstance].isRetinaDisplay) {
-        cost.scale=cScale * 0.7;
+        cost.scale=cScale * 0.6;
     }
     [cell addChild:cost z:0];
     
@@ -151,8 +151,8 @@ NSString *const ToolShedUpdateProductPurchasedNotification = @"ToolShedUpdatePro
     [cell addChild:name z:99999];
 
     CCLabelBMFont *multiplier = [CCLabelBMFont labelWithString:[NSString stringWithFormat: @"x%d", [self getMultiplierWithItemID:itemId]] fntFile:@"font1.fnt"];
-    multiplier.position= ccp(powrUpSpr.position.x + 34*scaleFactorX, powrUpSpr.position.y - 3.5 *scaleFactorY);
-    multiplier.scale = cScale *0.7;
+    multiplier.position= ccp(powrUpSpr.position.x + 34*scaleFactorX, powrUpSpr.position.y - 4.5 *scaleFactorY);
+    multiplier.scale = cScale *0.6;
     [cell addChild:multiplier z:0];
 
     CCSprite *cheeseSpr = [CCSprite spriteWithFile:@"cheese_bite.png"];
@@ -241,28 +241,28 @@ NSString *const ToolShedUpdateProductPurchasedNotification = @"ToolShedUpdatePro
 -(CGPoint) getAppropriateCostPosWithItemID:(int) itemId andPoint:(CGPoint) point{
     switch(itemId){
         case MAGNIFIER_ITEM_ID:
-            return ccp(point.x -15 *scaleFactorX, point.y - 12 *scaleFactorY);
+            return ccp(point.x -15 *scaleFactorX, point.y - 13 *scaleFactorY);
             break;
         case BOOTS_ITEM_ID:
-            return ccp(point.x -15 *scaleFactorX, point.y - 12 *scaleFactorY);
+            return ccp(point.x -15 *scaleFactorX, point.y - 13 *scaleFactorY);
             break;
         case SPEEDUP_ITEM_ID:
-            return ccp(point.x -15 *scaleFactorX, point.y - 12 *scaleFactorY);
+            return ccp(point.x -15 *scaleFactorX, point.y - 13 *scaleFactorY);
             break;
         case SPECIAL_CHEESE_ITEM_ID:
-            return ccp(point.x -18 *scaleFactorX, point.y - 12 *scaleFactorY);
+            return ccp(point.x -18 *scaleFactorX, point.y - 13 *scaleFactorY);
             break;
         case SLOWDOWN_TIME_ITEM_ID:
-            return ccp(point.x -15 *scaleFactorX, point.y - 12 *scaleFactorY);
+            return ccp(point.x -15 *scaleFactorX, point.y - 13 *scaleFactorY);
             break;
         case MASTER_KEY_ITEM_ID:
-            return ccp(point.x -18 *scaleFactorX, point.y - 12 *scaleFactorY);
+            return ccp(point.x -18 *scaleFactorX, point.y - 13 *scaleFactorY);
             break;
         case BARKING_DOG_ITEM_ID:
-            return ccp(point.x -18 *scaleFactorX, point.y - 12 *scaleFactorY);
+            return ccp(point.x -18 *scaleFactorX, point.y - 13 *scaleFactorY);
             break;
         default:
-            return ccp(point.x -15 *scaleFactorX, point.y - 12 *scaleFactorY);
+            return ccp(point.x -15 *scaleFactorX, point.y - 13 *scaleFactorY);
             break;
     }
     

@@ -97,7 +97,7 @@ GameEngine07Menu *layer07;
         
         heroRunSprite = [CCSprite spriteWithSpriteFrameName:@"mother_run01.png"];
         heroRunSprite.position = ccp(200, 200);
-        heroRunSprite.scale=0.8;
+        heroRunSprite.scale = MAMA_SCALE;
         [spriteSheet addChild:heroRunSprite];
         
         NSMutableArray *animFrames = [NSMutableArray array];
@@ -190,104 +190,179 @@ GameEngine07Menu *layer07;
             cheeseSprite[i]=[CCSprite spriteWithFile:@"Cheese.png"];
             cheeseSprite[i].position=[gameFunc getCheesePosition:1 gameLevel:motherLevel iValue:i];
             [self addChild:cheeseSprite[i] z:9];
+            if (![FTMUtil sharedInstance].isRetinaDisplay) {
+                cheeseSprite[i].scale = NON_RETINA_SCALE;
+                cheeseSprite2[i].scale = NON_RETINA_SCALE;
+                
+            }
         }
         
-        switchAtlas = [[CCLabelAtlas labelWithString:@"0" charMapFile:@"switch.png" itemWidth:40 itemHeight:103 startCharMap:'0'] retain];
+        int switchWidth = [FTMUtil sharedInstance].isRetinaDisplay ? 40: 80;
+        int switchHeight = [FTMUtil sharedInstance].isRetinaDisplay ? 103: 206;
+        switchAtlas = [[CCLabelAtlas labelWithString:@"0" charMapFile:@"switch.png" itemWidth:switchWidth itemHeight:switchHeight startCharMap:'0'] retain];
         switchAtlas.position=ccp(307,475);
-        switchAtlas.scale=0.7;
+        if (![FTMUtil sharedInstance].isRetinaDisplay) {
+            switchAtlas.scale = 0.35;
+        }else{
+            switchAtlas.scale=0.7;
+        }
         [self addChild:switchAtlas z:9];
         
-        switchAtlas2 = [[CCLabelAtlas labelWithString:@"0" charMapFile:@"switch.png" itemWidth:40 itemHeight:103 startCharMap:'0'] retain];
+        switchAtlas2 = [[CCLabelAtlas labelWithString:@"0" charMapFile:@"switch.png" itemWidth:switchWidth itemHeight:switchHeight startCharMap:'0'] retain];
         switchAtlas2.position=ccp(242,260);
-        switchAtlas2.scale=0.7;
+        if (![FTMUtil sharedInstance].isRetinaDisplay) {
+            switchAtlas2.scale = 0.35;
+        }else{
+            switchAtlas2.scale=0.7;
+        }
         switchAtlas2.opacity=150;
         [self addChild:switchAtlas2 z:9];
         
         CCSprite *woodSprite=[CCSprite spriteWithFile:@"wood.png"];
         woodSprite.position=ccp(322,300);
-        woodSprite.scaleX=0.79;
-        woodSprite.scaleY=0.69;
+        if (![FTMUtil sharedInstance].isRetinaDisplay) {
+            woodSprite.scaleX = 0.395;
+            woodSprite.scaleY = 0.345;
+        }else{
+            woodSprite.scaleX = 0.79;
+            woodSprite.scaleY = 0.69;
+        }
+        
         woodSprite.flipX=1;
         [self addChild:woodSprite z:10];
         
         woodSprite=[CCSprite spriteWithFile:@"wood.png"];
         woodSprite.position=ccp(322,390);
-        woodSprite.scaleX=0.79;
-        woodSprite.scaleY=0.69;
+        if (![FTMUtil sharedInstance].isRetinaDisplay) {
+            woodSprite.scaleX = 0.395;
+            woodSprite.scaleY = 0.345;
+        }else{
+            woodSprite.scaleX = 0.79;
+            woodSprite.scaleY = 0.69;
+        }
         [self addChild:woodSprite z:10];
         
         woodSprite=[CCSprite spriteWithFile:@"apple_wood.png"];
         woodSprite.position=ccp(322,300);
-        woodSprite.scaleX=0.79;
-        woodSprite.scaleY=0.69;
+        if (![FTMUtil sharedInstance].isRetinaDisplay) {
+            woodSprite.scaleX = 0.395;
+            woodSprite.scaleY = 0.345;
+        }else{
+            woodSprite.scaleX = 0.79;
+            woodSprite.scaleY = 0.69;
+        }
         woodSprite.flipX=1;
         [self addChild:woodSprite z:0];
         
         woodSprite=[CCSprite spriteWithFile:@"apple_wood.png"];
         woodSprite.position=ccp(322,390);
-        woodSprite.scaleX=0.79;
-        woodSprite.scaleY=0.69;
+        if (![FTMUtil sharedInstance].isRetinaDisplay) {
+            woodSprite.scaleX = 0.395;
+            woodSprite.scaleY = 0.345;
+        }else{
+            woodSprite.scaleX = 0.79;
+            woodSprite.scaleY = 0.69;
+        }
         [self addChild:woodSprite z:0];
         
         clockBackgroundSprite=[CCSprite spriteWithFile:@"clock_background.png"];
         clockBackgroundSprite.position=ccp(-100,258);
-        clockBackgroundSprite.scale=0.5;
+        if (![FTMUtil sharedInstance].isRetinaDisplay) {
+            clockBackgroundSprite.scale = 0.25;
+        }else{
+            clockBackgroundSprite.scaleX = 0.5;
+        }
         [layer07 addChild:clockBackgroundSprite z:0];
         
         clockArrowSprite=[CCSprite spriteWithFile:@"clock_arrow.png"];
         clockArrowSprite.position=ccp(-100,258);
-        clockArrowSprite.scale=0.5;
+        if (![FTMUtil sharedInstance].isRetinaDisplay) {
+            clockArrowSprite.scale = 0.25;
+        }else{
+            clockArrowSprite.scaleX = 0.5;
+        }
         clockArrowSprite.anchorPoint=ccp(0.2f, 0.2f);
         clockArrowSprite.rotation=-40;
         [layer07 addChild:clockArrowSprite z:0];
         
         CCSprite *slapSprite=[CCSprite spriteWithFile:@"slap.png"];
         slapSprite.position=ccp(150,188);
-        slapSprite.scale=0.6;
+        if (![FTMUtil sharedInstance].isRetinaDisplay) {
+            slapSprite.scale = 0.3;
+        }else{
+            slapSprite.scaleX = 0.6;
+        }
         [self addChild:slapSprite z:2];
         
         slapSprite=[CCSprite spriteWithFile:@"slap.png"];
         slapSprite.position=ccp(450,188);
-        slapSprite.scale=0.6;
+        if (![FTMUtil sharedInstance].isRetinaDisplay) {
+            slapSprite.scale = 0.3;
+        }else{
+            slapSprite.scaleX = 0.6;
+        }
         [self addChild:slapSprite z:1];
         
         slapSprite=[CCSprite spriteWithFile:@"slap.png"];
         slapSprite.position=ccp(750,188);
-        slapSprite.scale=0.6;
+        if (![FTMUtil sharedInstance].isRetinaDisplay) {
+            slapSprite.scale = 0.3;
+        }else{
+            slapSprite.scaleX = 0.6;
+        }
         [self addChild:slapSprite z:1];
         
         slapSprite=[CCSprite spriteWithFile:@"slap.png"];
         slapSprite.position=ccp(1050,188);
-        slapSprite.scale=0.6;
+        if (![FTMUtil sharedInstance].isRetinaDisplay) {
+            slapSprite.scale = 0.3;
+        }else{
+            slapSprite.scaleX = 0.6;
+        }
         [self addChild:slapSprite z:1];
         
         CCSprite *objectSprite=[CCSprite spriteWithFile:@"pulb.png"];
         objectSprite.position=ccp(646,635);
+        if (![FTMUtil sharedInstance].isRetinaDisplay) {
+            objectSprite.scale = NON_RETINA_SCALE;
+        }
         [self addChild:objectSprite z:0];
         
         CCSprite *pSprite=[CCSprite spriteWithFile:@"move_platform3.png"];
         pSprite.position=ccp(936,433);
+        if (![FTMUtil sharedInstance].isRetinaDisplay) {
+            pSprite.scale = NON_RETINA_SCALE;
+        }
         [self addChild:pSprite z:9];
         
         for(int i=0;i<15;i++){
             hotSprite[i]=[CCSprite spriteWithFile:@"smoke.png"];
             hotSprite[i].position=ccp(-275,415);
+            if (![FTMUtil sharedInstance].isRetinaDisplay) {
+                hotSprite[i].scale = NON_RETINA_SCALE;
+            }
             [self addChild:hotSprite[i] z:9];
         }
         
         teaPotSprite=[CCSprite spriteWithFile:@"tea_pot.png"];
         teaPotSprite.position=ccp(794,286);
+        if (![FTMUtil sharedInstance].isRetinaDisplay) {
+            teaPotSprite.scale = NON_RETINA_SCALE;
+        }
         [self addChild:teaPotSprite z:9];
         
         
         tileMove=[CCSprite spriteWithFile:@"move_platform3.png"];
         tileMove.position=ccp(-350,479);
+        if (![FTMUtil sharedInstance].isRetinaDisplay) {
+            tileMove.scale = NON_RETINA_SCALE;
+        }
         [self addChild:tileMove z:9];
         
         domeSprite=[CCSprite spriteWithSpriteFrameName:@"dome_0.png"];
         domeSprite.position=ccp(-348,479);
         if (![FTMUtil sharedInstance].isRetinaDisplay) {
-            domeSprite.scale =0.5;
+            domeSprite.scale = 0.5;
         }
         
         [self addChild:domeSprite z:9];
@@ -314,17 +389,28 @@ GameEngine07Menu *layer07;
         for(int i=0;i<20;i++){
             heroPimpleSprite[i]=[CCSprite spriteWithFile:@"dotted.png"];
             heroPimpleSprite[i].position=ccp(-100,160);
-            heroPimpleSprite[i].scale=0.3;
+            if (![FTMUtil sharedInstance].isRetinaDisplay) {
+                heroPimpleSprite[i].scale = 0.15;
+            }else{
+                heroPimpleSprite[i].scale=0.3;
+            }
             [self addChild:heroPimpleSprite[i] z:10];
         }
         
         CCSprite *holeSprite=[CCSprite spriteWithFile:@"hole.png"];
         holeSprite.position=ccp(960,475);
+        if (![FTMUtil sharedInstance].isRetinaDisplay) {
+            holeSprite.scale = NON_RETINA_SCALE;
+        }
         [self addChild:holeSprite z:0];
         
         dotSprite=[CCSprite spriteWithFile:@"dotted.png"];
         dotSprite.position=ccp(745,348);
-        dotSprite.scale=0.3;
+        if (![FTMUtil sharedInstance].isRetinaDisplay) {
+            dotSprite.scale = 0.15;
+        }else{
+            dotSprite.scale = 0.3;
+        }
         [self addChild:dotSprite z:10];
         [self addHudLayerToTheScene];
         [self starCheeseSpriteInitilized];
@@ -531,7 +617,11 @@ GameEngine07Menu *layer07;
     if(motherLevel == 7){
         sx=795;
         sy=280;
-        hotScale=1.0;
+        if (![FTMUtil sharedInstance].isRetinaDisplay) {
+            hotScale = 0.5;
+        }else{
+            hotScale=1.0;
+        }
         divideLength=1.0;
     }
     for(int i=0;i<15;i++){

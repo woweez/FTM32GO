@@ -28,6 +28,7 @@
 #define SCREEN [[CCDirector sharedDirector] winSize]
 #define CURTIME CACurrentMediaTime()
 
+#define NON_RETINA_SCALE (!IS_RETINA_SUPPORT ? 0.5 : 1)
 //convenience functions
 #define random_range(low,high) (arc4random()%(high-low+1))+low
 #define frandom (float)arc4random()/UINT64_C(0x100000000)

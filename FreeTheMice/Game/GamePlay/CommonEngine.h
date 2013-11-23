@@ -76,7 +76,9 @@
 -(void) showLevelFailedUI : (int) tag;
 -(void) mouseTrapped;
 -(void) playIceCubeApprearSound;
--(void) playIceCubeFallSound;
+-(void) scheduleFridgeMotorFallSound;
+-(void) scheduleHotPotSmokeSound;
+-(void) unScheduleHotPotSmokeSound;
 -(void) mamaAnimationWithType:(int)fValue animationType:(NSString *)type;
 -(void) girlAnimationWithType:(int)fValue animationType:(NSString *)type;
 //-(void)playMamaKniveHitAnimation;

@@ -99,7 +99,7 @@ GameEngine13Menu *layer13;
         
         heroRunSprite = [CCSprite spriteWithSpriteFrameName:@"mother_run01.png"];
         heroRunSprite.position = ccp(200, 200);
-        heroRunSprite.scale=0.8;
+        heroRunSprite.scale = MAMA_SCALE;
         [spriteSheet addChild:heroRunSprite];
         
         NSMutableArray *animFrames = [NSMutableArray array];
@@ -121,12 +121,16 @@ GameEngine13Menu *layer13;
         
         wavesSprite = [CCSprite spriteWithSpriteFrameName:@"moving_electricity_0.png"];
         wavesSprite.position = ccp(570, 630);
-//        wavesSprite.scale=0.4;
+        if (![FTMUtil sharedInstance].isRetinaDisplay) {
+            wavesSprite.scale = NON_RETINA_SCALE;
+        }
         [self addChild:wavesSprite];
         
         wavesSprite2 = [CCSprite spriteWithSpriteFrameName:@"moving_electricity_0.png"];
         wavesSprite2.position = ccp(430, 630);
-//        wavesSprite2.scale=0.4;
+        if (![FTMUtil sharedInstance].isRetinaDisplay) {
+            wavesSprite2.scale = NON_RETINA_SCALE;
+        }
         wavesSprite2.flipX=1;
         [self addChild:wavesSprite2];
         
@@ -224,6 +228,9 @@ GameEngine13Menu *layer13;
         
         movePlatformSprite=[CCSprite spriteWithFile:@"move_platform2.png"];
         movePlatformSprite.position=ccp(-220,512);
+        if (![FTMUtil sharedInstance].isRetinaDisplay) {
+            movePlatformSprite.scale = NON_RETINA_SCALE;
+        }
         [self addChild:movePlatformSprite z:9];
         
         for(int i=0;i<cheeseCount;i++){
@@ -235,15 +242,27 @@ GameEngine13Menu *layer13;
             cheeseSprite[i]=[CCSprite spriteWithFile:@"Cheese.png"];
             cheeseSprite[i].position=[gameFunc getCheesePosition:1 gameLevel:motherLevel iValue:i];
             [self addChild:cheeseSprite[i] z:9];
+            if (![FTMUtil sharedInstance].isRetinaDisplay) {
+                cheeseSprite[i].scale = NON_RETINA_SCALE;
+                cheeseSprite2[i].scale = NON_RETINA_SCALE;
+            }
         }
         
-        switchAtlas = [[CCLabelAtlas labelWithString:@"0" charMapFile:@"switch.png" itemWidth:40 itemHeight:103 startCharMap:'0'] retain];
+        int switchWidth = [FTMUtil sharedInstance].isRetinaDisplay ? 40: 80;
+        int switchHeight = [FTMUtil sharedInstance].isRetinaDisplay ? 103: 206;
+        switchAtlas = [[CCLabelAtlas labelWithString:@"0" charMapFile:@"switch.png" itemWidth:switchWidth itemHeight:switchHeight startCharMap:'0'] retain];
         switchAtlas.position=ccp(400,245);
-        switchAtlas.scale=0.7;
+        if (![FTMUtil sharedInstance].isRetinaDisplay) {
+            switchAtlas.scale = 0.35;
+        }else{
+            switchAtlas.scale = 0.7;
+        }
         [self addChild:switchAtlas z:9];
         
         
-        iceBlastAtlas = [[CCLabelAtlas labelWithString:@"0" charMapFile:@"ice_blast.png" itemWidth:100 itemHeight:50 startCharMap:'0'] retain];
+        int iceBlastWidth = [FTMUtil sharedInstance].isRetinaDisplay ? 100: 200;
+        int iceBlastHeight = [FTMUtil sharedInstance].isRetinaDisplay ? 50: 100;
+        iceBlastAtlas = [[CCLabelAtlas labelWithString:@"0" charMapFile:@"ice_blast.png" itemWidth:iceBlastWidth itemHeight:iceBlastHeight startCharMap:'0'] retain];
         iceBlastAtlas.position=ccp(-270,200);
         [self addChild:iceBlastAtlas z:9];
         
