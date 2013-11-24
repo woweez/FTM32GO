@@ -52,6 +52,7 @@
 #import "GirlMouseEngine12.h"
 #import "GirlMouseEngine13.h"
 #import "GirlMouseEngine14.h"
+#import "BossCatLevel15.h"
 #import "FTMUtil.h"
 #import "FTMConstants.h"
 
@@ -152,20 +153,22 @@
     CCCallFunc *callback = [CCCallFunc actionWithTarget:self selector:@selector(callbackForMoving)];
     CCSequence *seq = [CCSequence actions:moveTo,callback, nil];
     CCAnimation *animation = [CCAnimation animationWithSpriteFrames:animFrames delay:0.06f];
-    [heroRunSprite runAction:[CCRepeatForever actionWithAction: [CCAnimate actionWithAnimation:animation]]];
-    [heroRunSprite runAction:seq];
+//    [heroRunSprite runAction:[CCRepeatForever actionWithAction: [CCAnimate actionWithAnimation:animation]]];
+//    [heroRunSprite runAction:seq];
+    [self schedule:@selector(callbackForMoving)];
     
 }
 -(void) callbackForMoving{
     
     if(self.tag==1){
+        [[CCDirector sharedDirector] replaceScene:[BossCatLevel15 scene]];
+        return;
         if(currentMouse==1)
             [[CCDirector sharedDirector] replaceScene:[GameEngine01 scene]];
         else if(currentMouse ==2)
             [[CCDirector sharedDirector] replaceScene:[StrongMouseEngine01 scene]];
         else if(currentMouse==3)
             [[CCDirector sharedDirector] replaceScene:[GirlMouseEngine01 scene]];
-        
         
     }else if(self.tag==2){
         if(currentMouse==1)

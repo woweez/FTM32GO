@@ -451,6 +451,15 @@
 		46B878FC18127578000583A3 /* vent_mist.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 46B878D518127578000583A3 /* vent_mist.mp3 */; };
 		46B878FD18127578000583A3 /* water_falling_from_vase.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 46B878D618127578000583A3 /* water_falling_from_vase.mp3 */; };
 		46B878FE18127578000583A3 /* water_sink_splash.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 46B878D718127578000583A3 /* water_sink_splash.mp3 */; };
+		46BDF2F61841CDD50027DE5A /* BossCatLevel15.mm in Sources */ = {isa = PBXBuildFile; fileRef = 46BDF2F51841CDD50027DE5A /* BossCatLevel15.mm */; };
+		46BDF30018422B510027DE5A /* bossCatIdle.plist in Resources */ = {isa = PBXBuildFile; fileRef = 46BDF2F818422B510027DE5A /* bossCatIdle.plist */; };
+		46BDF30118422B510027DE5A /* bossCatIdle.png in Resources */ = {isa = PBXBuildFile; fileRef = 46BDF2F918422B510027DE5A /* bossCatIdle.png */; };
+		46BDF30218422B510027DE5A /* bossCatJump.plist in Resources */ = {isa = PBXBuildFile; fileRef = 46BDF2FA18422B510027DE5A /* bossCatJump.plist */; };
+		46BDF30318422B510027DE5A /* bossCatJump.png in Resources */ = {isa = PBXBuildFile; fileRef = 46BDF2FB18422B510027DE5A /* bossCatJump.png */; };
+		46BDF30418422B510027DE5A /* bossCatRun.plist in Resources */ = {isa = PBXBuildFile; fileRef = 46BDF2FC18422B510027DE5A /* bossCatRun.plist */; };
+		46BDF30518422B510027DE5A /* bossCatRun.png in Resources */ = {isa = PBXBuildFile; fileRef = 46BDF2FD18422B510027DE5A /* bossCatRun.png */; };
+		46BDF30618422B510027DE5A /* bossCatWalk.plist in Resources */ = {isa = PBXBuildFile; fileRef = 46BDF2FE18422B510027DE5A /* bossCatWalk.plist */; };
+		46BDF30718422B510027DE5A /* bossCatWalk.png in Resources */ = {isa = PBXBuildFile; fileRef = 46BDF2FF18422B510027DE5A /* bossCatWalk.png */; };
 		46C70B7517F03457002E0DAC /* mama_flame_animation.plist in Resources */ = {isa = PBXBuildFile; fileRef = 46C70B6D17F03457002E0DAC /* mama_flame_animation.plist */; };
 		46C70B7617F03457002E0DAC /* mama_flame_animation.png in Resources */ = {isa = PBXBuildFile; fileRef = 46C70B6E17F03457002E0DAC /* mama_flame_animation.png */; };
 		46C70B7717F03457002E0DAC /* mama_knives_animation.plist in Resources */ = {isa = PBXBuildFile; fileRef = 46C70B6F17F03457002E0DAC /* mama_knives_animation.plist */; };
@@ -1314,6 +1323,16 @@
 		46B878D518127578000583A3 /* vent_mist.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = vent_mist.mp3; sourceTree = "<group>"; };
 		46B878D618127578000583A3 /* water_falling_from_vase.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = water_falling_from_vase.mp3; sourceTree = "<group>"; };
 		46B878D718127578000583A3 /* water_sink_splash.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = water_sink_splash.mp3; sourceTree = "<group>"; };
+		46BDF2F41841CDD50027DE5A /* BossCatLevel15.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BossCatLevel15.h; sourceTree = "<group>"; };
+		46BDF2F51841CDD50027DE5A /* BossCatLevel15.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BossCatLevel15.mm; sourceTree = "<group>"; };
+		46BDF2F818422B510027DE5A /* bossCatIdle.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = bossCatIdle.plist; sourceTree = "<group>"; };
+		46BDF2F918422B510027DE5A /* bossCatIdle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bossCatIdle.png; sourceTree = "<group>"; };
+		46BDF2FA18422B510027DE5A /* bossCatJump.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = bossCatJump.plist; sourceTree = "<group>"; };
+		46BDF2FB18422B510027DE5A /* bossCatJump.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bossCatJump.png; sourceTree = "<group>"; };
+		46BDF2FC18422B510027DE5A /* bossCatRun.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = bossCatRun.plist; sourceTree = "<group>"; };
+		46BDF2FD18422B510027DE5A /* bossCatRun.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bossCatRun.png; sourceTree = "<group>"; };
+		46BDF2FE18422B510027DE5A /* bossCatWalk.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = bossCatWalk.plist; sourceTree = "<group>"; };
+		46BDF2FF18422B510027DE5A /* bossCatWalk.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bossCatWalk.png; sourceTree = "<group>"; };
 		46C064C2180AB7F000C5CA9A /* strong0_boots.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = strong0_boots.plist; sourceTree = "<group>"; };
 		46C064C3180AB7F000C5CA9A /* strong0_boots.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = strong0_boots.png; sourceTree = "<group>"; };
 		46C70B6D17F03457002E0DAC /* mama_flame_animation.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = mama_flame_animation.plist; sourceTree = "<group>"; };
@@ -2496,6 +2515,30 @@
 			path = SFX;
 			sourceTree = "<group>";
 		};
+		46BDF2F31841CD9F0027DE5A /* BossCatLevel */ = {
+			isa = PBXGroup;
+			children = (
+				46BDF2F41841CDD50027DE5A /* BossCatLevel15.h */,
+				46BDF2F51841CDD50027DE5A /* BossCatLevel15.mm */,
+			);
+			name = BossCatLevel;
+			sourceTree = "<group>";
+		};
+		46BDF2F718422B510027DE5A /* bossCatAnim */ = {
+			isa = PBXGroup;
+			children = (
+				46BDF2F818422B510027DE5A /* bossCatIdle.plist */,
+				46BDF2F918422B510027DE5A /* bossCatIdle.png */,
+				46BDF2FA18422B510027DE5A /* bossCatJump.plist */,
+				46BDF2FB18422B510027DE5A /* bossCatJump.png */,
+				46BDF2FC18422B510027DE5A /* bossCatRun.plist */,
+				46BDF2FD18422B510027DE5A /* bossCatRun.png */,
+				46BDF2FE18422B510027DE5A /* bossCatWalk.plist */,
+				46BDF2FF18422B510027DE5A /* bossCatWalk.png */,
+			);
+			path = bossCatAnim;
+			sourceTree = "<group>";
+		};
 		46C70B5317F0342D002E0DAC /* inGameUI */ = {
 			isa = PBXGroup;
 			children = (
@@ -2832,6 +2875,7 @@
 		7F81EC1416BFB0590063E41E /* GamePlay */ = {
 			isa = PBXGroup;
 			children = (
+				46BDF2F31841CD9F0027DE5A /* BossCatLevel */,
 				FAFAFD31180B457F008C7BDC /* CatUi */,
 				46C70B8117F075E4002E0DAC /* CommonEngine.mm */,
 				46C70B8217F075E4002E0DAC /* CommonEngine.h */,
@@ -2900,6 +2944,7 @@
 		7FB38ECB16B6ACDD00099B61 /* Game */ = {
 			isa = PBXGroup;
 			children = (
+				46BDF2F718422B510027DE5A /* bossCatAnim */,
 				4600FF581806A5810010683E /* ingame_animations */,
 				4685B88517F8545E00660516 /* ToolbagShed */,
 				46C70B5317F0342D002E0DAC /* inGameUI */,
@@ -4286,6 +4331,14 @@
 				469E2023181E8C3E003E0503 /* 144x144.png in Resources */,
 				469E2025181E8C51003E0503 /* Icon_57x57.png in Resources */,
 				469E2027181E8C77003E0503 /* Icon_114x114.png in Resources */,
+				46BDF30018422B510027DE5A /* bossCatIdle.plist in Resources */,
+				46BDF30118422B510027DE5A /* bossCatIdle.png in Resources */,
+				46BDF30218422B510027DE5A /* bossCatJump.plist in Resources */,
+				46BDF30318422B510027DE5A /* bossCatJump.png in Resources */,
+				46BDF30418422B510027DE5A /* bossCatRun.plist in Resources */,
+				46BDF30518422B510027DE5A /* bossCatRun.png in Resources */,
+				46BDF30618422B510027DE5A /* bossCatWalk.plist in Resources */,
+				46BDF30718422B510027DE5A /* bossCatWalk.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4536,6 +4589,7 @@
 				FAFAFD6C1811C119008C7BDC /* GirlLevel13Cat.m in Sources */,
 				46141E19181BAF0600D3D793 /* LevelFailedScreen.mm in Sources */,
 				46F0C0181840A72A0034E1F7 /* LoadingLayer.mm in Sources */,
+				46BDF2F61841CDD50027DE5A /* BossCatLevel15.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4604,13 +4658,13 @@
 				GCC_PREFIX_HEADER = FreeTheMice/Prefix.pch;
 				HEADER_SEARCH_PATHS = "\"FreeTheMice/libs/kazmath/include\"";
 				INFOPLIST_FILE = FreeTheMice/Resources/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
 				OTHER_LDFLAGS = (
 					"-lz",
 					"-ObjC",
 				);
 				PRODUCT_NAME = FreeTheMice;
-				TARGETED_DEVICE_FAMILY = 1;
+				TARGETED_DEVICE_FAMILY = "1,2";
 				USER_HEADER_SEARCH_PATHS = "\"FreeTheMice/libs\"";
 				WRAPPER_EXTENSION = app;
 			};
@@ -4627,13 +4681,13 @@
 				GCC_PREFIX_HEADER = FreeTheMice/Prefix.pch;
 				HEADER_SEARCH_PATHS = "\"FreeTheMice/libs/kazmath/include\"";
 				INFOPLIST_FILE = FreeTheMice/Resources/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
 				OTHER_LDFLAGS = (
 					"-lz",
 					"-ObjC",
 				);
 				PRODUCT_NAME = FreeTheMice;
-				TARGETED_DEVICE_FAMILY = 1;
+				TARGETED_DEVICE_FAMILY = "1,2";
 				USER_HEADER_SEARCH_PATHS = "\"FreeTheMice/libs\"";
 				VALIDATE_PRODUCT = YES;
 				WRAPPER_EXTENSION = app;
@@ -4676,14 +4730,14 @@
 				GCC_PREFIX_HEADER = FreeTheMice/Prefix.pch;
 				HEADER_SEARCH_PATHS = "\"FreeTheMice/libs/kazmath/include\"";
 				INFOPLIST_FILE = FreeTheMice/Resources/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
 				OTHER_LDFLAGS = (
 					"-lz",
 					"-ObjC",
 				);
 				PRODUCT_NAME = FreeTheMice;
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
-				TARGETED_DEVICE_FAMILY = 1;
+				TARGETED_DEVICE_FAMILY = "1,2";
 				USER_HEADER_SEARCH_PATHS = "\"FreeTheMice/libs\"";
 				VALIDATE_PRODUCT = YES;
 				WRAPPER_EXTENSION = app;
