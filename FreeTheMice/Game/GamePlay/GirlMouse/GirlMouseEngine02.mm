@@ -100,7 +100,7 @@ GirlMouseEngineMenu02 *gLayer02;
         
         heroRunSprite = [CCSprite spriteWithSpriteFrameName:@"girl_run1.png"];
         heroRunSprite.position = ccp(200, 200);
-        heroRunSprite.scale=0.65;
+        heroRunSprite.scale = 0.65;
         [spriteSheet addChild:heroRunSprite];
         
         NSMutableArray *animFrames = [NSMutableArray array];

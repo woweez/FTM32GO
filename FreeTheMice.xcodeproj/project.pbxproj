@@ -4664,7 +4664,7 @@
 					"-ObjC",
 				);
 				PRODUCT_NAME = FreeTheMice;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 				USER_HEADER_SEARCH_PATHS = "\"FreeTheMice/libs\"";
 				WRAPPER_EXTENSION = app;
 			};
@@ -4687,7 +4687,7 @@
 					"-ObjC",
 				);
 				PRODUCT_NAME = FreeTheMice;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 				USER_HEADER_SEARCH_PATHS = "\"FreeTheMice/libs\"";
 				VALIDATE_PRODUCT = YES;
 				WRAPPER_EXTENSION = app;
@@ -4737,7 +4737,7 @@
 				);
 				PRODUCT_NAME = FreeTheMice;
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 				USER_HEADER_SEARCH_PATHS = "\"FreeTheMice/libs\"";
 				VALIDATE_PRODUCT = YES;
 				WRAPPER_EXTENSION = app;

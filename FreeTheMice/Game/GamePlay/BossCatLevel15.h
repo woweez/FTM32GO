@@ -12,6 +12,7 @@
 
 @interface BossCatLevel15 : CommonEngine{
 
+    CGSize winSize;
 CCTMXTiledMap *_tileMap;
 CCTMXLayer *_background;
     int motherLevel;

@@ -158,6 +158,7 @@
     [self schedule:@selector(callbackForMoving)];
     
 }
+
 -(void) callbackForMoving{
     
     if(self.tag==1){
