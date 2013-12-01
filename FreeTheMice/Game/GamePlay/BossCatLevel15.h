@@ -13,14 +13,16 @@
 @interface BossCatLevel15 : CommonEngine{
 
     CGSize winSize;
-CCTMXTiledMap *_tileMap;
-CCTMXLayer *_background;
+    CCTMXTiledMap *_tileMap;
+    CCTMXLayer *_background;
     int motherLevel;
+    int heroForwardX;
     
 
 }
 
 @property (nonatomic, retain) CCTMXTiledMap *tileMap;
 @property (nonatomic, retain) CCTMXLayer *background;
-+(CCScene *) scene;
+
+-(void) moveTheBackground;
 @end

@@ -359,6 +359,9 @@
 		46924649171044ED006C7B22 /* StrongMouseEngine09.mm in Sources */ = {isa = PBXBuildFile; fileRef = 46924647171044EB006C7B22 /* StrongMouseEngine09.mm */; };
 		4693D707173F6E8100247415 /* GirlMouseEngine12.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4693D705173F6E8100247415 /* GirlMouseEngine12.mm */; };
 		4694CB3118192C5300161802 /* drawer7.png in Resources */ = {isa = PBXBuildFile; fileRef = 4694CB3018192C5300161802 /* drawer7.png */; };
+		4695A8DF1845DD12009A8EF2 /* BossCatLevel15A.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4695A8DE1845DD12009A8EF2 /* BossCatLevel15A.mm */; };
+		4695A8E21845DD30009A8EF2 /* BossCatLevel15B.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4695A8E11845DD30009A8EF2 /* BossCatLevel15B.mm */; };
+		4695A8E51845DD77009A8EF2 /* BossCatLevel15C.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4695A8E41845DD77009A8EF2 /* BossCatLevel15C.mm */; };
 		469929CD17ED8EA000C5A62A /* LevelCompleteScreen.mm in Sources */ = {isa = PBXBuildFile; fileRef = 469929CB17ED8EA000C5A62A /* LevelCompleteScreen.mm */; };
 		469929D317ED8F7700C5A62A /* level_complete_bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 469929CF17ED8F7700C5A62A /* level_complete_bg.png */; };
 		469929D417ED8F7700C5A62A /* level_complete_star.png in Resources */ = {isa = PBXBuildFile; fileRef = 469929D017ED8F7700C5A62A /* level_complete_star.png */; };
@@ -1226,6 +1229,12 @@
 		4693D705173F6E8100247415 /* GirlMouseEngine12.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = GirlMouseEngine12.mm; sourceTree = "<group>"; };
 		4693D706173F6E8100247415 /* GirlMouseEngine12.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GirlMouseEngine12.h; sourceTree = "<group>"; };
 		4694CB3018192C5300161802 /* drawer7.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = drawer7.png; sourceTree = "<group>"; };
+		4695A8DD1845DD12009A8EF2 /* BossCatLevel15A.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BossCatLevel15A.h; sourceTree = "<group>"; };
+		4695A8DE1845DD12009A8EF2 /* BossCatLevel15A.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BossCatLevel15A.mm; sourceTree = "<group>"; };
+		4695A8E01845DD30009A8EF2 /* BossCatLevel15B.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BossCatLevel15B.h; sourceTree = "<group>"; };
+		4695A8E11845DD30009A8EF2 /* BossCatLevel15B.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BossCatLevel15B.mm; sourceTree = "<group>"; };
+		4695A8E31845DD77009A8EF2 /* BossCatLevel15C.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BossCatLevel15C.h; sourceTree = "<group>"; };
+		4695A8E41845DD77009A8EF2 /* BossCatLevel15C.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BossCatLevel15C.mm; sourceTree = "<group>"; };
 		469929CB17ED8EA000C5A62A /* LevelCompleteScreen.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LevelCompleteScreen.mm; sourceTree = "<group>"; };
 		469929CC17ED8EA000C5A62A /* LevelCompleteScreen.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LevelCompleteScreen.h; sourceTree = "<group>"; };
 		469929CF17ED8F7700C5A62A /* level_complete_bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = level_complete_bg.png; sourceTree = "<group>"; };
@@ -2520,6 +2529,12 @@
 			children = (
 				46BDF2F41841CDD50027DE5A /* BossCatLevel15.h */,
 				46BDF2F51841CDD50027DE5A /* BossCatLevel15.mm */,
+				4695A8DD1845DD12009A8EF2 /* BossCatLevel15A.h */,
+				4695A8DE1845DD12009A8EF2 /* BossCatLevel15A.mm */,
+				4695A8E01845DD30009A8EF2 /* BossCatLevel15B.h */,
+				4695A8E11845DD30009A8EF2 /* BossCatLevel15B.mm */,
+				4695A8E31845DD77009A8EF2 /* BossCatLevel15C.h */,
+				4695A8E41845DD77009A8EF2 /* BossCatLevel15C.mm */,
 			);
 			name = BossCatLevel;
 			sourceTree = "<group>";
@@ -4590,6 +4605,9 @@
 				46141E19181BAF0600D3D793 /* LevelFailedScreen.mm in Sources */,
 				46F0C0181840A72A0034E1F7 /* LoadingLayer.mm in Sources */,
 				46BDF2F61841CDD50027DE5A /* BossCatLevel15.mm in Sources */,
+				4695A8DF1845DD12009A8EF2 /* BossCatLevel15A.mm in Sources */,
+				4695A8E21845DD30009A8EF2 /* BossCatLevel15B.mm in Sources */,
+				4695A8E51845DD77009A8EF2 /* BossCatLevel15C.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

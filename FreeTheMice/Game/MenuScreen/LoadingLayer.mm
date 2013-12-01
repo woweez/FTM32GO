@@ -52,7 +52,7 @@
 #import "GirlMouseEngine12.h"
 #import "GirlMouseEngine13.h"
 #import "GirlMouseEngine14.h"
-#import "BossCatLevel15.h"
+#import "BossCatLevel15A.h"
 #import "FTMUtil.h"
 #import "FTMConstants.h"
 
@@ -162,7 +162,7 @@
 -(void) callbackForMoving{
     
     if(self.tag==1){
-        [[CCDirector sharedDirector] replaceScene:[BossCatLevel15 scene]];
+        [[CCDirector sharedDirector] replaceScene:[BossCatLevel15A scene]];
         return;
         if(currentMouse==1)
             [[CCDirector sharedDirector] replaceScene:[GameEngine01 scene]];
