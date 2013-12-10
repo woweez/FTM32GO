@@ -14,6 +14,19 @@
 #import "InAppUtils.h"
 #import "FTMUtil.h"
 #import "FTMConstants.h"
+
+@implementation MyRootViewController
+
+-(NSUInteger)supportedInterfaceOrientations{
+    return UIInterfaceOrientationMaskLandscape;
+}
+
+- (BOOL)shouldAutorotate {
+    return YES;
+}
+
+@end
+
 @implementation AppController
 
 @synthesize window=window_, navController=navController_, director=director_;
@@ -140,18 +153,19 @@
     }
     if (cheese == 0) {
         NSDictionary *appDefaults = [NSDictionary
-                                     dictionaryWithObject:[NSNumber numberWithInt:cheese] forKey:@"currentCheese"];
+                                     dictionaryWithObject:[NSNumber numberWithInt:0.5] forKey:@"currentCheese"];
         [[NSUserDefaults standardUserDefaults] registerDefaults:appDefaults];
 
     }
-      
+    
+    [[GameKitHelper sharedGameKitHelper] loadSharePrefernceDicForAchievements];
     
 	// and add the scene to the stack. The director will run it when it automatically when the view is displayed.
 	[director_ pushScene: [IntroLayer scene]]; 
 	
 	
 	// Create a Navigation Controller with the Director
-	navController_ = [[UINavigationController alloc] initWithRootViewController:director_];
+	navController_ = [[MyRootViewController alloc] initWithRootViewController:director_];
 	navController_.navigationBarHidden = YES;
 	
 	// set the Navigation Controller as the root view controller
@@ -163,6 +177,10 @@
 	return YES;
 }
 
+//- (NSUInteger)application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(UIWindow *)window
+//{
+//    return  UIInterfaceOrientationMaskLandscapeLeft |   UIInterfaceOrientationMaskLandscapeRight;
+//}
 // Supported orientations: Landscape. Customize it for your own needs
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
@@ -176,7 +194,18 @@
 	if( [navController_ visibleViewController] == director_ )
 		[director_ pause];
 }
+- (BOOL) shouldAutorotate {
+    return YES;
+}
 
+- (NSUInteger) application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(UIWindow *)window
+{
+    return  UIInterfaceOrientationMaskAll;
+}
+
+- (UIInterfaceOrientation)preferredInterfaceOrientationForPresentation {
+    return UIInterfaceOrientationLandscapeLeft;
+}
 // call got rejected
 -(void) applicationDidBecomeActive:(UIApplication *)application
 {

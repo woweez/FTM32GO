@@ -53,18 +53,20 @@
 #import "GirlMouseEngine13.h"
 #import "GirlMouseEngine14.h"
 #import "BossCatLevel15A.h"
+#import "BossCatLevel15B.h"
+#import "BossCatLevel15C.h"
 #import "FTMUtil.h"
 #import "FTMConstants.h"
 
 @implementation LoadingLayer
 
-+(CCScene *) scene :(int)catId levelNo:(int)lvl{
++(CCScene *) scene :(int)lvlNo currentMice:(int)currentMice{
 	
     
     CCScene *scene = [CCScene node];
 	LoadingLayer *layer = [LoadingLayer node];
-    layer.tag = catId;
-    [layer setLevel:lvl];
+    layer.tag = lvlNo;
+    [layer setCurrentMouse:currentMice];
     [layer addAnimation];
 	[scene addChild: layer];
 	
@@ -80,8 +82,8 @@
     return self;
 }
 
--(void) setLevel:(int)lvl{
-    currentMouse = lvl;
+-(void) setCurrentMouse:(int)miceId{
+    currentMouse = miceId;
 }
 
 -(void) addAnimation{
@@ -105,13 +107,19 @@
     NSString *miceRun01;
     NSString *miceRunArr;
     int framesLength;
-    if (currentMouse == FTM_MAMA_MICE_ID) {
+    int mouseClicked = self.tag <= 15 ? currentMouse: self.tag;
+    if (self.tag == 16) {
+        mouseClicked = FTM_STRONG_MICE_ID;
+    }else if(self.tag == 17){
+        mouseClicked = FTM_MAMA_MICE_ID;
+    }
+    if (mouseClicked == FTM_MAMA_MICE_ID) {
         miceDefault = @"mother_mouse_default.png";
         micePlist = @"mother_mouse_default.plist";
         miceRun01 = @"mother_run01.png";
         miceRunArr = @"mother_run0%d.png";
         framesLength = 8;
-    }else if (currentMouse == FTM_STRONG_MICE_ID){
+    }else if (mouseClicked == FTM_STRONG_MICE_ID){
         miceDefault = @"strong0_default.png";
         micePlist = @"strong0_default.plist";
         miceRun01 = @"strong_run01.png";
@@ -146,8 +154,8 @@
         [animFrames addObject:frame];
     }
     int seconds = 3;
-    if (currentMouse == FTM_STRONG_MICE_ID) {
-        seconds = 5;
+    if (mouseClicked == FTM_STRONG_MICE_ID) {
+        seconds = 4;
     }
     CCMoveTo *moveTo = [CCMoveTo actionWithDuration:seconds position:CGPointMake(winSize.width, winSize.height/3)];
     CCCallFunc *callback = [CCCallFunc actionWithTarget:self selector:@selector(callbackForMoving)];
@@ -162,8 +170,6 @@
 -(void) callbackForMoving{
     
     if(self.tag==1){
-        [[CCDirector sharedDirector] replaceScene:[BossCatLevel15A scene]];
-        return;
         if(currentMouse==1)
             [[CCDirector sharedDirector] replaceScene:[GameEngine01 scene]];
         else if(currentMouse ==2)
@@ -268,6 +274,15 @@
             [[CCDirector sharedDirector] replaceScene:[StrongMouseEngine14 scene]];
         else if(currentMouse==3)
             [[CCDirector sharedDirector] replaceScene:[GirlMouseEngine14 scene]];
+    }else if (self.tag == 15){
+        [FTMUtil sharedInstance].mouseClicked = FTM_GIRL_MICE_ID;
+        [[CCDirector sharedDirector] replaceScene:[BossCatLevel15A scene]];
+    }else if (self.tag == 16){
+        [FTMUtil sharedInstance].mouseClicked = FTM_STRONG_MICE_ID;
+        [[CCDirector sharedDirector] replaceScene:[BossCatLevel15B scene]];
+    }else if (self.tag == 17){
+        [FTMUtil sharedInstance].mouseClicked = FTM_MAMA_MICE_ID;
+        [[CCDirector sharedDirector] replaceScene:[BossCatLevel15C scene]];
     }
 
 }

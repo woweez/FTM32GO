@@ -10,10 +10,14 @@
 #import "cocos2d.h"
 #import "sound.h"
 
+@interface MyRootViewController : UINavigationController
+
+@end
+
 @interface AppController : NSObject <UIApplicationDelegate, CCDirectorDelegate>
 {
 	UIWindow *window_;
-	UINavigationController *navController_;
+	MyRootViewController *navController_;
     sound *soundEffect;
 	
 	CCDirectorIOS	*director_;							// weak ref

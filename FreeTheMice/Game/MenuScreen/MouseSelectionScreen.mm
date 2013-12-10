@@ -136,7 +136,7 @@ int counter;
         int height = 20;
         
         // need to add check for iPhone 4s/5.
-        CCLabelAtlas *currentLevelLabel = [CCLabelAtlas labelWithString:[NSString stringWithFormat:@"%d/14", mamaCurrentLvl] charMapFile:@"numbers.png" itemWidth:width itemHeight:height startCharMap:'.'];
+        CCLabelAtlas *currentLevelLabel = [CCLabelAtlas labelWithString:[NSString stringWithFormat:@"%d/14", mamaCurrentLvl=mamaCurrentLvl>14?14:mamaCurrentLvl] charMapFile:@"numbers.png" itemWidth:width itemHeight:height startCharMap:'.'];
         currentLevelLabel.position=ccp(72*scaleFactorX,38*scaleFactorY);
         if ([FTMUtil sharedInstance].isRetinaDisplay) {
             currentLevelLabel.visible = YES;
@@ -149,7 +149,7 @@ int counter;
         motherMenuItem.tag=1;
         
         CCMenuItem *strongMenuItem = NULL;
-        currentLevelLabel = [CCLabelAtlas labelWithString:[NSString stringWithFormat:@"%d/14", strongCurrentLvl] charMapFile:@"numbers.png" itemWidth:width itemHeight:height startCharMap:'.'];
+        currentLevelLabel = [CCLabelAtlas labelWithString:[NSString stringWithFormat:@"%d/14", strongCurrentLvl=strongCurrentLvl>14?14:strongCurrentLvl] charMapFile:@"numbers.png" itemWidth:width itemHeight:height startCharMap:'.'];
         currentLevelLabel.position=ccp(78*scaleFactorX,44*scaleFactorY);
         if ([FTMUtil sharedInstance].isRetinaDisplay) {
             currentLevelLabel.visible = YES;
@@ -168,7 +168,7 @@ int counter;
         strongMenuItem.tag=2;
         
         CCMenuItem *girlMenuItem = NULL;
-        currentLevelLabel = [CCLabelAtlas labelWithString:[NSString stringWithFormat:@"%d/14", girlCurrentLvl] charMapFile:@"numbers.png" itemWidth:width itemHeight:height startCharMap:'.'];
+        currentLevelLabel = [CCLabelAtlas labelWithString:[NSString stringWithFormat:@"%d/14", girlCurrentLvl=girlCurrentLvl>14?14:girlCurrentLvl] charMapFile:@"numbers.png" itemWidth:width itemHeight:height startCharMap:'.'];
         currentLevelLabel.position=ccp(80*scaleFactorX,51*scaleFactorY);
         if ([FTMUtil sharedInstance].isRetinaDisplay) {
             currentLevelLabel.visible = YES;
@@ -197,10 +197,10 @@ int counter;
             if(counter == 10){
                 DB *db = [DB new];
                 [db setSettingsFor:@"CurrentMouse" withValue:[NSString stringWithFormat:@"%d", 3]];
-                [db setSettingsFor:@"CurrentLevel" withValue:[NSString stringWithFormat:@"%d", 14]];
-                [db setSettingsFor:@"strongCurrLvl" withValue:[NSString stringWithFormat:@"%d", 14]];
-                [db setSettingsFor:@"mamaCurrLvl" withValue:[NSString stringWithFormat:@"%d", 14]];
-                [db setSettingsFor:@"girlCurrLvl" withValue:[NSString stringWithFormat:@"%d", 14]];
+                [db setSettingsFor:@"CurrentLevel" withValue:[NSString stringWithFormat:@"%d", 15]];
+                [db setSettingsFor:@"strongCurrLvl" withValue:[NSString stringWithFormat:@"%d", 15]];
+                [db setSettingsFor:@"mamaCurrLvl" withValue:[NSString stringWithFormat:@"%d", 15]];
+                [db setSettingsFor:@"girlCurrLvl" withValue:[NSString stringWithFormat:@"%d", 15]];
                 [db release];
                 [[CCDirector sharedDirector] replaceScene:[MouseSelectionScreen scene]];
             }

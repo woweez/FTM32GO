@@ -25,6 +25,7 @@
     float scaleFactorY;
     CCSprite * timer;
     CCSprite *pauseScreenBg;
+    CCSprite *pauseText;
     CCSprite *timerBg;
     CCSprite *cheezeCollectedBg;
     CCSprite *leftSprite;

@@ -14,7 +14,7 @@
     int objectWidth;
     int objectHeight;
     int sideValueForObject;
-    
+
     int gameLevel;
     CGFloat xPosition;
     CGFloat yPosition;
@@ -164,11 +164,12 @@
 @property (nonatomic, readwrite) BOOL notCollideBlockChe;
 
 
-
 -(CGPoint)getCheesePosition:(int)wLevel gameLevel:(int)gLevel iValue:(int)iValue;
 -(CGPoint)getPlatformPosition:(int)level;
 -(void)runningRender:(CGFloat)xPos  yPosition:(CGFloat)yPos fChe:(BOOL)fChe;
+-(void)runningRenderLevel15B:(CGFloat)xPos  yPosition:(CGFloat)yPos  fChe:(BOOL)fChe blockPositionsArr:(CGPoint)blocksPosiotion isBlockCollide:(BOOL) isCollision;
 -(void)jumpingRender:(CGFloat)xPos  yPosition:(CGFloat)yPos fChe:(BOOL)fChe;
+-(void)jumpingRenderLevel15B:(CGFloat)xPos  yPosition:(CGFloat)yPos  fChe:(BOOL)fChe blockPositionsArr:(CGPoint)blocksPosiotion;
 -(void)render;
 -(CGFloat)getBox:(int)bValue pValue:(int)pValue;
 -(void)setCombinationChe:(int)cValue;

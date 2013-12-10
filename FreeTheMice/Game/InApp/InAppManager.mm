@@ -9,6 +9,7 @@
 #import "InAppManager.h"
 #import <StoreKit/StoreKit.h>
 #import "InAppUtils.h"
+#import "FTMConstants.h"
 @interface InAppManager () <SKProductsRequestDelegate , SKPaymentTransactionObserver>
 @end
 
@@ -126,12 +127,15 @@ NSString *const StoreUpdateProductPurchasedNotification = @"StoreUpdateProductPu
 
     if ([transaction.payment.productIdentifier isEqualToString:[NSString stringWithFormat:@"com.woweez.ftmtest.pieceofcheese"]]) {
         cheese +=  100;
+        [[GameKitHelper sharedGameKitHelper]reportAchievementIdentifier:kFtm100CheeseCategory percentComplete:100 maxValue:100 checkPercent:YES];
     }
     if ([transaction.payment.productIdentifier isEqualToString:[NSString stringWithFormat:@"com.woweez.ftmtest.pieceofcake"]]) {
         cheese +=  500;
+        [[GameKitHelper sharedGameKitHelper]reportAchievementIdentifier:kFtm500CheeseCategory percentComplete:100 maxValue:100 checkPercent:YES];
     }
     if ([transaction.payment.productIdentifier isEqualToString:[NSString stringWithFormat:@"com.woweez.ftmtest.cheesecontainer"]]) {
         cheese +=  25000;
+        [[GameKitHelper sharedGameKitHelper]reportAchievementIdentifier:kFtm1000CheeseCategory percentComplete:100 maxValue:100 checkPercent:YES];
     }
     
     NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];

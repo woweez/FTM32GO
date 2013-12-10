@@ -16,7 +16,7 @@
 #import "SimpleAudioEngine.h"
 #import "LevelCompleteScreen.h"
 #import "LevelFailedScreen.h"
-
+#import "GameKitHelper.h"
 
 @implementation CommonEngine
 
@@ -575,6 +575,8 @@
     LevelCompleteScreen *lvlCompleteLayer = [[LevelCompleteScreen alloc] init];
     [lvlCompleteLayer playStarImageAnimationAgainstLevel:totalNoOffCheese];
     lvlCompleteLayer.tag = tag;
+    [[GameKitHelper sharedGameKitHelper]submitScore:(int64_t)1000/(totalNoOffCheese+1) category:kHighScoreLeaderboardCategory];
+    [[GameKitHelper sharedGameKitHelper]reportAchievementIdentifier:kFtmFirstAchievementCategory percentComplete:100 maxValue:100 checkPercent:NO];
     [[[CCDirector sharedDirector] runningScene] addChild: lvlCompleteLayer z:2000];
 }
 
@@ -633,8 +635,9 @@
     NSString *fStr=@"";
     if([type isEqualToString:@"jump"])
         fStr=[NSString stringWithFormat:@"girl_jump%d.png",fValue+1];
-    else if([type isEqualToString:@"stand"])
+    else if([type isEqualToString:@"stand"]){
         fStr=[NSString stringWithFormat:@"girl_stand%d.png",fValue+1];
+    }
     else if([type isEqualToString:@"win"])
         fStr=@"girl_win1.png";
     

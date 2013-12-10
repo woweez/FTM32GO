@@ -95,6 +95,7 @@
 	CADisplayLink	*displayLink_;
 	CFTimeInterval	lastDisplayTime_;
 }
+
 -(void) mainLoop:(id)sender;
 @end
 

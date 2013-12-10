@@ -130,6 +130,7 @@ enum {
         int currentLvl = 0;
         DB *db = [DB new];
         currentMouse = [FTMUtil sharedInstance].mouseClicked;//[[db getSettingsFor:@"CurrentMouse"] intValue];
+        int currentMouseInDB = [[db getSettingsFor:@"CurrentMouse"] intValue];
         switch (currentMouse) {
             case 1://mother mouse
                 currentLvl = [[db getSettingsFor:@"mamaCurrLvl"] intValue];
@@ -150,8 +151,9 @@ enum {
         mouseCurrentLevelAndImageViewer.position = ccp(70 *scaleFactorX, 160 *scaleFactorY);
         [mouseCurrentLevelAndImageViewer setScale:cScale];
         [self addChild: mouseCurrentLevelAndImageViewer z:0];
+        int lvl = currentLvl>14 ? 14:currentLvl;
         
-        CCLabelAtlas *currentLevelLabel = [CCLabelAtlas labelWithString:[NSString stringWithFormat:@"%d/14", currentLvl] charMapFile:@"numbers.png" itemWidth:15 itemHeight:20 startCharMap:'.'];
+        CCLabelAtlas *currentLevelLabel = [CCLabelAtlas labelWithString:[NSString stringWithFormat:@"%d/14", lvl] charMapFile:@"numbers.png" itemWidth:15 itemHeight:20 startCharMap:'.'];
         currentLevelLabel.position=ccp(21 *scaleFactorX, 33 *scaleFactorY);
         if ([FTMUtil sharedInstance].isRetinaDisplay) {
             currentLevelLabel.scale = 0.5;
@@ -166,8 +168,23 @@ enum {
                 levelMenu.isEnabled = FALSE;
                 [levelMenu addChild:[self getAppropriateStarImageAgainstLevel:0]];
             }else if(i>13){
-                levelMenu=[CCMenuItemImage itemWithNormalImage:[NSString stringWithFormat:@"level15_lock_3.png"] selectedImage:[NSString stringWithFormat:@"level15_lock_3.png"] target:self selector:@selector(clickLevel:)];
-                levelMenu.isEnabled = FALSE;
+                
+                NSString *lvlStr;
+                if (currentMouseInDB == 1) {
+                    lvlStr = @"level15_lock_3.png";
+                }else if(currentMouseInDB == 2){
+                    lvlStr = @"level15_lock_2.png";
+                }else if (currentMouseInDB == 3 && currentLvl <= 14){
+                    lvlStr = @"level15_lock_1.png";
+                }else{
+                    lvlStr = @"15_1.png";
+                }
+                
+                levelMenu=[CCMenuItemImage itemWithNormalImage:lvlStr selectedImage:lvlStr target:self selector:@selector(clickLevel:)];
+                if ((currentLvl != 15 && currentLvl != 16 && currentLvl != 17) || currentMouse == FTM_MAMA_MICE_ID || currentMouse == FTM_STRONG_MICE_ID) {
+                    levelMenu.isEnabled = FALSE;
+                }
+                
                 [levelMenu addChild:[self getAppropriateStarImageAgainstLevel:0]];
 
             }else{
@@ -183,7 +200,11 @@ enum {
             
             
             CCMenu *menu2 = [CCMenu menuWithItems: levelMenu,  nil];
-            levelMenu.tag=i+1;
+            if (i==14 && currentLvl > 15) {
+                levelMenu.tag=currentLvl;
+            }else{
+                levelMenu.tag=i+1;
+            }
             if ([FTMUtil sharedInstance].isRetinaDisplay) {
                 if(i<=4)
                     menu2.position=ccp(140 *scaleFactorX+(i*55 *scaleFactorX),220 *scaleFactorY);
@@ -234,7 +255,7 @@ enum {
 }
 -(void)clickLevel:(CCMenuItem *)sender {
     [soundEffect button_1];
-    [[CCDirector sharedDirector] replaceScene:[LoadingLayer scene:sender.tag levelNo:currentMouse]];
+    [[CCDirector sharedDirector] replaceScene:[LoadingLayer scene:sender.tag currentMice:currentMouse]];
     
     }
 

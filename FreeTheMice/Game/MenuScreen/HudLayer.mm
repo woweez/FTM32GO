@@ -50,6 +50,9 @@
 #import "GirlMouseEngine12.h"
 #import "GirlMouseEngine13.h"
 #import "GirlMouseEngine14.h"
+#import "BossCatLevel15A.h"
+#import "BossCatLevel15B.h"
+#import "BossCatLevel15C.h"
 #import "FTMUtil.h"
 #import "FTMConstants.h"
 #import "DB.h"
@@ -170,7 +173,11 @@
         [[SimpleAudioEngine sharedEngine] setMute:YES];
         
     }];
-    [pauseMenuItem setScale:cScale];
+    if ([FTMUtil sharedInstance].isRetinaDisplay) {
+        [pauseMenuItem setScale:cScale*scaleFactorX];
+    }else{
+        [pauseMenuItem setScale:cScale];
+    }
     pauseMenuItem.position = ccp(-220 *scaleFactorX, 138 *scaleFactorY);
     menu = [CCMenu menuWithItems: pauseMenuItem,  nil];
     menu.position = ccp(240 *scaleFactorX, 160 *scaleFactorY);
@@ -187,7 +194,11 @@
 //        [FTMUtil sharedInstance].isFirstTutorial = YES;
         [self addLevelSceneAgainForRetry];
     }];
-    [retryMenuItem setScale:cScale];
+    if ([FTMUtil sharedInstance].isRetinaDisplay) {
+        [retryMenuItem setScale:cScale*scaleFactorX];
+    }else{
+        [retryMenuItem setScale:cScale];
+    }
     retryMenuItem.position = ccp(-185 *scaleFactorX, 138 *scaleFactorY);
     [menu addChild:retryMenuItem];
 }
@@ -217,7 +228,11 @@
 //        [FTMUtil sharedInstance].isSlowDownTimer = YES;
 //        [self hideFailureScreen];
     }];
-    [inventoryMenuItem setScale:cScale];
+    if ([FTMUtil sharedInstance].isRetinaDisplay) {
+        [inventoryMenuItem setScale:cScale*scaleFactorX];
+    }else{
+        [inventoryMenuItem setScale:cScale];
+    }
     inventoryMenuItem.position = ccp(-150 *scaleFactorX, 138 *scaleFactorY);
     [menu addChild:inventoryMenuItem];
 
@@ -235,7 +250,11 @@
         }
 //        [FTMUtil sharedInstance].isBoostPowerUpEnabled = YES;
     }];
-    [magnifyMenuItem setScale:cScale];
+    if ([FTMUtil sharedInstance].isRetinaDisplay) {
+        [magnifyMenuItem setScale:cScale*scaleFactorX];
+    }else{
+        [magnifyMenuItem setScale:cScale];
+    }
     magnifyMenuItem.position = ccp(220 *scaleFactorX, 138 *scaleFactorY);
     [menu addChild:magnifyMenuItem];
 }
@@ -243,7 +262,11 @@
 -(void) addMoveLeftBtnMenu{
     
     leftSprite = [CCSprite spriteWithFile:@"arrow_indicator_left.png"];
-    [leftSprite setScale:cScale];
+    if ([FTMUtil sharedInstance].isRetinaDisplay) {
+        [leftSprite setScale:cScale * scaleFactorX];
+    }else{
+        [leftSprite setScale:cScale];
+    }
     leftSprite.position = ccp(37 *scaleFactorX , 34 *scaleFactorY);
     [self addChild: leftSprite z:0];
 }
@@ -251,7 +274,11 @@
 -(void) addMoveRightBtnMenu{
     
     rightSprite = [CCSprite spriteWithFile:@"arrow_indicator_right.png"];
-    [rightSprite setScale:cScale];
+    if ([FTMUtil sharedInstance].isRetinaDisplay) {
+        [rightSprite setScale:cScale * scaleFactorX];
+    }else{
+        [rightSprite setScale:cScale];
+    }
     rightSprite.position = ccp(443 *scaleFactorX , 34 *scaleFactorY);
     [self addChild: rightSprite z:0];
     
@@ -270,9 +297,21 @@
     [pauseScreenBg setScaleX:0.0001];
     [pauseScreenBg setScaleY:cScale];
     [pauseScreenBg setAnchorPoint:ccp(0, 1)];
-    pauseScreenBg.position = ccp(0 *scaleFactorX , 275 *scaleFactorY);
+    if ([FTMUtil sharedInstance].isRetinaDisplay) {
+        pauseScreenBg.position = ccp(0 *scaleFactorX , 315 *scaleFactorY);
+    }else{
+        pauseScreenBg.position = ccp(0 *scaleFactorX , 275 *scaleFactorY);
+    }
     pauseScreenBg.tag = 125;
     [self addChild: pauseScreenBg z:0];
+    
+    pauseText = [CCSprite spriteWithFile:@"pause_text.png"];
+    pauseText.visible = YES;
+    pauseText.position = ccp([CCDirector sharedDirector].winSize.width/2 +50, [CCDirector sharedDirector].winSize.height/2 - 3);
+    if (![FTMUtil sharedInstance].isRetinaDisplay) {
+        pauseText.scale = NON_RETINA_SCALE;
+    }
+    [pauseScreenBg addChild:pauseText z:9999];
     
     CCMenuItem *levelsMenuItem = [CCMenuItemImage itemWithNormalImage:@"level_select_btn.png" selectedImage:@"level_select_btn_press.png" block:^(id sender) {
         [soundEffect button_1];
@@ -348,10 +387,10 @@
     CCMenu *resumeMenu = [CCMenu menuWithItems:resumeMenuItem, nil];
     
     if ([FTMUtil sharedInstance].isRetinaDisplay && [FTMUtil sharedInstance].isIphone5) {
-        resumeMenu.position = ccp(56 *scaleFactorX, 107 *scaleFactorY);
+        resumeMenu.position = ccp(102 *scaleFactorX, 148 *scaleFactorY);
     }else{
         if([FTMUtil sharedInstance].isIphone4){
-            resumeMenu.position = ccp(69 *scaleFactorX, 107*scaleFactorY);
+            resumeMenu.position = ccp(122 *scaleFactorX, 148*scaleFactorY);
         }else{
             resumeMenu.position = ccp(146 *scaleFactorX, 223*scaleFactorY);
         }
@@ -359,10 +398,12 @@
     [pauseScreenBg addChild: resumeMenu];
     
     CCMenu *pauseMenu = [CCMenu menuWithItems:homeMenuItem,soundOn,levelsMenuItem, nil];
-    [pauseMenu alignItemsVerticallyWithPadding:30 * scaleFactorY];
+    
     if ([FTMUtil sharedInstance].isRetinaDisplay) {
-        pauseMenu.position = ccp(30 *scaleFactorX, 110 *scaleFactorY);
+        [pauseMenu alignItemsVerticallyWithPadding:30 * scaleFactorY];
+        pauseMenu.position = ccp(40 *scaleFactorX, 158 *scaleFactorY);
     }else{
+        [pauseMenu alignItemsVerticallyWithPadding:30 * scaleFactorY];
         pauseMenu.position = ccp(60 *scaleFactorX, 220 *scaleFactorY);
     }
     [pauseScreenBg addChild:pauseMenu];
@@ -370,7 +411,7 @@
     CCMenu *soundOffMenu = [CCMenu menuWithItems:soundOff, nil];
     [soundOffMenu alignItemsVerticallyWithPadding:30 * scaleFactorY];
     if ([FTMUtil sharedInstance].isRetinaDisplay) {
-        soundOffMenu.position = ccp(30 *scaleFactorX, 110 *scaleFactorY);
+        soundOffMenu.position = ccp(40 *scaleFactorX, 158 *scaleFactorY);
     }
     else{
         soundOffMenu.position = ccp(60 *scaleFactorX, 220 *scaleFactorY);
@@ -503,7 +544,7 @@
             [[CCDirector sharedDirector] replaceScene:[GameEngine14 scene]];
             break;
         case 15:
-            
+            [[CCDirector sharedDirector] replaceScene:[BossCatLevel15C scene]];
             break;
             
         default:
@@ -556,7 +597,7 @@
             [[CCDirector sharedDirector] replaceScene:[StrongMouseEngine14 scene]];
             break;
         case 15:
-            
+            [[CCDirector sharedDirector] replaceScene:[BossCatLevel15B scene]];
             break;
             
         default:
@@ -611,7 +652,7 @@
             [[CCDirector sharedDirector] replaceScene:[GirlMouseEngine14 scene]];
             break;
         case 15:
-            
+            [[CCDirector sharedDirector] replaceScene:[BossCatLevel15A scene]];
             break;
             
         default:

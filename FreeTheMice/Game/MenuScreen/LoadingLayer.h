@@ -15,7 +15,7 @@
     float cScale;
     int currentMouse;
 }
-+(CCScene *) scene :(int) catId levelNo:(int) lvl;
++(CCScene *) scene :(int) lvlNo currentMice:(int) mice;
 -(void) addAnimation;
--(void) setLevel:(int)lvl;
+-(void) setCurrentMouse:(int)miceId;
 @end

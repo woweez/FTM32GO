@@ -24,11 +24,18 @@
 @interface BossCatLevel15A : CommonEngine{
 	GirlGameFunc *gameFunc;
     sound *soundEffect;
+    CCSpriteBatchNode *bossCatTurnBatch;
     b2World* world;
     CCSpriteBatchNode *bossCatWalkBatch;
+    CCSpriteBatchNode *girlCageBatch;
+    CCSpriteBatchNode *girlKeyBatch;
     CCSprite *bossCatWalk;
+    CCSprite *strongMouse;
     BOOL isCatKnockedOut;
+    BOOL isTurnAnimation;
+    int knockoutCount;
     CCSprite *bossCatKnocked;
+    CCSprite *bossCatTurn;
     CCSequence *catKnockedAnimSeq;
     int bossCatDirection;
     CGSize winSize;

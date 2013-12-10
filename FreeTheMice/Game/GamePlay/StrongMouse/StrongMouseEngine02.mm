@@ -621,7 +621,7 @@ StrongMouseEngineMenu02 *sLayer02;
         if(heroTrappedCount==1)
             [self heroAnimationFunc:0 animationType:@"win"];
         
-        if(heroTrappedCount==0010){
+        if(heroTrappedCount==10){
             heroTrappedSprite = [CCSprite spriteWithSpriteFrameName:@"mother_trapped1.png"];
             if(!forwardChe)
                 heroTrappedSprite.position = ccp(platformX, platformY+5);

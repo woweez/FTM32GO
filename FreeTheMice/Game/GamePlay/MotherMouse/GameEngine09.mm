@@ -1027,7 +1027,7 @@ GameEngine09Menu *layer09;
 
 -(void)starCheeseSpriteInitilized{
     for(int i=0;i<5;i++){
-        starSprite[i] = [CCSprite spriteWithSpriteFrameName:@"star2.png"];
+        starSprite[i] = [CCSprite spriteWithSpriteFrameName:@"starxxx2.png"];
         starSprite[i].scale=0.4;
         starSprite[i].position=ccp([gameFunc getCheesePosition:1 gameLevel:motherLevel iValue:i].x-12,[gameFunc getCheesePosition:1 gameLevel:motherLevel iValue:i].y+8);
         [spriteSheet addChild:starSprite[i]];
@@ -1035,7 +1035,7 @@ GameEngine09Menu *layer09;
             starSprite[i].visible=NO;
         NSMutableArray *animFrames3 = [NSMutableArray array];
         for(int j = 0; j <5; j++) {
-            CCSpriteFrame *frame = [cache spriteFrameByName:[NSString stringWithFormat:@"star%d.png",j+1]];
+            CCSpriteFrame *frame = [cache spriteFrameByName:[NSString stringWithFormat:@"starxxx%d.png",j+1]];
             [animFrames3 addObject:frame];
         }
         CCAnimation *animation2 = [CCAnimation animationWithSpriteFrames:animFrames3 delay:0.1f];
@@ -1167,7 +1167,7 @@ GameEngine09Menu *layer09;
                 heroWinSprite.position = ccp(750, platformY+5);
             else
                 heroWinSprite.position = ccp(750, platformY+5);
-            heroWinSprite.scale=0.8;
+            heroWinSprite.scale=MAMA_SCALE;
             [spriteSheet addChild:heroWinSprite];
             
             NSMutableArray *animFrames2 = [NSMutableArray array];

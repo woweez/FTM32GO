@@ -100,15 +100,15 @@
     if(wLevel ==1){
         if(gLevel ==1){
             if(iValue ==0)
-                cheesePosition = ccp(200, 160);
+                cheesePosition = ccp(250, 235);
             else if(iValue==1)
-                cheesePosition = ccp(325, 160);
+                cheesePosition = ccp(375, 235);
             else if(iValue==2)
-                cheesePosition = ccp(450, 160);
+                cheesePosition = ccp(500, 235);
             else if(iValue==3)
-                cheesePosition = ccp(575, 160);
+                cheesePosition = ccp(625, 235);
             else if(iValue==4)
-                cheesePosition = ccp(700, 160);
+                cheesePosition = ccp(750, 235);
         }else if(gLevel ==2){
             if(iValue==0)
                 cheesePosition = ccp(235, 320);
@@ -263,7 +263,7 @@
 -(CGPoint)getPlatformPosition:(int)level {
     CGPoint platformPosition;
     if(level==1)
-        platformPosition=ccp(0,160);
+        platformPosition=ccp(0,246);
     else if(level==2)
         platformPosition=ccp(0,230);
     else if(level==3)
@@ -289,6 +289,8 @@
     else if(level == 13)
         platformPosition=ccp(80,266);
     else if(level == 14)
+        platformPosition=ccp(0,266);
+    else if(level == 15)
         platformPosition=ccp(0,266);
     
     return platformPosition;
@@ -643,6 +645,7 @@
         }
     }
 }
+
 -(void)runningRender:(CGFloat)xPos  yPosition:(CGFloat)yPos fChe:(BOOL)fChe{
     xPosition=xPos;
     yPosition=yPos;
@@ -863,7 +866,11 @@
             [self runTransaction:946 heroY:300 objectW:60 objectH:70 fChe:fChe sideValue:0];
         
         [self runTransaction:115 heroY:700 objectW:12 objectH:200 fChe:fChe sideValue:0];
+    }else if(gameLevel == 15){
+        [self runTransaction:140 heroY:382 objectW:250 objectH:10 fChe:fChe sideValue:0];
+        [self runTransaction:460 heroY:382 objectW:250 objectH:5 fChe:fChe sideValue:0];
     }
+    
 }
 
 -(void)jumpingRender:(CGFloat)xPos  yPosition:(CGFloat)yPos fChe:(BOOL)fChe{
@@ -1107,9 +1114,22 @@
             [self jumpTransaction:946 heroY:300 objectW:60 objectH:70 fChe:fChe sideValue:1];
         
         [self jumpTransaction:115 heroY:700 objectW:12 objectH:200 fChe:fChe sideValue:0];
+    }else if(gameLevel == 15){
+        [self jumpTransaction:140 heroY:382 objectW:230 objectH:5 fChe:fChe sideValue:0];
+        [self jumpTransaction:470 heroY:382 objectW:230 objectH:5 fChe:fChe sideValue:0];ccp(930, 440);
     }
 }
 
+-(void) runningRenderLevel15B:(CGFloat)xPos yPosition:(CGFloat)yPos fChe:(BOOL)fChe blockPositionsArr:(CGPoint)blocksPosiotion isBlockCollide:(BOOL)isCollision{
+    int width = 41;
+    if (isCollision) {
+        //width = 82;
+    }
+    [self runTransaction:blocksPosiotion.x - 20 heroY:blocksPosiotion.y + 18 objectW:41 objectH:width fChe:fChe sideValue:0];
+}
+-(void) jumpingRenderLevel15B:(CGFloat)xPos yPosition:(CGFloat)yPos fChe:(BOOL)fChe blockPositionsArr:(CGPoint)blocksPosiotion{
+    [self jumpTransaction:blocksPosiotion.x - 20 heroY:blocksPosiotion.y + 18 objectW:41 objectH:18 fChe:NO sideValue:0];
+}
 -(void)jumpTransaction:(CGFloat)heroX  heroY:(CGFloat)heroY objectW:(CGFloat)objectW objectH:(CGFloat)objectH fChe:(BOOL)fChe sideValue:(int)sValue{
     if(!fChe){
         //reverseJump

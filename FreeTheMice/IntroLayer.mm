@@ -54,7 +54,7 @@
 		background = [CCSprite spriteWithFile:@"Default-Landscape~ipad.png"];
 	}
 	background.position = ccp(size.width/2, size.height/2);
-
+    [[GameKitHelper sharedGameKitHelper] authenticateLocalPlayer];
 	// add the label as a child to this Layer
 	[self addChild: background];
 	

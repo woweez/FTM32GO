@@ -86,15 +86,15 @@
     if(wLevel ==1){
         if(gLevel ==1){
             if(iValue ==0)
-                cheesePosition = ccp(200, 160);
+                cheesePosition = ccp(250, 235);
             else if(iValue==1)
-                cheesePosition = ccp(325, 160);
+                cheesePosition = ccp(375, 235);
             else if(iValue==2)
-                cheesePosition = ccp(450, 160);
+                cheesePosition = ccp(500, 235);
             else if(iValue==3)
-                cheesePosition = ccp(575, 160);
+                cheesePosition = ccp(625, 235);
             else if(iValue==4)
-                cheesePosition = ccp(700, 160);
+                cheesePosition = ccp(750, 235);
         }else if(gLevel ==2){
             if(iValue==0)
                 cheesePosition = ccp(340, 320);
@@ -242,6 +242,9 @@
                 cheesePosition = ccp(940, 260);
             
         }
+        else if(gLevel == 15){
+                cheesePosition = ccp(30, 260);
+        }
     }
     return cheesePosition;
 }
@@ -249,7 +252,7 @@
 -(CGPoint)getPlatformPosition:(int)level {
     CGPoint platformPosition;
     if(level==1)
-        platformPosition=ccp(-50,160);
+        platformPosition=ccp(-50,246);
     else if(level==2)
         platformPosition=ccp(-50,211);//bhai
     else if(level==3)
@@ -276,6 +279,8 @@
        platformPosition=ccp(80,266);
     else if(level==14)
         platformPosition=ccp(120,266);
+    else if(level==15)
+        platformPosition=ccp(-50,251);
     
     return platformPosition;
 }
@@ -578,6 +583,12 @@
         [self runTransaction:250 heroY:532 objectW:187 objectH:12 fChe:fChe sideValue:0];
         if(!gateOpenChe)
             [self runTransaction:946 heroY:300 objectW:60 objectH:70 fChe:fChe sideValue:0];
+    }else if(gameLevel == 15){
+        [self runTransaction:170 heroY:350 objectW:180 objectH:12 fChe:fChe sideValue:0];
+        [self runTransaction:661 heroY:350 objectW:180 objectH:12 fChe:fChe sideValue:0];
+        [self runTransaction:20 heroY:470 objectW:180 objectH:12 fChe:fChe sideValue:0];
+        [self runTransaction:831 heroY:470 objectW:180 objectH:12 fChe:fChe sideValue:0];
+        [self runTransaction:420 heroY:470 objectW:180 objectH:12 fChe:fChe sideValue:0];
     }
 }
 
@@ -897,6 +908,12 @@
             }
         }
         
+    }else if(gameLevel == 15){
+        [self jumpTransaction:180 heroY:350 objectW:180 objectH:12 fChe:fChe sideValue:0];
+        [self jumpTransaction:671 heroY:350 objectW:180 objectH:12 fChe:fChe sideValue:0];
+        [self jumpTransaction:20 heroY:470 objectW:180 objectH:12 fChe:fChe sideValue:0];
+        [self jumpTransaction:841 heroY:470 objectW:180 objectH:12 fChe:fChe sideValue:0];
+        [self jumpTransaction:430 heroY:470 objectW:180 objectH:12 fChe:fChe sideValue:0];
     }
 }
 

@@ -1604,9 +1604,18 @@ GirlMouseEngineMenu14 *gLayer14;
     
     if(mouseWinChe&&!gameFunc.trappedChe){
         heroWinCount+=1;
+        if (heroWinCount <2) {
+            DB *db = [DB new];
+            int currentLvl = [[db getSettingsFor:@"girlCurrLvl"] intValue];
+            if(currentLvl <= motherLevel){
+                [db setSettingsFor:@"CurrentLevel" withValue:[NSString stringWithFormat:@"%d", motherLevel+1]];
+                [db setSettingsFor:@"girlCurrLvl" withValue:[NSString stringWithFormat:@"%d", motherLevel+1]];
+            }
+            [db release];
+        }
         if(heroWinCount==15){
             heroWinSprite = [CCSprite spriteWithSpriteFrameName:@"girl_win1.png"];
-            heroWinSprite.scale=0.6;
+            heroWinSprite.scale = GIRL_SCALE;
             if(!forwardChe)
                 heroWinSprite.position = ccp(platformX+30, platformY+5);
             else

@@ -150,13 +150,14 @@ enum {
         CCMenuItem *gameCenterMenuItem = [CCMenuItemImage itemWithNormalImage:@"game_center.png" selectedImage:@"game_center_press.png" block:^(id sender) {
             //add functionality here.
             [soundEffect button_1];
-            [[InAppUtils sharedInstance] requestProductsWithCompletionHandler:^(BOOL success, NSArray *products) {
-                if (success) {
-                    [InAppUtils sharedInstance]._products = products;
-                    
-                    NSLog(@"No of products retrived successfully: %d", [InAppUtils sharedInstance]._products.count);
-                }
-            }];
+            [[GameKitHelper sharedGameKitHelper] showLeaderboard:kHighScoreLeaderboardCategory];
+//            [[InAppUtils sharedInstance] requestProductsWithCompletionHandler:^(BOOL success, NSArray *products) {
+//                if (success) {
+//                    [InAppUtils sharedInstance]._products = products;
+//                    
+//                    NSLog(@"No of products retrived successfully: %d", [InAppUtils sharedInstance]._products.count);
+//                }
+//            }];
 		}];
         [gameCenterMenuItem setScale:cScale];
         if ([FTMUtil sharedInstance].isRetinaDisplay || scaleFactorX > 1) {
@@ -175,6 +176,7 @@ enum {
         [self addGilMouseEyesAnimation];
         [self addAboutSelectionMenu];
         [self addSettingsSelectionMenu];
+        
 
 	}
 	return self;
@@ -459,6 +461,8 @@ enum {
     CGSize winSize = [CCDirector sharedDirector].winSize;
     CCMenu *soundBtnMenu = [CCMenu menuWithItems:soundOn, soundOff, nil];
     if ([FTMUtil sharedInstance].isRetinaDisplay) {
+        soundOn.scale = 0.5;
+        soundOff.scale = 0.5;
         soundBtnMenu.position = ccp(60*scaleFactorX, 21*scaleFactorY);
     }else{
         if (winSize.width > 480 && winSize.height < 1100) {

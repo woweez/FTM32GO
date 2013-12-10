@@ -14,6 +14,8 @@
 #import "LevelScreen.h"
 // Needed to obtain the Navigation Controller
 #import "AppDelegate.h"
+#import "BossCatLevel15B.h"
+#import "LoadingLayer.h"
 #import "DB.h"
 
 
@@ -90,8 +92,12 @@ GirlMouseEngineMenu15 *gLayer15;
         
         cache = [CCSpriteFrameCache sharedSpriteFrameCache];
         [cache addSpriteFramesWithFile:@"girl_default.plist"];
-         [cache addSpriteFramesWithFile:@"bossCatWalk.plist"];
+        [cache addSpriteFramesWithFile:@"bossCatWalk.plist"];
         [cache addSpriteFramesWithFile:@"bossCatKnocked.plist"];
+        [cache addSpriteFramesWithFile:@"bossCatTurn.plist"];
+        [cache addSpriteFramesWithFile:@"strongCageAnim.plist"];
+        [cache addSpriteFramesWithFile:@"keyAnimation.plist"];
+        [cache addSpriteFramesWithFile:@"strong0_default.plist"];
         
         spriteSheet = [CCSpriteBatchNode batchNodeWithFile:@"girl_default.png"];
         bossCatWalkBatch = [CCSpriteBatchNode batchNodeWithFile:@"bossCatWalk.png"];
@@ -99,9 +105,27 @@ GirlMouseEngineMenu15 *gLayer15;
         [self addChild:spriteSheet z:10];
         [self addChild:bossCatWalkBatch z:10];
         
-        CCSpriteBatchNode *bossCatKnockedBatch = [CCSpriteBatchNode batchNodeWithFile:@"bossCatKnocked.png"];
+        CCSpriteBatchNode *strongMouseBatch = [CCSpriteBatchNode batchNodeWithFile:@"strong0_default.png"];
+        [self addChild:strongMouseBatch];
         
+        strongMouse = [CCSprite spriteWithSpriteFrameName:@"strong_run01.png"];
+         NSMutableArray *strongFrames = [NSMutableArray array];
+        for(int i =1; i <= 12; i++) {
+            CCSpriteFrame *frame = [cache spriteFrameByName:[NSString stringWithFormat:@"strong_run0%d.png",i]];
+            [strongFrames addObject:frame];
+        }
+        strongMouse.scale = STRONG_SCALE;
+        strongMouse.tag = HERO_RUN_SPRITE_TAG;
+        strongMouse.visible = NO;
+        strongMouse.position = ccp(200, 200);
+        CCAnimation *strongAnimation = [CCAnimation animationWithSpriteFrames:strongFrames delay:0.04f];
+    
+        [strongMouse runAction:[CCRepeatForever actionWithAction: [CCAnimate actionWithAnimation:strongAnimation]]];
+        [strongMouseBatch addChild:strongMouse];
+            
+        CCSpriteBatchNode *bossCatKnockedBatch = [CCSpriteBatchNode batchNodeWithFile:@"bossCatKnocked.png"];
         [self addChild:bossCatKnockedBatch];
+        
         
         bossCatKnocked = [CCSprite spriteWithSpriteFrameName:@"boss_cat_knocked out1_0.png"];
         bossCatKnocked.position = bossCatWalk.position;
@@ -110,9 +134,15 @@ GirlMouseEngineMenu15 *gLayer15;
             bossCatKnocked.scale = NON_RETINA_SCALE;
         }
         [bossCatKnockedBatch addChild:bossCatKnocked];
-        //bhai
+        //
+        bossCatTurnBatch = [CCSpriteBatchNode batchNodeWithFile:@"bossCatTurn.png"];
+        
+        [self addChild:bossCatTurnBatch];
+        
+        [self makeCageAnimation];
+        //
         bossCatWalk = [CCSprite spriteWithSpriteFrameName:@"boss_cat_walk_0.png"];
-        bossCatWalk.position = ccp(200, 160);
+        bossCatWalk.position = ccp(200, 276);
         if (![FTMUtil sharedInstance].isRetinaDisplay) {
             bossCatWalk.scale = NON_RETINA_SCALE;
         }
@@ -151,50 +181,70 @@ GirlMouseEngineMenu15 *gLayer15;
         
         [self HeroDrawing];
         
-//        for(int i=0;i<cheeseCount;i++){
-//            cheeseCollectedChe[i]=YES;
-//            cheeseSprite2[i]=[CCSprite spriteWithFile:@"cheeseGlow.png"];
-//            cheeseSprite2[i].position=[gameFunc getCheesePosition:1 gameLevel:motherLevel iValue:i];
-//            [self addChild:cheeseSprite2[i] z:9];
-//            
-//            cheeseSprite[i]=[CCSprite spriteWithFile:@"Cheese.png"];
-//            cheeseSprite[i].position=[gameFunc getCheesePosition:1 gameLevel:motherLevel iValue:i];
-//            [self addChild:cheeseSprite[i] z:9];
-//            if (![FTMUtil sharedInstance].isRetinaDisplay) {
-//                cheeseSprite[i].scale = NON_RETINA_SCALE;
-//                cheeseSprite2[i].scale = NON_RETINA_SCALE;
-//                
-//            }
-//        }
-//        
         CCSprite *platformSprite=[CCSprite spriteWithFile:@"move_platform3.png"];
-        platformSprite.position = ccp(230,325);
+        platformSprite.position = ccp(230,441);
         if (![FTMUtil sharedInstance].isRetinaDisplay) {
             platformSprite.scale = NON_RETINA_SCALE;
         }
         [self addChild:platformSprite z:1];
         
         platformSprite=[CCSprite spriteWithFile:@"move_platform3.png"];
-        platformSprite.position=ccp(550,325);
+        platformSprite.position=ccp(550,441);
         if (![FTMUtil sharedInstance].isRetinaDisplay) {
             platformSprite.scale = NON_RETINA_SCALE;
         }
         [self addChild:platformSprite z:1];
         
         CCSprite *sPlatformSprite=[CCSprite spriteWithFile:@"sticky_platform.png"];
-        sPlatformSprite.position=ccp(550,315);
+        sPlatformSprite.position=ccp(550,431);
         if (![FTMUtil sharedInstance].isRetinaDisplay) {
             sPlatformSprite.scale = NON_RETINA_SCALE;
         }
         [self addChild:sPlatformSprite z:10];
         
         sPlatformSprite=[CCSprite spriteWithFile:@"sticky_platform.png"];
-        sPlatformSprite.position=ccp(230,315);
+        sPlatformSprite.position=ccp(230,431);
         if (![FTMUtil sharedInstance].isRetinaDisplay) {
             sPlatformSprite.scale = NON_RETINA_SCALE;
         }
         [self addChild:sPlatformSprite z:10];
         
+        CCSprite *slapSprite=[CCSprite spriteWithFile:@"slap.png"];
+        slapSprite.position=ccp(150,188);
+        if (![FTMUtil sharedInstance].isRetinaDisplay) {
+            slapSprite.scale=0.3;
+        }else{
+            slapSprite.scale=0.6;
+        }
+        [self addChild:slapSprite z:2];
+        
+        slapSprite=[CCSprite spriteWithFile:@"slap.png"];
+        slapSprite.position=ccp(450,188);
+        if (![FTMUtil sharedInstance].isRetinaDisplay) {
+            slapSprite.scale=0.3;
+        }else{
+            slapSprite.scale=0.6;
+        }
+        [self addChild:slapSprite z:1];
+        
+        slapSprite=[CCSprite spriteWithFile:@"slap.png"];
+        slapSprite.position=ccp(750,188);
+        if (![FTMUtil sharedInstance].isRetinaDisplay) {
+            slapSprite.scale = 0.3;
+        }else{
+            slapSprite.scale = 0.6;
+        }
+        [self addChild:slapSprite z:1];
+        
+        slapSprite=[CCSprite spriteWithFile:@"slap.png"];
+        slapSprite.position=ccp(1050,188);
+        if (![FTMUtil sharedInstance].isRetinaDisplay) {
+            slapSprite.scale = 0.3;
+        }else{
+            slapSprite.scale = 0.6;
+        }
+        [self addChild:slapSprite z:1];
+
         for(int i=0;i<25;i++){
             heroPimpleSprite[i]=[CCSprite spriteWithFile:@"dotted.png"];
             heroPimpleSprite[i].position=ccp(-100,160);
@@ -208,17 +258,114 @@ GirlMouseEngineMenu15 *gLayer15;
         //===================================================================
         dotSprite=[CCSprite spriteWithFile:@"dotted.png"];
         dotSprite.position=ccp(487,280);
-        dotSprite.scale=0.2;
+        dotSprite.scale = 0.2;
         [self addChild:dotSprite z:10];
         [self addHudLayerToTheScene];
         [self starCheeseSpriteInitilized];
-        [self schedule:@selector(moveBossCatLeftAndRight) interval:0.02];
+        [self schedule:@selector(moveBossCatLeftAndRight) interval:0.01];
         [self scheduleUpdate];
-        
     }
     return self;
 }
 
+-(void) makeKeyAnimation{
+    DB *db = [DB new];
+    int currentLvl = [[db getSettingsFor:@"girlCurrLvl"] intValue];
+    if(currentLvl <= motherLevel){
+        [db setSettingsFor:@"CurrentLevel" withValue:[NSString stringWithFormat:@"%d", 16]];
+        [db setSettingsFor:@"girlCurrLvl" withValue:[NSString stringWithFormat:@"%d", 16]];
+    }
+    [db release];
+    girlKeyBatch = [CCSpriteBatchNode batchNodeWithFile:@"keyAnimation.png"];
+    [self addChild:girlKeyBatch];
+    
+    CCSprite *girlCage = [CCSprite spriteWithSpriteFrameName:@"key_0.png"];
+    if (bossCatTurn.flipX == 1) {
+        girlCage.position = ccp(bossCatKnocked.position.x - 80, bossCatKnocked.position.y + 30);
+    }else{
+        girlCage.position = ccp(bossCatKnocked.position.x + 80, bossCatKnocked.position.y + 30);
+    }
+    
+    if (![FTMUtil sharedInstance].isRetinaDisplay) {
+        girlCage.scale = NON_RETINA_SCALE;
+    }
+    [girlKeyBatch addChild:girlCage];
+    
+    NSMutableArray *cageFrames = [NSMutableArray array];
+    for(int i = 0; i <= 9; i++) {
+        CCSpriteFrame *frame = [cache spriteFrameByName:[NSString stringWithFormat:@"key_%d.png",i]];
+        [cageFrames addObject:frame];
+    }
+    CGPoint point = CGPointMake(390, 556);
+    int x = MAX(point.x, winSize.width / 2);
+    int y = MAX(point.y, winSize.height / 2);
+    x = MIN(x, (_tileMap.mapSize.width * _tileMap.tileSize.width)
+            - winSize.width / 2);
+    y = MIN(y, (_tileMap.mapSize.height * _tileMap.tileSize.height)
+            - winSize.height/2);
+    CGPoint actualPosition = ccp(x, y);
+    if(x<=winSize.width/2)
+        screenHeroPosX=point.x;
+    else if(x>=_tileMap.mapSize.width-winSize.width/2)
+        screenHeroPosX=(point.x-x)+winSize.width/2;
+    if(y<=winSize.height/2)
+        screenHeroPosY=point.y;
+    else if(y>=_tileMap.mapSize.height-winSize.height/2)
+        screenHeroPosY=(point.y-y)+winSize.height/2;
+    
+    
+    CGPoint centerOfView = ccp(winSize.width/2, winSize.height/2);
+    CGPoint viewPoint = ccpSub(centerOfView, actualPosition);
+    
+    CCDelayTime *delay = [CCDelayTime actionWithDuration:1.2];
+    CCMoveTo *move1 = [CCMoveTo actionWithDuration:2 position:viewPoint];
+    CCSequence *seq1 = [CCSequence actions:delay,move1, nil];
+    [self runAction:seq1];
+    
+    CCCallFunc *animationDone = [CCCallFunc actionWithTarget:self selector:@selector(keyAnimationDone)];
+    CCMoveTo *move2 = [CCMoveTo actionWithDuration:2 position:CGPointMake(374, 463)];
+    CCSequence *seq2 = [CCSequence actions:delay,move2,animationDone, nil];
+    CCAnimation *cageAnim = [CCAnimation animationWithSpriteFrames:cageFrames delay:0.05f];
+    [girlCage runAction:[CCRepeatForever actionWithAction: [CCAnimate actionWithAnimation:cageAnim]]];
+    [girlCage runAction:seq2];
+}
+
+-(void) keyAnimationDone{
+    girlKeyBatch.visible = NO;
+    girlCageBatch.visible = NO;
+    strongMouse.position = ccp(390, 474);
+    CCMoveTo *move = [CCMoveTo actionWithDuration:1.2 position:CGPointMake(600, 480)];
+    CCCallFunc *animationDone = [CCCallFunc actionWithTarget:self selector:@selector(strongMouseMoveDone)];
+    CCSequence *seq = [CCSequence actions:move, animationDone, nil];
+    strongMouse.visible = YES;
+    [strongMouse runAction:seq];
+}
+
+-(void) strongMouseMoveDone{
+    [FTMUtil sharedInstance].mouseClicked = FTM_STRONG_MICE_ID;
+    [[CCDirector sharedDirector] replaceScene:[LoadingLayer scene:16 currentMice:FTM_STRONG_MICE_ID]];
+}
+
+-(void) makeCageAnimation{
+    girlCageBatch = [CCSpriteBatchNode batchNodeWithFile:@"strongCageAnim.png"];
+    [self addChild:girlCageBatch];
+    
+    CCSprite *girlCage = [CCSprite spriteWithSpriteFrameName:@"sm_cage_0.png"];
+    girlCage.position = ccp(390, 556);
+    girlCage.visible = YES;
+    if (![FTMUtil sharedInstance].isRetinaDisplay) {
+        girlCage.scale = NON_RETINA_SCALE;
+    }
+    [girlCageBatch addChild:girlCage];
+    
+    NSMutableArray *cageFrames = [NSMutableArray array];
+    for(int i = 0; i <= 27; i++) {
+        CCSpriteFrame *frame = [cache spriteFrameByName:[NSString stringWithFormat:@"sm_cage_%d.png",i]];
+        [cageFrames addObject:frame];
+    }
+    CCAnimation *cageAnim = [CCAnimation animationWithSpriteFrames:cageFrames delay:0.05f];
+    [girlCage runAction:[CCRepeatForever actionWithAction: [CCAnimate actionWithAnimation:cageAnim]]];
+}
 -(void) makeCatKnockedAnimation{
     bossCatKnocked.visible = YES;
     bossCatKnocked.position = bossCatWalk.position;
@@ -240,62 +387,201 @@ GirlMouseEngineMenu15 *gLayer15;
     CCAnimation *catKnockedAnim2 = [CCAnimation animationWithSpriteFrames:catKnockedFrames delay:0.07f];
     CCAnimate *animation2 = [CCAnimate actionWithAnimation:catKnockedAnim2];
     catKnockedAnimSeq = [CCSequence actions:animation1,animation2,animationDone, nil];
+    if (knockoutCount == 3) {
+        [self makeKeyAnimation];
+    }
     [bossCatKnocked runAction: catKnockedAnimSeq];
 }
--(void) catAnimationDone{
-    bossCatWalk.visible = YES;
-    bossCatKnocked.visible = NO;
-    isCatKnockedOut = NO;
+
+-(void) makeCatTurnAnimation{
+    
+    if (isTurnAnimation) {
+        [bossCatTurn removeFromParentAndCleanup:YES];
+        bossCatTurn = [CCSprite spriteWithSpriteFrameName:@"boss_cat_turn_0.png"];
+        bossCatTurn.position = bossCatWalk.position;
+        if (bossCatDirection == 1) {
+            bossCatTurn.flipX = 1;
+        }else{
+            bossCatTurn.flipX = 0;
+        }
+        if (![FTMUtil sharedInstance].isRetinaDisplay) {
+            bossCatTurn.scale = NON_RETINA_SCALE;
+        }
+        [bossCatTurnBatch addChild:bossCatTurn];
+        
+        NSMutableArray *catKnockedFrames = [NSMutableArray array];
+        for(int i = 1; i <= 11; i++) {
+            CCSpriteFrame *frame = [cache spriteFrameByName:[NSString stringWithFormat:@"boss_cat_turn_%d.png",i]];
+            [catKnockedFrames addObject:frame];
+        }
+        CCAnimation *catKnockedAnim1 = [CCAnimation animationWithSpriteFrames:catKnockedFrames delay:0.07f];
+        CCAnimate *animation1 = [CCAnimate actionWithAnimation:catKnockedAnim1];
+        
+        CCCallFunc *animationDone = [CCCallFunc actionWithTarget:self selector:@selector(catTurnAnimationDone)];
+        CCSequence *animSeq = [CCSequence actions:animation1,animationDone, nil];
+        
+        [bossCatTurn runAction: animSeq];
+        
+    }
 }
+
+-(void) catTurnAnimationDone{
+    isTurnAnimation = NO;
+    bossCatTurn.visible = NO;
+    bossCatWalk.visible = YES;
+    if (bossCatDirection == 0) {
+        bossCatWalk.flipX = 0;
+    }else{
+        bossCatWalk.flipX = 1;
+    }
+}
+-(void) catAnimationDone{
+    if(knockoutCount == 3){
+        NSMutableArray *catKnockedFrames = [NSMutableArray array];
+        for(int i = 0; i <= 29; i++) {
+            CCSpriteFrame *frame = [cache spriteFrameByName:[NSString stringWithFormat:@"boss_cat_knocked out2_%d.png",i]];
+            [catKnockedFrames addObject:frame];
+        }
+        CCAnimation *catKnockedAnim2 = [CCAnimation animationWithSpriteFrames:catKnockedFrames delay:0.07f];
+        CCAnimate *animation2 = [CCAnimate actionWithAnimation:catKnockedAnim2];
+        
+        catKnockedAnimSeq = [CCSequence actions:animation2, nil];
+        [bossCatKnocked runAction: [CCRepeatForever actionWithAction:catKnockedAnimSeq]];
+        
+    }else{
+        bossCatWalk.visible = YES;
+        bossCatKnocked.visible = NO;
+        isCatKnockedOut = NO;
+    }}
 -(void) checkCatCallision{
     
-//    CGRect catRect;
-//    if (bossCatWalk.flipX == 0) {
-//      catRect = CGRectMake(bossCatWalk.position.x+ 40, bossCatWalk.position.y, 15, 5);
-//    }else{
-//        catRect = CGRectMake(bossCatWalk.position.x, bossCatWalk.position.y , 15, 5);
-//    }
-//    
-//    CGRect heroRect = CGRectMake(heroSprite.position.x, heroSprite.position.y, 20, 10);
-//    if (CGRectContainsRect(heroRect, catRect)) {
-//        NSLog(@"Bhai cat is knocked.... heree");
-//    }
+    if (knockoutCount == 3) {
+        // cat is knocked out.
+        return;
+        
+    }
+    CGRect catRect;
+    if (bossCatWalk.flipX == 0) {
+      catRect = CGRectMake(bossCatWalk.position.x, bossCatWalk.position.y, bossCatWalk.contentSize.width* 0.3, 5);
+    }else{
+        catRect = CGRectMake(bossCatWalk.position.x, bossCatWalk.position.y, bossCatWalk.contentSize.width* 0.3, 5);
+    }
+    
+    CGRect heroRect = CGRectMake(heroSprite.position.x, heroSprite.position.y, heroSprite.contentSize.width/2, heroSprite.contentSize.height/2);
+    
     int heroX = heroSprite.position.x;
     int heroY = heroSprite.position.y;
     int catX = bossCatWalk.position.x;
-    if (bossCatWalk.flipX == 0) {
-        catX = catX+80;
+    if (bossCatWalk.flipX == 0 && heroSprite.flipX == 0) {
+        catX = catX+40;
+    }
+    if (bossCatWalk.flipX == 0 && heroSprite.flipX == 1) {
+        catX = catX+60;
     }
     int catY = bossCatWalk.position.y;
-    if (!isCatKnockedOut) {
-        if (heroX > (catX - 60) && heroX < (catX-20)  && heroY > (catY +10) && heroY < (catY + 20) )  {
-            NSLog(@"Bhai cat is knocked.... heree");
+    if (!isCatKnockedOut && !CGRectIsNull(CGRectIntersection(catRect, heroRect))) {
+
+        gameFunc.trappedChe = YES;
+        heroTrappedChe=YES;
+        heroSprite.visible=NO;
+        heroStandChe=NO;
+        heroRunSprite.visible=NO;
+    }
+    else if (!isCatKnockedOut) {
+        if (heroX > (catX - 60) && heroX < catX  && heroY > (catY +10) && heroY < (catY + 20) )  {
+            knockoutCount ++;
+            jumpingChe = NO;
+            runningChe = NO;
+            heroStandChe = NO;
+            landingChe = NO;
             isCatKnockedOut = YES;
             bossCatWalk.visible = NO;
-        
+            [self moveMiceAndPlatform];
             bossCatKnocked.visible = YES;
             [self makeCatKnockedAnimation];
         }
     }
     
 }
+
+-(void) moveMiceAndPlatform{
+    heroSprite.visible = YES;
+
+    CCCallFunc *animationDone = [CCCallFunc actionWithTarget:self selector:@selector(miceMoveMentDone)];
+    CGPoint point;
+    if (!forwardChe) {
+        point = CGPointMake(heroSprite.position.x + 130, 266);
+    }else{
+        point = CGPointMake(heroSprite.position.x  - 130 - heroForwardX, 266);
+    }
+    platformX = point.x;
+    platformY = point.y;
+    
+    
+    CCJumpTo *jump = [CCJumpTo actionWithDuration:1 position:CGPointMake(point.x , point.y) height:50 jumps:1];
+    if (forwardChe) {
+        jump = [CCJumpTo actionWithDuration:1 position:CGPointMake(point.x + heroForwardX, point.y) height:50 jumps:1];
+    }
+    CCSequence *seq = [CCSequence actions:jump, animationDone, nil];
+    [heroSprite runAction:seq];
+    
+    int x = MAX(point.x, winSize.width / 2);
+    int y = MAX(point.y, winSize.height / 2);
+    x = MIN(x, (_tileMap.mapSize.width * _tileMap.tileSize.width)
+            - winSize.width / 2);
+    y = MIN(y, (_tileMap.mapSize.height * _tileMap.tileSize.height)
+            - winSize.height/2);
+    CGPoint actualPosition = ccp(x, y);
+    if(x<=winSize.width/2)
+        screenHeroPosX=point.x;
+    else if(x>=_tileMap.mapSize.width-winSize.width/2)
+        screenHeroPosX=(point.x-x)+winSize.width/2;
+    if(y<=winSize.height/2)
+        screenHeroPosY=point.y;
+    else if(y>=_tileMap.mapSize.height-winSize.height/2)
+        screenHeroPosY=(point.y-y)+winSize.height/2;
+    
+
+    CGPoint centerOfView = ccp(winSize.width/2, winSize.height/2);
+    CGPoint viewPoint = ccpSub(centerOfView, actualPosition);
+    
+    CCMoveTo *move = [CCMoveTo actionWithDuration:1 position:viewPoint];
+    [self runAction:move];
+    
+}
+-(void) miceMoveMentDone{
+    jumpingChe = NO;
+    runningChe = NO;
+    heroStandChe = YES;
+    landingChe = NO;
+    gameFunc.stickyChe=NO;
+    if (stickyJumpValue == 1) {
+        stickyJumpValue = 0;
+    }
+}
 -(void) moveBossCatLeftAndRight{
     // 1 for left movement. 0 for right movement.
-    if (isCatKnockedOut) {
+    if (isCatKnockedOut || isTurnAnimation) {
         return;
     }
     if (bossCatDirection == 0 && bossCatWalk.position.x > 700) {
-        bossCatWalk.flipX = 1;
+        bossCatWalk.visible = NO;
         bossCatDirection = 1;
-    }else if(bossCatWalk.position.x < 150){
+        isTurnAnimation = YES;
+        [self makeCatTurnAnimation];
+    }else if(bossCatDirection == 1 && bossCatWalk.position.x < 150){
+        bossCatWalk.visible = NO;
         bossCatDirection = 0;
-        bossCatWalk.flipX = 0;
+        isTurnAnimation = YES;
+        [self makeCatTurnAnimation];
     }
     
-    if (bossCatDirection == 1) {
-        bossCatWalk.position = ccp(bossCatWalk.position.x - 2 , bossCatWalk.position.y);
-    }else{
-        bossCatWalk.position = ccp(bossCatWalk.position.x + 2 , bossCatWalk.position.y);
+    if (!isTurnAnimation) {
+        if (bossCatDirection == 1) {
+            bossCatWalk.position = ccp(bossCatWalk.position.x - 2 , bossCatWalk.position.y);
+        }else{
+            bossCatWalk.position = ccp(bossCatWalk.position.x + 2 , bossCatWalk.position.y);
+        }
     }
 }
 -(void)initValue{
@@ -423,24 +709,14 @@ GirlMouseEngineMenu15 *gLayer15;
             screenShowY2=platformY;
         }
     }
-    
-    
-    int fValue=(!forwardChe?0:30);
-    if(heroSprite.position.x>=920+fValue &&heroSprite.position.y<=330&&!mouseWinChe){
-        if(runningChe||heroStandChe){
-            mouseWinChe=YES;
-            heroStandChe=YES;
-            runningChe=NO;
-            heroRunSprite.visible=NO;
-        }
-    }else if(gameFunc.trappedChe){
+    if(gameFunc.trappedChe){
         heroTrappedChe=YES;
         heroSprite.visible=NO;
         heroStandChe=NO;
         heroRunSprite.visible=NO;
     }
     if(gameFunc.trappedChe){
-        if(heroTrappedChe&&heroTrappedCount ==100 &&heroTrappedMove==0){
+        if(heroTrappedChe&&heroTrappedCount ==50 &&heroTrappedMove==0){
             [self showLevelFailedUI:motherLevel];
         }
     }
@@ -584,12 +860,12 @@ GirlMouseEngineMenu15 *gLayer15;
             
             mouseDragSprite.visible=NO;
             heroTrappedSprite = [CCSprite spriteWithSpriteFrameName:@"girl_trapped1.png"];
-            heroTrappedSprite.scale=0.7;
+            heroTrappedSprite.scale = GIRL_SCALE;
             if(!forwardChe)
-                heroTrappedSprite.position = ccp(platformX, platformY+15);
+                heroTrappedSprite.position = heroSprite.position;
             else
-                heroTrappedSprite.position = ccp(platformX+heroForwardX, platformY+15);
-            [spriteSheet addChild:heroTrappedSprite];
+                heroTrappedSprite.position = ccp(heroSprite.position.x+heroForwardX, heroSprite.position.y+15);
+            [spriteSheet addChild:heroTrappedSprite z:9999];
             
             NSMutableArray *animFrames2 = [NSMutableArray array];
             for(int i = 1; i < 8; i++) {
@@ -659,7 +935,7 @@ GirlMouseEngineMenu15 *gLayer15;
 }
 -(void) addHudLayerToTheScene{
     hudLayer = [[HudLayer alloc] init];
-    hudLayer.tag = 2;
+    hudLayer.tag = 15;
     [gLayer15 addChild: hudLayer z:2000];
     [hudLayer updateNoOfCheeseCollected:0 andMaxValue:[cheeseSetValue[motherLevel-1] intValue]];
 }
@@ -1018,10 +1294,11 @@ GirlMouseEngineMenu15 *gLayer15;
         
         heroPimpleSprite[i].position=ccp(xx,yy);
     }
+    int y = gameFunc.stickyChe? -11: 11;
     if(!forwardChe)
-        mouseDragSprite.position=ccp(platformX,platformY-11);
+        mouseDragSprite.position=ccp(platformX,platformY-y);
     else
-        mouseDragSprite.position=ccp(platformX+heroForwardX,platformY-11);
+        mouseDragSprite.position=ccp(platformX+heroForwardX,platformY-y);
     
     mouseDragSprite.rotation=(180-angle)-170;
     mouseDragSprite.scale=MICE_TAIL_SCALE/2+(jumpPower/40.0);
@@ -1062,7 +1339,7 @@ GirlMouseEngineMenu15 *gLayer15;
     
     CGPoint centerOfView = ccp(winSize.width/2, winSize.height/2);
     CGPoint viewPoint = ccpSub(centerOfView, actualPosition);
-    self.position = viewPoint;
+    self.position = ccp(viewPoint.x, viewPoint.y - 15);
     
     
 }
@@ -1073,7 +1350,9 @@ GirlMouseEngineMenu15 *gLayer15;
     
     CGPoint prevLocation = [myTouch previousLocationInView: [myTouch view]];
     prevLocation = [[CCDirector sharedDirector] convertToGL: prevLocation];
-    
+    if (knockoutCount == 3) {
+        return;
+    }
     if(!mouseWinChe&&!heroTrappedChe&&!screenMoveChe){
         
         int forwadeValue=(!forwardChe?0:heroForwardX);
@@ -1085,12 +1364,13 @@ GirlMouseEngineMenu15 *gLayer15;
                 heroStandChe=NO;
                 [self heroAnimationFunc:0 animationType:@"jump"];
                 mouseDragSprite.visible=YES;
+                int y = gameFunc.stickyChe ? -11:11;
                 if(!forwardChe){
-                    mouseDragSprite.position=ccp(platformX+10,platformY-11);
+                    mouseDragSprite.position=ccp(platformX+10,platformY-y);
                     mouseDragSprite.rotation=(180-0)-170;
                 }else{
                     mouseDragSprite.rotation=(180-180)-170;
-                    mouseDragSprite.position=ccp(platformX-10+heroForwardX,platformY-11);
+                    mouseDragSprite.position=ccp(platformX-10+heroForwardX,platformY-y);
                 }
                 startVect = b2Vec2(location.x, location.y);
                 activeVect = startVect - b2Vec2(location.x, location.y);
@@ -1120,7 +1400,9 @@ GirlMouseEngineMenu15 *gLayer15;
     UITouch *myTouch = [touches anyObject];
     CGPoint location = [myTouch locationInView:[myTouch view]];
     location = [[CCDirector sharedDirector] convertToGL:location];
-    
+    if (knockoutCount == 3) {
+        return;
+    }
     if(!jumpingChe&&!runningChe&&heroJumpLocationChe&&!mouseWinChe&&motherLevel!=1&&!heroTrappedChe&&!screenMoveChe){
         activeVect = startVect - b2Vec2(location.x, location.y);
         jumpAngle = fabsf( CC_RADIANS_TO_DEGREES( atan2f(-activeVect.y, activeVect.x)));
@@ -1132,6 +1414,10 @@ GirlMouseEngineMenu15 *gLayer15;
     UITouch *myTouch = [touches anyObject];
     CGPoint location = [myTouch locationInView:[myTouch view]];
     location = [[CCDirector sharedDirector] convertToGL:location];
+    if (knockoutCount == 3) {
+        return;
+    }
+
     if(!mouseWinChe&&!heroTrappedChe){
         if(!jumpingChe&&!runningChe&&heroJumpLocationChe&&!screenMoveChe){
             heroJumpLocationChe=NO;

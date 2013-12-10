@@ -59,7 +59,7 @@ GameEngine01Menu *layer01;
         cheeseSetValue= [[NSArray alloc] initWithObjects:@"5",@"5",@"5",@"5",@"5",@"5",@"5",@"5",@"5",@"5",nil];
         cheeseArrX=[[NSArray alloc] initWithObjects:@"0",@"20",@"0",@"20",@"10",nil];
         cheeseArrY=[[NSArray alloc] initWithObjects:@"0",@"0", @"-15", @"-15",@"-8",nil];
-        heroRunningStopArr=[[NSArray alloc] initWithObjects:@"80",@"80",@"80", @"40",@"140",@"80",@"80",@"80",@"80",nil];
+        heroRunningStopArr=[[NSArray alloc] initWithObjects:@"115",@"80",@"80", @"40",@"140",@"80",@"80",@"80",@"80",nil];
         
         gameFunc=[[GameFunc alloc] init];
         soundEffect=[[sound alloc] init];
@@ -89,13 +89,21 @@ GameEngine01Menu *layer01;
         if ([FTMUtil sharedInstance].isRetinaDisplay) {
             self.background.scale = 2;
         }
-        
         [self addChild:_tileMap z:-1 tag:1];
         
         cache = [CCSpriteFrameCache sharedSpriteFrameCache];
         [cache addSpriteFramesWithFile:@"mother_mouse_default.plist"];
+        [cache addSpriteFramesWithFile:@"doorLvl1Anim.plist"];
+        
         spriteSheet = [CCSpriteBatchNode batchNodeWithFile:@"mother_mouse_default.png"];
         [self addChild:spriteSheet z:10];
+        
+        doorSprite = [CCSprite spriteWithSpriteFrameName:@"lvl1door1.png"];
+        doorSprite.position = ccp(880, 317);
+        doorSprite.scaleX = [FTMUtil sharedInstance].isRetinaDisplay ? 1.46: 0.73;
+        doorSprite.scaleY = [FTMUtil sharedInstance].isRetinaDisplay ? 1.50: 0.75;
+        [self addChild:doorSprite];
+        
         
         heroRunSprite = [CCSprite spriteWithSpriteFrameName:@"mother_run01.png"];
         heroRunSprite.position = ccp(200, 200);
@@ -170,11 +178,6 @@ GameEngine01Menu *layer01;
         timeCheeseSprite.visible=NO;
         [layer01 addChild:timeCheeseSprite z:10];
         
-        
-        
-        
-        
-        
         cheeseCollectedAtlas = [[CCLabelAtlas labelWithString:@"0/3" charMapFile:@"numbers.png" itemWidth:15 itemHeight:20 startCharMap:'.'] retain];
         cheeseCollectedAtlas.position=ccp(422,292);
         cheeseCollectedAtlas.scale=0.8;
@@ -210,8 +213,22 @@ GameEngine01Menu *layer01;
         
         mouseTrappedBackground=[CCSprite spriteWithFile:@"mouse_trapped_background.png"];
         mouseTrappedBackground.position=ccp(240,160);
-        mouseTrappedBackground.visible=NO;
+        mouseTrappedBackground.visible = NO;
         [layer01 addChild:mouseTrappedBackground z:10];
+        
+        CCSprite *bed=[CCSprite spriteWithFile:@"bed.png"];
+        bed.position=ccp(75,240);
+        if ([FTMUtil sharedInstance].isRetinaDisplay) {
+            bed.scale = 1.4;
+        }
+        [self addChild:bed z:10000];
+        
+        CCSprite *lamp=[CCSprite spriteWithFile:@"lamp.png"];
+        lamp.position=ccp(180,270);
+        if ([FTMUtil sharedInstance].isRetinaDisplay) {
+            lamp.scale = 1.4;
+        }
+        [self addChild:lamp z:-1];
         
         CCMenuItem *aboutMenuItem = [CCMenuItemImage itemWithNormalImage:@"main_menu_button_1.png" selectedImage:@"main_menu_button_2.png" target:self selector:@selector(clickLevel:)];
         aboutMenuItem.tag=2;
@@ -433,27 +450,43 @@ GameEngine01Menu *layer01;
         }
     }
     if(motherLevel==1){
-        if(platformX>=850&&platformY<=170&&!mouseWinChe&&!heroTrappedChe){
+        if(heroRunSprite.position.x >=710&&platformY<=270&&!mouseWinChe&&!heroTrappedChe){
             if(runningChe||heroStandChe){
-                mouseWinChe=YES;
-                heroStandChe=YES;
-                runningChe=NO;
-                heroRunSprite.visible=NO;
+                if (doorSprite.tag != 100) {
+                    doorSprite.tag = 100;
+                    NSMutableArray *animFrames = [NSMutableArray array];
+                    for(int i = 1; i < 5; i++) {
+                        CCSpriteFrame *frame = [cache spriteFrameByName:[NSString stringWithFormat:@"lvl1door%d.png",i]];
+                        [animFrames addObject:frame];
+                    }
+                    CCAnimation *animation = [CCAnimation animationWithSpriteFrames:animFrames delay:0.2f];
+                    CCCallFunc *callback = [CCCallFunc actionWithTarget:self selector:@selector(doorAnimDone)];
+                    
+                    [doorSprite runAction:[CCSequence actions:[CCAnimate actionWithAnimation:animation], callback, nil]];
+                    
+                    
+                }
             }
         }
     }
 }
 
+-(void) doorAnimDone{
+    mouseWinChe=YES;
+    heroStandChe=YES;
+    runningChe=NO;
+    heroRunSprite.visible=NO;
+}
 -(void)starCheeseSpriteInitilized{
     for(int i=0;i<5;i++){
-        starSprite[i] = [CCSprite spriteWithSpriteFrameName:@"star2.png"];
+        starSprite[i] = [CCSprite spriteWithSpriteFrameName:@"starxxx2.png"];
         starSprite[i].scale=0.4;
         starSprite[i].position=ccp([gameFunc getCheesePosition:1 gameLevel:motherLevel iValue:i].x-12,[gameFunc getCheesePosition:1 gameLevel:motherLevel iValue:i].y+8);
         [spriteSheet addChild:starSprite[i]];
         
         NSMutableArray *animFrames3 = [NSMutableArray array];
         for(int j = 0; j <5; j++) {
-            CCSpriteFrame *frame = [cache spriteFrameByName:[NSString stringWithFormat:@"star%d.png",j+1]];
+            CCSpriteFrame *frame = [cache spriteFrameByName:[NSString stringWithFormat:@"starxxx%d.png",j+1]];
             [animFrames3 addObject:frame];
         }
         CCAnimation *animation2 = [CCAnimation animationWithSpriteFrames:animFrames3 delay:0.1f];
@@ -558,7 +591,7 @@ GameEngine01Menu *layer01;
                 heroWinSprite.position = ccp(870, platformY+5);
             else
                 heroWinSprite.position = ccp(870, platformY+5);
-            heroWinSprite.scale=0.8;
+            heroWinSprite.scale = MAMA_SCALE;
             [spriteSheet addChild:heroWinSprite];
             
             NSMutableArray *animFrames2 = [NSMutableArray array];
@@ -879,7 +912,6 @@ GameEngine01Menu *layer01;
                 heroSprite.visible=YES;
             }else if(autoJumpValue2 == 2&&gameFunc.autoJumpChe2){
                 gameFunc.autoJumpChe2=NO;
-                
             }
             landingChe=NO;
             heroJumpingAnimationCount=0;
@@ -988,7 +1020,7 @@ GameEngine01Menu *layer01;
     
     CGPoint centerOfView = ccp(winSize.width/2, winSize.height/2);
     CGPoint viewPoint = ccpSub(centerOfView, actualPosition);
-    self.position = viewPoint;
+    self.position = ccp(viewPoint.x, viewPoint.y - 60);
     
     
 }

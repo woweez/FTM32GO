@@ -32,6 +32,7 @@
 	GirlGameFunc *gameFunc;
     sound *soundEffect;
     b2World* world;
+    CCSprite *doorSprite;
 //    HudLayer * hudLayer;
     CGSize winSize;
 	GLESDebugDraw *m_debugDraw;

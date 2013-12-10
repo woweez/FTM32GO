@@ -54,6 +54,9 @@
 #import "GirlMouseEngine12.h"
 #import "GirlMouseEngine13.h"
 #import "GirlMouseEngine14.h"
+#import "BossCatLevel15A.h"
+#import "BossCatLevel15B.h"
+#import "BossCatLevel15C.h"
 #import "FTMUtil.h"
 #import "FTMConstants.h"
 
@@ -79,6 +82,7 @@ enum {
         [self addChild:colorLayer z:-1];
         
         soundEffect=[[sound alloc] init];
+        [soundEffect stopAllSoundEffects];
         [soundEffect PlayWinMusic];
         CGSize winSize = [CCDirector sharedDirector].winSize;
         scaleFactorX = winSize.width/480;
@@ -127,10 +131,17 @@ enum {
         [soundEffect button_1];
         [[CCDirector sharedDirector] replaceScene:[LevelScreen scene]];
     }];
+    
     [levelsMenuItem setScale:cScale];
     
-    if([FTMUtil sharedInstance].isRetinaDisplay && [FTMUtil sharedInstance].isIphone5){
-        levelsMenuItem.position = ccp(-4 *scaleFactorX, 11 *scaleFactorY);
+    if([FTMUtil sharedInstance].isRetinaDisplay){
+        [levelsMenuItem setScale:cScale/2];
+        if ([FTMUtil sharedInstance].isIphone5) {
+            levelsMenuItem.position = ccp(-5 *scaleFactorX, 11 *scaleFactorY);
+        }else{
+            levelsMenuItem.position = ccp(-15 *scaleFactorX, 11 *scaleFactorY);
+        }
+        
     }else{
         levelsMenuItem.position = ccp(-14 *scaleFactorX, 11 *scaleFactorY);
     }
@@ -240,7 +251,7 @@ enum {
             [[CCDirector sharedDirector] replaceScene:[GameEngine14 scene]];
             break;
         case 15:
-            
+            [[CCDirector sharedDirector] replaceScene:[BossCatLevel15C scene]];
             break;
             
         default:
@@ -294,7 +305,7 @@ enum {
             [[CCDirector sharedDirector] replaceScene:[StrongMouseEngine14 scene]];
             break;
         case 15:
-            
+            [[CCDirector sharedDirector] replaceScene:[BossCatLevel15B scene]];
             break;
             
         default:
@@ -349,7 +360,7 @@ enum {
             [[CCDirector sharedDirector] replaceScene:[GirlMouseEngine14 scene]];
             break;
         case 15:
-            
+            [[CCDirector sharedDirector] replaceScene:[BossCatLevel15A scene]];
             break;
             
         default:
@@ -369,43 +380,48 @@ enum {
 }
 
 -(void) playStarImageAnimationAgainstLevel: (int) level{
-   // get the appropriate star image id here from the level: use db to get that. for now just 1;
+    // get the appropriate star image id here from the level: use db to get that. for now just 1;
     level = [self getAppropriateStarLevel:level];
-    CCSpriteFrameCache *cache = [CCSpriteFrameCache sharedSpriteFrameCache];
-    [cache addSpriteFramesWithFile:[NSString stringWithFormat:@"star_%d_Anim.plist", level]];
-    CCSpriteBatchNode *spriteSheet = [CCSpriteBatchNode batchNodeWithFile:[NSString stringWithFormat:@"star_%d_Anim.png", level]];
+    
+    CCSprite *starSprite = [CCSprite spriteWithFile:@"no_starBg.png"];
+    starSprite.scale = NON_RETINA_SCALE;
+    
+    starSprite.position = ccp(240 *scaleFactorX, 220 *scaleFactorY);
+    [self addChild:starSprite];
+    CCSpriteFrameCache *cache = [CCSpriteFrameCache
+                                 sharedSpriteFrameCache];
+    [cache addSpriteFramesWithFile:@"starAnimation.plist"];
+    CCSpriteBatchNode *spriteSheet = [CCSpriteBatchNode batchNodeWithFile:@"starAnimation.png"];
     [self addChild:spriteSheet z:10];
-    
-    CCSprite *starSprite = [CCSprite spriteWithSpriteFrameName:[NSString stringWithFormat:@"%d_star_0.png", level]];
-    if ([FTMUtil sharedInstance].isRetinaDisplay) {
-        starSprite.scale = 2;
+    for (int i = 0 ; i< level; i++) {
+        
+        CCSprite *starSprite = [CCSprite spriteWithSpriteFrameName:@"ss_1.png"];
+        starSprite.scale = NON_RETINA_SCALE;
+        if (i == 0) {
+            int x = [FTMUtil sharedInstance].isIphone5 ? 193: 185;
+            starSprite.position = ccp(x *scaleFactorX, 218 *scaleFactorY);
+        }
+        else if (i == 1) {
+            int x = [FTMUtil sharedInstance].isIphone5 ? 243: 245;
+            starSprite.position = ccp(x *scaleFactorX, 218 *scaleFactorY);
+        }
+        else{
+            int x = [FTMUtil sharedInstance].isIphone5 ? 295: 305;
+            starSprite.position = ccp(x *scaleFactorX, 218 *scaleFactorY);
+        }
+        [spriteSheet addChild:starSprite];
+        
+        int length = 24;
+        
+        NSMutableArray *animFrames = [NSMutableArray array];
+        for(int i = 1; i <= length; i++) {
+            CCSpriteFrame *frame = [cache spriteFrameByName:[NSString stringWithFormat:@"ss_%d.png",i]];
+            [animFrames addObject:frame];
+        }
+        CCAnimation *animation = [CCAnimation animationWithSpriteFrames:animFrames delay:0.06f];
+        [starSprite runAction:[CCSequence actions:[CCDelayTime actionWithDuration:i*0.5],[CCAnimate actionWithAnimation:animation],nil]];
+        
     }
-
-    if (level == 3) {
-       starSprite.position = ccp(231 *scaleFactorX, 220 *scaleFactorY);
-    }
-    else{
-        starSprite.position = ccp(212 *scaleFactorX, 220 *scaleFactorY);
-    }
-    [spriteSheet addChild:starSprite];
-    
-    int length = 0;
-    
-    if (level == 1) {
-        length = 27;
-    }else if (level == 2){
-        length = 34;
-    }else{
-        length = 44;
-    }
-    
-    NSMutableArray *animFrames = [NSMutableArray array];
-    for(int i = 0; i <= length; i++) {
-        CCSpriteFrame *frame = [cache spriteFrameByName:[NSString stringWithFormat:@"%d_star_%d.png",level,i]];
-        [animFrames addObject:frame];
-    }
-    CCAnimation *animation = [CCAnimation animationWithSpriteFrames:animFrames delay:0.06f];
-    [starSprite runAction:[CCAnimate actionWithAnimation:animation]];
 }
 
 -(int) getAppropriateStarLevel:(int) count{

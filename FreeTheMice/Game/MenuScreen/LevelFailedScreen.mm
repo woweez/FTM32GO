@@ -52,6 +52,9 @@
 #import "GirlMouseEngine12.h"
 #import "GirlMouseEngine13.h"
 #import "GirlMouseEngine14.h"
+#import "BossCatLevel15A.h"
+#import "BossCatLevel15B.h"
+#import "BossCatLevel15C.h"
 #import "DB.h"
 #import "FTMConstants.h"
 #import "sound.h"
@@ -72,6 +75,7 @@
         [self addChild:colorLayer z:-1];
         
         soundEffect=[[sound alloc] init];
+        [soundEffect stopAllSoundEffects];
         [soundEffect playLoseMusic];
         CGSize winSize = [CCDirector sharedDirector].winSize;
         scaleFactorX = winSize.width/480;
@@ -231,7 +235,7 @@
             [[CCDirector sharedDirector] replaceScene:[GameEngine14 scene]];
             break;
         case 15:
-            
+            [[CCDirector sharedDirector] replaceScene:[BossCatLevel15C scene]];
             break;
             
         default:
@@ -285,7 +289,7 @@
             [[CCDirector sharedDirector] replaceScene:[StrongMouseEngine14 scene]];
             break;
         case 15:
-            
+            [[CCDirector sharedDirector] replaceScene:[BossCatLevel15B scene]];
             break;
             
         default:
@@ -340,7 +344,7 @@
             [[CCDirector sharedDirector] replaceScene:[GirlMouseEngine14 scene]];
             break;
         case 15:
-            
+            [[CCDirector sharedDirector] replaceScene:[BossCatLevel15A scene]];
             break;
             
         default:

@@ -34,6 +34,14 @@
 #define frandom (float)arc4random()/UINT64_C(0x100000000)
 #define frandom_range(low,high) ((high-low)*frandom)+low
 
+//Game Center.
+#define kHighScoreLeaderboardCategory @"ftm_leader"
+#define kFtmFirstAchievementCategory @"ftm_achievements"
+#define kFtm100CheeseCategory @"ftm_achievements"
+#define kFtm500CheeseCategory @"ftm_achievements_buycheese"
+#define kFtm1000CheeseCategory @"ftm_achievements_buy1000cheese"
+#define kFtmVisitStoreCategory @ "ftm_achievements_credits"
+#define kFtmEarnStarsCategory @ "ftm_achievements_earnStars"
 
 
 

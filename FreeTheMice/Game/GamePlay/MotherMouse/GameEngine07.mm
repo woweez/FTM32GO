@@ -290,7 +290,7 @@ GameEngine07Menu *layer07;
         if (![FTMUtil sharedInstance].isRetinaDisplay) {
             slapSprite.scale = 0.3;
         }else{
-            slapSprite.scaleX = 0.6;
+            slapSprite.scale = 0.6;
         }
         [self addChild:slapSprite z:2];
         
@@ -299,7 +299,7 @@ GameEngine07Menu *layer07;
         if (![FTMUtil sharedInstance].isRetinaDisplay) {
             slapSprite.scale = 0.3;
         }else{
-            slapSprite.scaleX = 0.6;
+            slapSprite.scale = 0.6;
         }
         [self addChild:slapSprite z:1];
         
@@ -308,7 +308,7 @@ GameEngine07Menu *layer07;
         if (![FTMUtil sharedInstance].isRetinaDisplay) {
             slapSprite.scale = 0.3;
         }else{
-            slapSprite.scaleX = 0.6;
+            slapSprite.scale = 0.6;
         }
         [self addChild:slapSprite z:1];
         
@@ -317,7 +317,7 @@ GameEngine07Menu *layer07;
         if (![FTMUtil sharedInstance].isRetinaDisplay) {
             slapSprite.scale = 0.3;
         }else{
-            slapSprite.scaleX = 0.6;
+            slapSprite.scale = 0.6;
         }
         [self addChild:slapSprite z:1];
         
@@ -796,14 +796,14 @@ GameEngine07Menu *layer07;
 
 -(void)starCheeseSpriteInitilized{
     for(int i=0;i<5;i++){
-        starSprite[i] = [CCSprite spriteWithSpriteFrameName:@"star2.png"];
+        starSprite[i] = [CCSprite spriteWithSpriteFrameName:@"starxxx2.png"];
         starSprite[i].scale=0.4;
         starSprite[i].position=ccp([gameFunc getCheesePosition:1 gameLevel:motherLevel iValue:i].x-12,[gameFunc getCheesePosition:1 gameLevel:motherLevel iValue:i].y+8);
         [spriteSheet addChild:starSprite[i]];
         
         NSMutableArray *animFrames3 = [NSMutableArray array];
         for(int j = 0; j <5; j++) {
-            CCSpriteFrame *frame = [cache spriteFrameByName:[NSString stringWithFormat:@"star%d.png",j+1]];
+            CCSpriteFrame *frame = [cache spriteFrameByName:[NSString stringWithFormat:@"starxxx%d.png",j+1]];
             [animFrames3 addObject:frame];
         }
         CCAnimation *animation2 = [CCAnimation animationWithSpriteFrames:animFrames3 delay:0.1f];
@@ -924,7 +924,7 @@ GameEngine07Menu *layer07;
                 heroWinSprite.position = ccp(950, platformY+5);
             else
                 heroWinSprite.position = ccp(950, platformY+5);
-            heroWinSprite.scale=0.8;
+            heroWinSprite.scale=MAMA_SCALE;
             [spriteSheet addChild:heroWinSprite];
             
             NSMutableArray *animFrames2 = [NSMutableArray array];

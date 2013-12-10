@@ -32,6 +32,7 @@
     GameFunc *gameFunc;
     sound *soundEffect;
     Trigo *trigo;
+    CCSprite *doorSprite;
     b2World* world;
     CGSize winSize;
     CCSprite *pressImage;

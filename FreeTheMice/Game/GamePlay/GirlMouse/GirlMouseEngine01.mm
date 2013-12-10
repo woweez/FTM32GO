@@ -54,7 +54,7 @@ GirlMouseEngineMenu01 *gLayer01;
         cheeseSetValue= [[NSArray alloc] initWithObjects:@"5",@"5",@"5",@"5",@"5",@"5",@"5",@"5",@"5",@"5",@"5",@"5",@"5",@"5",@"5",@"5",nil];
         cheeseArrX=[[NSArray alloc] initWithObjects:@"0",@"20",@"0",   @"20",@"10",nil];
         cheeseArrY=[[NSArray alloc] initWithObjects:@"0",@"0", @"-15", @"-15",@"-8",nil];
-        heroRunningStopArr=[[NSArray alloc] initWithObjects:@"80",@"80",@"80", @"40",@"140",@"80",@"80",@"80",@"80",@"80",@"80",@"80",@"40",@"80",nil];
+        heroRunningStopArr=[[NSArray alloc] initWithObjects:@"115",@"80",@"80", @"40",@"140",@"80",@"80",@"80",@"80",@"80",@"80",@"80",@"40",@"80",nil];
         winSize = [CCDirector sharedDirector].winSize;
         gameFunc=[[GirlGameFunc alloc] init];
         soundEffect=[[sound alloc] init];
@@ -86,6 +86,31 @@ GirlMouseEngineMenu01 *gLayer01;
         
         cache = [CCSpriteFrameCache sharedSpriteFrameCache];
         [cache addSpriteFramesWithFile:@"girl_default.plist"];
+        
+        [cache addSpriteFramesWithFile:@"doorLvl1Anim.plist"];
+        
+        doorSprite = [CCSprite spriteWithSpriteFrameName:@"lvl1door1.png"];
+        doorSprite.position = ccp(880, 317);
+        doorSprite.scaleX = [FTMUtil sharedInstance].isRetinaDisplay ? 1.46: 0.73;
+        doorSprite.scaleY = [FTMUtil sharedInstance].isRetinaDisplay ? 1.50: 0.75;
+        [self addChild:doorSprite];
+        
+        CCSprite *bed=[CCSprite spriteWithFile:@"bed.png"];
+        bed.position=ccp(75,240);
+        bed.scale = 0.7;
+        if ([FTMUtil sharedInstance].isRetinaDisplay) {
+            bed.scale = 1.4;
+        }
+        [self addChild:bed z:10000];
+        
+        CCSprite *lamp=[CCSprite spriteWithFile:@"lamp.png"];
+        lamp.position=ccp(180,270);
+        lamp.scale = 0.7;
+        if ([FTMUtil sharedInstance].isRetinaDisplay) {
+            lamp.scale = 1.4;
+        }
+        
+        [self addChild:lamp z:-1];
         spriteSheet = [CCSpriteBatchNode batchNodeWithFile:@"girl_default.png"];
         
         [self addChild:spriteSheet z:10];
@@ -326,12 +351,21 @@ GirlMouseEngineMenu01 *gLayer01;
     
     
     int fValue=(!forwardChe?0:30);
-    if(heroSprite.position.x>=920+fValue &&heroSprite.position.y<=330&&!mouseWinChe){
+    if(heroSprite.position.x>=705+fValue &&heroSprite.position.y<=430&&!mouseWinChe){
         if(runningChe||heroStandChe){
-            mouseWinChe=YES;
-            heroStandChe=YES;
-            runningChe=NO;
-            heroRunSprite.visible=NO;
+            
+            if (doorSprite.tag != 100) {
+                doorSprite.tag = 100;
+                NSMutableArray *animFrames = [NSMutableArray array];
+                for(int i = 1; i < 5; i++) {
+                    CCSpriteFrame *frame = [cache spriteFrameByName:[NSString stringWithFormat:@"lvl1door%d.png",i]];
+                    [animFrames addObject:frame];
+                }
+                CCAnimation *animation = [CCAnimation animationWithSpriteFrames:animFrames delay:0.2f];
+                CCCallFunc *callback = [CCCallFunc actionWithTarget:self selector:@selector(doorAnimDone)];
+                
+                [doorSprite runAction:[CCSequence actions:[CCAnimate actionWithAnimation:animation], callback, nil]];
+            }
         }
     }else if(gameFunc.trappedChe){
         heroTrappedChe=YES;
@@ -347,7 +381,12 @@ GirlMouseEngineMenu01 *gLayer01;
     
     
 }
-
+-(void) doorAnimDone{
+    mouseWinChe=YES;
+    heroStandChe=YES;
+    runningChe=NO;
+    heroRunSprite.visible=NO;
+}
 -(void)starCheeseSpriteInitilized{
     for(int i=0;i<5;i++){
         starSprite[i] = [CCSprite spriteWithSpriteFrameName:@"star2.png"];
@@ -481,7 +520,7 @@ GirlMouseEngineMenu01 *gLayer01;
         
         if(heroWinCount==15){
             heroWinSprite = [CCSprite spriteWithSpriteFrameName:@"girl_win1.png"];
-            heroWinSprite.scale=0.6;
+            heroWinSprite.scale=GIRL_SCALE;
             if(!forwardChe)
                 heroWinSprite.position = ccp(platformX+30, platformY+5);
             else
@@ -867,7 +906,7 @@ GirlMouseEngineMenu01 *gLayer01;
     
     CGPoint centerOfView = ccp(winSize.width/2, winSize.height/2);
     CGPoint viewPoint = ccpSub(centerOfView, actualPosition);
-    self.position = viewPoint;
+    self.position = ccp(viewPoint.x, viewPoint.y - 60);
     
     
 }

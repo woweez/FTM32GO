@@ -1058,7 +1058,7 @@ GirlMouseEngineMenu12 *gLayer12;
         heroWinCount+=1;
         if(heroWinCount==15){
             heroWinSprite = [CCSprite spriteWithSpriteFrameName:@"girl_win1.png"];
-            heroWinSprite.scale=0.6;
+            heroWinSprite.scale=GIRL_SCALE;
             if(!forwardChe)
                 heroWinSprite.position = ccp(platformX+30, platformY+5);
             else

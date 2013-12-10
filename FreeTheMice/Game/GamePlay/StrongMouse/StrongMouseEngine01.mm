@@ -56,7 +56,7 @@ StrongMouseEngineMenu01 *sLayer01;
         cheeseSetValue= [[NSArray alloc] initWithObjects:@"5",@"5",@"5",@"5",@"5",@"5",@"5",@"5",@"5",@"5",@"5",@"5",@"5",@"5",@"5",@"5",nil];
         cheeseArrX=[[NSArray alloc] initWithObjects:@"0",@"20",@"0",   @"20",@"10",nil];
         cheeseArrY=[[NSArray alloc] initWithObjects:@"0",@"0", @"-15", @"-15",@"-8",nil];
-        heroRunningStopArr=[[NSArray alloc] initWithObjects:@"80",@"80",@"80", @"40",@"140",@"80",@"80",@"80",@"80",@"80",@"80",@"80",@"40",@"80",nil];
+        heroRunningStopArr=[[NSArray alloc] initWithObjects:@"115",@"80",@"80", @"40",@"140",@"80",@"80",@"80",@"80",@"80",@"80",@"80",@"40",@"80",nil];
         winSize = [[CCDirector sharedDirector] winSize];
         gameFunc=[[StrongGameFunc alloc] init];
         soundEffect=[[sound alloc] init];
@@ -97,6 +97,15 @@ StrongMouseEngineMenu01 *sLayer01;
         
         cache = [CCSpriteFrameCache sharedSpriteFrameCache];
         [cache addSpriteFramesWithFile:@"strong0_default.plist"];
+        [cache addSpriteFramesWithFile:@"doorLvl1Anim.plist"];
+        
+        doorSprite = [CCSprite spriteWithSpriteFrameName:@"lvl1door1.png"];
+        doorSprite.position = ccp(880, 317);
+        doorSprite.scaleX = [FTMUtil sharedInstance].isRetinaDisplay ? 1.46: 0.73;
+        doorSprite.scaleY = [FTMUtil sharedInstance].isRetinaDisplay ? 1.50: 0.75;
+        [self addChild:doorSprite];
+        
+        
         spriteSheet = [CCSpriteBatchNode batchNodeWithFile:@"strong0_default.png"];
         [self addChild:spriteSheet z:10];
         
@@ -113,7 +122,20 @@ StrongMouseEngineMenu01 *sLayer01;
         CCAnimation *animation = [CCAnimation animationWithSpriteFrames:animFrames delay:0.03f];
         [heroRunSprite runAction:[CCRepeatForever actionWithAction: [CCAnimate actionWithAnimation:animation]]];
         
+        CCSprite *bed=[CCSprite spriteWithFile:@"bed.png"];
+        bed.position=ccp(75,240);
+        if ([FTMUtil sharedInstance].isRetinaDisplay) {
+            bed.scale = 1.4;
+        }
+        [self addChild:bed z:10000];
         
+        CCSprite *lamp=[CCSprite spriteWithFile:@"lamp.png"];
+        lamp.position=ccp(180,270);
+        if ([FTMUtil sharedInstance].isRetinaDisplay) {
+            lamp.scale = 1.4;
+        }
+        [self addChild:lamp z:-1];
+
         
         heroPushSprite = [CCSprite spriteWithSpriteFrameName:@"push1.png"];
         heroPushSprite.scale = STRONG_SCALE;
@@ -302,9 +324,7 @@ StrongMouseEngineMenu01 *sLayer01;
 }
 
 -(void)switchFunc{
-    
-    
-    
+
 }
 
 -(void)level01{
@@ -324,14 +344,30 @@ StrongMouseEngineMenu01 *sLayer01;
     
     
     int fValue=(!forwardChe?0:30);
-    if(heroSprite.position.x>=880+fValue &&heroSprite.position.y<=430&&!mouseWinChe){
+    if(heroRunSprite.position.x>=700+fValue &&heroSprite.position.y<=530&&!mouseWinChe){
         if(runningChe||heroStandChe){
-            mouseWinChe=YES;
-            heroStandChe=YES;
-            runningChe=NO;
-            heroRunSprite.visible=NO;
+            
+            if (doorSprite.tag != 100) {
+                doorSprite.tag = 100;
+                NSMutableArray *animFrames = [NSMutableArray array];
+                for(int i = 1; i < 5; i++) {
+                    CCSpriteFrame *frame = [cache spriteFrameByName:[NSString stringWithFormat:@"lvl1door%d.png",i]];
+                    [animFrames addObject:frame];
+                }
+                CCAnimation *animation = [CCAnimation animationWithSpriteFrames:animFrames delay:0.2f];
+                CCCallFunc *callback = [CCCallFunc actionWithTarget:self selector:@selector(doorAnimDone)];
+                
+                [doorSprite runAction:[CCSequence actions:[CCAnimate actionWithAnimation:animation], callback, nil]];
+            }
         }
     }
+}
+
+-(void) doorAnimDone{
+    mouseWinChe=YES;
+    heroStandChe=YES;
+    runningChe=NO;
+    heroRunSprite.visible=NO;
 }
 
 //-(void)starCheeseSpriteInitilized{
@@ -896,7 +932,7 @@ StrongMouseEngineMenu01 *sLayer01;
     
     CGPoint centerOfView = ccp(winSize.width/2, winSize.height/2);
     CGPoint viewPoint = ccpSub(centerOfView, actualPosition);
-    self.position = viewPoint;
+    self.position = ccp(viewPoint.x, viewPoint.y - 60);
     
     
 }

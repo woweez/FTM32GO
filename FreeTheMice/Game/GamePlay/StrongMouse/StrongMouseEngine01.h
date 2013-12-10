@@ -31,6 +31,7 @@
 	StrongGameFunc *gameFunc;
     sound *soundEffect;
     b2World* world;
+    CCSprite *doorSprite;
 	GLESDebugDraw *m_debugDraw;
 	MyContactListener *_contactListener;
     b2Body *heroBody;
