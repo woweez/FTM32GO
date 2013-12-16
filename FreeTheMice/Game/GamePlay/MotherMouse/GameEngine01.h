@@ -67,8 +67,6 @@
     CCSprite *progressBarSprite[120];
     CCSprite *timeCheeseSprite;
     CCSprite *cheeseSprite[5];
-    CCSprite *cheeseSprite2[5];
-    CCSprite *starSprite[5];
     CCSprite *clockBackgroundSprite;
     CCSprite *clockArrowSprite;
     CCSprite *teaPotSprite;
@@ -123,7 +121,6 @@
     CCLabelAtlas *cheeseCollectedAtlas;
     CCLabelAtlas *switchAtlas;
     CCLabelAtlas *switchAtlas2;
-    int cheeseCollectedScore;
     BOOL cheeseCollectedChe[10];
     int cheeseCount;
     int motherLevel;

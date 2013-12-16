@@ -190,13 +190,11 @@ GirlMouseEngineMenu07 *gLayer07;
         
         for(int i=0;i<cheeseCount;i++){
             cheeseCollectedChe[i]=YES;
-            cheeseSprite2[i]=[CCSprite spriteWithFile:@"cheeseGlow.png"];
-            cheeseSprite2[i].position=[gameFunc getCheesePosition:1 gameLevel:motherLevel iValue:i];
-            [self addChild:cheeseSprite2[i] z:9];
-            
             cheeseSprite[i]=[CCSprite spriteWithFile:@"Cheese.png"];
             cheeseSprite[i].position=[gameFunc getCheesePosition:1 gameLevel:motherLevel iValue:i];
+            [self playStaticCheeseAnimation:cheeseSprite[i]];
             [self addChild:cheeseSprite[i] z:9];
+            cheeseSprite[i].scale = CHEESE_SCALE;
         }
         
         CCSprite *slapSprite=[CCSprite spriteWithFile:@"slap.png"];
@@ -232,56 +230,55 @@ GirlMouseEngineMenu07 *gLayer07;
         appleWoodSprite.scaleX=1.2;
         [self addChild:appleWoodSprite z:1];
         
-        
         woodVisibleSprite[0]=[CCSprite spriteWithFile:@"apple_wood.png"];
         woodVisibleSprite[0].position=ccp(360,280);
         woodVisibleSprite[0].scaleX=1.2;
         woodVisibleSprite[0].flipX=1;
-        [self addChild:woodVisibleSprite[0] z:10];
+        [self addChild:woodVisibleSprite[0] z:9];
         
         woodVisibleSprite[1]=[CCSprite spriteWithFile:@"apple_wood.png"];
         woodVisibleSprite[1].position=ccp(360,398);
         woodVisibleSprite[1].scaleX=1.2;
         woodVisibleSprite[1].flipX=1;
-        [self addChild:woodVisibleSprite[1] z:10];
+        [self addChild:woodVisibleSprite[1] z:9];
         
         woodVisibleSprite[2]=[CCSprite spriteWithFile:@"apple_wood.png"];
         woodVisibleSprite[2].position=ccp(360,515);
         woodVisibleSprite[2].scaleX=1.2;
-        [self addChild:woodVisibleSprite[2] z:10];
+        [self addChild:woodVisibleSprite[2] z:9];
         
         appleWoodAtlas[0] = [[CCLabelAtlas labelWithString:@"8" charMapFile:@"apple_wood.png" itemWidth:29 itemHeight:143 startCharMap:'0'] retain];
         appleWoodAtlas[0].position=ccp(485,207);
         appleWoodAtlas[0].scaleX=1.25;
-        [self addChild:appleWoodAtlas[0] z:10];
+        [self addChild:appleWoodAtlas[0] z:9];
         
         appleWoodAtlas[1] = [[CCLabelAtlas labelWithString:@"8" charMapFile:@"apple_wood.png" itemWidth:29 itemHeight:143 startCharMap:'0'] retain];
         appleWoodAtlas[1].position=ccp(485,325);
         appleWoodAtlas[1].scaleX=1.25;
-        [self addChild:appleWoodAtlas[1] z:10];
+        [self addChild:appleWoodAtlas[1] z:9];
         
         CCSprite *crackedSprite=[CCSprite spriteWithFile:@"cracked.png"];
-        crackedSprite.position=ccp(218,400);
-        [self addChild:crackedSprite z:1];
+        crackedSprite.position=ccp(228,400);
+        [self addChild:crackedSprite z:9];
         
         crackedSprite=[CCSprite spriteWithFile:@"cracked.png"];
-        crackedSprite.position=ccp(218,255);
-        [self addChild:crackedSprite z:1];
+        crackedSprite.position=ccp(228,255);
+        [self addChild:crackedSprite z:9];
         
         crackedSprite=[CCSprite spriteWithFile:@"cracked.png"];
-        crackedSprite.position=ccp(214,490);
-        [self addChild:crackedSprite z:1];
+        crackedSprite.position=ccp(224,490);
+        [self addChild:crackedSprite z:9];
         
         crackedSprite=[CCSprite spriteWithFile:@"cracked.png"];
-        crackedSprite.position=ccp(506,355);
+        crackedSprite.position=ccp(498,355);
         crackedSprite.flipX=1;
         crackedSprite.flipY=1;
-        [self addChild:crackedSprite z:1];
+        [self addChild:crackedSprite z:9];
         
         crackedSprite=[CCSprite spriteWithFile:@"cracked.png"];
-        crackedSprite.position=ccp(506,303);
+        crackedSprite.position=ccp(498,303);
         crackedSprite.flipX=1;
-        [self addChild:crackedSprite z:1];
+        [self addChild:crackedSprite z:9];
         
         CCSprite *platformSprite=[CCSprite spriteWithFile:@"platform4.png"];
         platformSprite.position=ccp(300,370);
@@ -673,28 +670,26 @@ GirlMouseEngineMenu07 *gLayer07;
         }
         [switchAtlas setString:@"1"];
     }
-    
-    for(int i=0;i<10;i++){
-        if(hx-iValue>hotSprite[i].position.x-70 &&hx-iValue<hotSprite[i].position.x+20 &&hy > hotSprite[i].position.y-10 &&hy<hotSprite[i].position.y+30 &&!gameFunc.
+    if (![FTMUtil sharedInstance].isInvincibilityOn) {
+        
+        for(int i=0;i<10;i++){
+            if(hx-iValue>hotSprite[i].position.x-70 &&hx-iValue<hotSprite[i].position.x+20 &&hy > hotSprite[i].position.y-10 &&hy<hotSprite[i].position.y+30 &&!gameFunc.
+               trappedChe&&!gameFunc.stickyChe){
+                gameFunc.trappedChe=YES;
+                trappedTypeValue=1;
+            }
+        }
+        
+        if(hx-iValue>[catObj1 getCatSprite].position.x-90 &&hx-iValue<[catObj1 getCatSprite].position.x+40 &&hy > [catObj1 getCatSprite].position.y-30 &&hy<[catObj1 getCatSprite].position.y+50 &&!gameFunc.
            trappedChe&&!gameFunc.stickyChe){
             gameFunc.trappedChe=YES;
-            trappedTypeValue=1;
+            trappedTypeValue=2;
+        }else if(hx-iValue>[catObj2 getCatSprite].position.x-90 &&hx-iValue<[catObj2 getCatSprite].position.x+40 &&hy > [catObj2 getCatSprite].position.y-30 &&hy<[catObj2 getCatSprite].position.y+50 &&!gameFunc.
+                 trappedChe&&!gameFunc.stickyChe){
+            gameFunc.trappedChe=YES;
+            trappedTypeValue=2;
         }
     }
-    
-    
-    
-    
-    if(hx-iValue>[catObj1 getCatSprite].position.x-90 &&hx-iValue<[catObj1 getCatSprite].position.x+40 &&hy > [catObj1 getCatSprite].position.y-30 &&hy<[catObj1 getCatSprite].position.y+50 &&!gameFunc.
-       trappedChe&&!gameFunc.stickyChe){
-        gameFunc.trappedChe=YES;
-        trappedTypeValue=2;
-    }else if(hx-iValue>[catObj2 getCatSprite].position.x-90 &&hx-iValue<[catObj2 getCatSprite].position.x+40 &&hy > [catObj2 getCatSprite].position.y-30 &&hy<[catObj2 getCatSprite].position.y+50 &&!gameFunc.
-             trappedChe&&!gameFunc.stickyChe){
-        gameFunc.trappedChe=YES;
-        trappedTypeValue=2;
-    }
-    
     
     if(hx-iValue>=180 && hx-iValue<475 &&hy>=220 &&hy<=590){
         gameFunc.visibleWindowChe=YES;
@@ -848,15 +843,11 @@ GirlMouseEngineMenu07 *gLayer07;
     tileMove.position=ccp(700,349+gameFunc.moveCount2);
     domeSprite.position=ccp(700,393+gameFunc.domeMoveCount);
     cheeseSprite[3].position=ccp(705,374+gameFunc.moveCount2);
-    cheeseSprite2[3].position=ccp(705,374+gameFunc.moveCount2);
     
     if(gameFunc.domeMoveCount>=180){
-        cheeseSprite2[2].position=[gameFunc getCheesePosition:1 gameLevel:motherLevel iValue:2];
         cheeseSprite[2].position=[gameFunc getCheesePosition:1 gameLevel:motherLevel iValue:2];
-        starSprite[2].position=ccp([gameFunc getCheesePosition:1 gameLevel:motherLevel iValue:2].x-12,[gameFunc getCheesePosition:1 gameLevel:motherLevel iValue:2].y+8);
     }else{
         cheeseSprite[2].position=ccp(-300,100);
-        cheeseSprite2[2].position=ccp(-300,100);
     }
     
     
@@ -953,11 +944,19 @@ GirlMouseEngineMenu07 *gLayer07;
     int fValue=(!forwardChe?0:30);
     if(heroSprite.position.x>=920+fValue &&heroSprite.position.y>450&&heroSprite.position.y<=550&&!mouseWinChe&&!gameFunc.trappedChe){
         if(runningChe||heroStandChe){
-            mouseWinChe=YES;
-            heroStandChe=YES;
-            runningChe=NO;
-            heroRunSprite.visible=NO;
+            if (cheeseCollectedScore < 3 && locker.tag != 911) {
+                [self playDoorLockAnimation:ccp(heroSprite.position.x, heroSprite.position.y)];
+                locker.tag = 911;
+            }else if(cheeseCollectedScore > 2){
+                mouseWinChe=YES;
+                heroStandChe=YES;
+                runningChe=NO;
+                heroRunSprite.visible=NO;
+            }
         }
+    }else if(locker.tag == 911){
+        locker.tag = 1;
+        locker.visible = NO;
     }else if(gameFunc.trappedChe){
         heroTrappedChe=YES;
         heroSprite.visible=NO;
@@ -1016,22 +1015,7 @@ GirlMouseEngineMenu07 *gLayer07;
 }
 
 -(void)starCheeseSpriteInitilized{
-    for(int i=0;i<5;i++){
-        starSprite[i] = [CCSprite spriteWithSpriteFrameName:@"star2.png"];
-        starSprite[i].scale=0.4;
-        starSprite[i].position=ccp([gameFunc getCheesePosition:1 gameLevel:motherLevel iValue:i].x-12,[gameFunc getCheesePosition:1 gameLevel:motherLevel iValue:i].y+8);
-        [spriteSheet addChild:starSprite[i] z:10];
-        if(i==2)
-            starSprite[i].position=ccp(-200,100);
-        
-        NSMutableArray *animFrames3 = [NSMutableArray array];
-        for(int j = 0; j <5; j++) {
-            CCSpriteFrame *frame = [cache spriteFrameByName:[NSString stringWithFormat:@"star%d.png",j+1]];
-            [animFrames3 addObject:frame];
-        }
-        CCAnimation *animation2 = [CCAnimation animationWithSpriteFrames:animFrames3 delay:0.2f];
-        [starSprite[i] runAction:[CCRepeatForever actionWithAction: [CCAnimate actionWithAnimation:animation2]]];
-    }
+    
 }
 -(void)cheeseCollisionFunc{
     CGFloat heroX=heroSprite.position.x;
@@ -1046,22 +1030,18 @@ GirlMouseEngineMenu07 *gLayer07;
                 int x=(arc4random() % 5);
                 cheeseX2=[cheeseArrX[x] intValue];
                 cheeseY2=[cheeseArrY[x] intValue];
-                
-                starSprite[i].position=ccp([gameFunc getCheesePosition:1 gameLevel:motherLevel iValue:i].x-12+cheeseX2,[gameFunc getCheesePosition:1 gameLevel:motherLevel iValue:i].y+8+cheeseY2);
             }
             
             int mValue=0;
             int mValue2=0;
             if(i==3){
                 mValue2=gameFunc.moveCount2;
-                starSprite[i].position=ccp([gameFunc getCheesePosition:1 gameLevel:motherLevel iValue:i].x-12+cheeseX2,[gameFunc getCheesePosition:1 gameLevel:motherLevel iValue:i].y+8+cheeseY2+mValue2);
             }
             
             cheeseAnimationCount+=2;
             cheeseAnimationCount=(cheeseAnimationCount>=500?0:cheeseAnimationCount);
             CGFloat localCheeseAnimationCount=0;
             localCheeseAnimationCount=(cheeseAnimationCount<=250?cheeseAnimationCount:250-(cheeseAnimationCount-250));
-            cheeseSprite2[i].opacity=localCheeseAnimationCount/4;
             
             CGFloat cheeseX=[gameFunc getCheesePosition:1 gameLevel:motherLevel iValue:i].x;
             CGFloat cheeseY=[gameFunc getCheesePosition:1 gameLevel:motherLevel iValue:i].y;
@@ -1071,11 +1051,8 @@ GirlMouseEngineMenu07 *gLayer07;
                     [soundEffect cheeseCollectedSound];
                     cheeseCollectedChe[i]=NO;
                     cheeseSprite[i].visible=NO;
-                    cheeseSprite2[i].visible=NO;
                     cheeseCollectedScore+=1;
-                    starSprite[i].visible=NO;
-                    [hudLayer updateNoOfCheeseCollected:cheeseCollectedScore andMaxValue:[cheeseSetValue[motherLevel-1] intValue]];
-                    [self createExplosionX:cheeseX-mValue y:cheeseY+mValue2];
+                    [self playCheeseCollectedAnimation:cheeseSprite[i]];
                     break;
                 }
             }else{
@@ -1083,16 +1060,11 @@ GirlMouseEngineMenu07 *gLayer07;
                     [soundEffect cheeseCollectedSound];
                     cheeseCollectedChe[i]=NO;
                     cheeseSprite[i].visible=NO;
-                    cheeseSprite2[i].visible=NO;
                     cheeseCollectedScore+=1;
-                    starSprite[i].visible=NO;
-                    [hudLayer updateNoOfCheeseCollected:cheeseCollectedScore andMaxValue:[cheeseSetValue[motherLevel-1] intValue]];
-                    [self createExplosionX:cheeseX-mValue y:cheeseY+mValue2];
+                    [self playCheeseCollectedAnimation:cheeseSprite[i]];
                     break;
                 }
             }
-        }else{
-            starSprite[i].visible=NO;
         }
     }
 }
@@ -1601,6 +1573,9 @@ GirlMouseEngineMenu07 *gLayer07;
     int tValue=0;
     int tValue2=0;
     int tValue3=0;
+    if (heroPimpleSprite[1].position.x == -100) {
+        [soundEffect pulling_tail];
+    }
     if(!safetyJumpChe){
         jumpPower = activeVect.Length();
         forwardChe=(angle<90.0?NO:YES);
@@ -1817,6 +1792,7 @@ GirlMouseEngineMenu07 *gLayer07;
             jumpAngle = fabsf( CC_RADIANS_TO_DEGREES( atan2f(-activeVect.y, activeVect.x)));
             jumpingChe=YES;
             dragChe=NO;
+            [soundEffect girl_jump];
             mouseDragSprite.visible=NO;
             for (int i = 0; i < 25; i=i+1) {
                 heroPimpleSprite[i].position=ccp(-100,100);

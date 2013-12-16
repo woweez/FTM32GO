@@ -161,9 +161,9 @@
     CCCallFunc *callback = [CCCallFunc actionWithTarget:self selector:@selector(callbackForMoving)];
     CCSequence *seq = [CCSequence actions:moveTo,callback, nil];
     CCAnimation *animation = [CCAnimation animationWithSpriteFrames:animFrames delay:0.06f];
-//    [heroRunSprite runAction:[CCRepeatForever actionWithAction: [CCAnimate actionWithAnimation:animation]]];
-//    [heroRunSprite runAction:seq];
-    [self schedule:@selector(callbackForMoving)];
+    [heroRunSprite runAction:[CCRepeatForever actionWithAction: [CCAnimate actionWithAnimation:animation]]];
+    [heroRunSprite runAction:seq];
+//    [self schedule:@selector(callbackForMoving)];
     
 }
 

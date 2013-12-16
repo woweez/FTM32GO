@@ -479,7 +479,7 @@ GirlMouseEngineMenu15 *gLayer15;
         catX = catX+60;
     }
     int catY = bossCatWalk.position.y;
-    if (!isCatKnockedOut && !CGRectIsNull(CGRectIntersection(catRect, heroRect))) {
+    if (![FTMUtil sharedInstance].isInvincibilityOn && !isCatKnockedOut && !CGRectIsNull(CGRectIntersection(catRect, heroRect))) {
 
         gameFunc.trappedChe = YES;
         heroTrappedChe=YES;
@@ -724,50 +724,7 @@ GirlMouseEngineMenu15 *gLayer15;
     
 }
 -(void)hotSmokingFunc{
-    CGFloat sx=0;
-    CGFloat sy=0;
-    CGFloat hotScale=0;
-    CGFloat divideLength=0;
-    
-    sx=452;
-    sy=288;
-    hotScale=0.8;
-    divideLength=2.3;
-    
-    for(int i=0;i<10;i++){
-        if(hotSmokingCount[i]>=1){
-            hotSmokingCount[i]+=1.5;
-            hotSprite[i].position=ccp(sx,sy+(hotSmokingCount[i]/divideLength));
-            hotSprite[i].opacity=250-(hotSmokingCount[i]);
-            hotSprite[i].scale=hotScale+(hotSmokingCount[i]/400.0);
-            if(hotSmokingCount[i]>=250){
-                hotSmokingCount[i]=0;
-                hotSprite[i].position=ccp(-200,100);
-            }
-        }
-    }
-    
-    if(hotSmokingRelease == 0){
-        for(int i=0;i<10;i++){
-            if(hotSmokingCount[i]==0){
-                hotSmokingCount[i]=1;
-                hotSmokingRelease=1;
-                break;
-            }
-        }
-    }
-    if(hotSmokingRelease>=1){
-        hotSmokingRelease+=1;
-        if(hotSmokingRelease>=17){
-            hotSmokingRelease=0;
-        }
-    }
-    int iValue=(forwardChe?50:0);
-    if(heroSprite.position.x-iValue>390 && heroSprite.position.x-iValue<= 470&& heroSprite.position.y>330&&heroSprite.position.y<=420&&!gameFunc.trappedChe){
-//        gameFunc.trappedChe=YES;
-//        trappedTypeValue=1;
-    }
-    
+ 
 }
 
 -(void)starCheeseSpriteInitilized{
@@ -1256,7 +1213,9 @@ GirlMouseEngineMenu15 *gLayer15;
 -(void)HeroLiningDraw:(int)cPath{
     
     CGFloat angle=jumpAngle;
-    
+    if (heroPimpleSprite[1].position.x == -100) {
+        [soundEffect pulling_tail];
+    }
     if(!safetyJumpChe){
         jumpPower = activeVect.Length();
         forwardChe=(angle<90.0?NO:YES);

@@ -8,6 +8,9 @@
 
 #import "GameFunc.h"
 #import "cocos2d.h"
+#import "FTMUtil.h"
+#import "FTMConstants.h"
+
 
 @implementation GameFunc
 
@@ -65,6 +68,7 @@
 @synthesize switchStatusValue;
 @synthesize speedReverseJump;
 @synthesize gateOpenChe;
+
 
 -(id) init {
     if( (self=[super init])) {
@@ -512,7 +516,7 @@
         [self runTransaction:855 heroY:290 objectW:70 objectH:90 fChe:fChe sideValue:6];
         [self runTransaction:470 heroY:292 objectW:270 objectH:90 fChe:fChe sideValue:0];
         [self runTransaction:568 heroY:407 objectW:12 objectH:80 fChe:fChe sideValue:0];
-        if(vegetableCount<100)
+        if(vegetableCount<100 && ![FTMUtil sharedInstance].isInvincibilityOn)
             [self runTransaction:568 heroY:327 objectW:12 objectH:80 fChe:fChe sideValue:0];
         [self runTransaction:498 heroY:407 objectW:12 objectH:180 fChe:fChe sideValue:0];
         [self runTransaction:400 heroY:407 objectW:12 objectH:170 fChe:fChe sideValue:0];
@@ -733,7 +737,7 @@
         
         [self jumpTransaction:470 heroY:292 objectW:270 objectH:90 fChe:fChe sideValue:0];
         [self jumpTransaction:568 heroY:407 objectW:12 objectH:80 fChe:fChe sideValue:0];
-        if(vegetableCount<100)
+        if(vegetableCount<100 && ![FTMUtil sharedInstance].isInvincibilityOn)
             [self jumpTransaction:568 heroY:327 objectW:12 objectH:80 fChe:fChe sideValue:0];
         [self jumpTransaction:498 heroY:407 objectW:12 objectH:180 fChe:fChe sideValue:0];
         [self jumpTransaction:400 heroY:407 objectW:12 objectH:170 fChe:fChe sideValue:0];
@@ -926,7 +930,7 @@
                 topHittingCollisionChe=NO;
                 reverseJump=YES;
                 xPosition=heroX-50;
-                if(sValue==6&&!trappedChe){
+                if(sValue==6&&!trappedChe && ![FTMUtil sharedInstance].isInvincibilityOn){
                     trappedChe=YES;
                     objectWidth = objectW;
                     objectHeight = objectH;
@@ -948,7 +952,7 @@
                             movePlatformX=xPosition;
                             movePlatformY=yPosition;
                             landMoveCount=(!moveSideChe?moveCount2:moveCount3);
-                        }else if(sValue==6&&!trappedChe){
+                        }else if(sValue==6&&!trappedChe && ![FTMUtil sharedInstance].isInvincibilityOn){
                             trappedChe=YES;
                             objectWidth = objectW;
                             objectHeight = objectH;
@@ -973,7 +977,7 @@
                 topHittingCollisionChe=NO;
                 reverseJump=YES;
                 xPosition=(heroX-10)+objectW;
-                if(sValue==6&&!trappedChe){
+                if(sValue==6&&!trappedChe && ![FTMUtil sharedInstance].isInvincibilityOn){
                     trappedChe=YES;
                     objectWidth = objectW;
                     objectHeight = objectH;
@@ -995,7 +999,7 @@
                             movePlatformX=xPosition;
                             movePlatformY=yPosition;
                             landMoveCount=(!moveSideChe?moveCount2:moveCount3);
-                        }else if(sValue==6&&!trappedChe){
+                        }else if(sValue==6&&!trappedChe && ![FTMUtil sharedInstance].isInvincibilityOn){
                             trappedChe=YES;
                             objectWidth = objectW;
                             objectHeight = objectH;
@@ -1031,7 +1035,7 @@
         if(xPosition >= heroX-60+aValue && xPosition<=((heroX-60)+20) && yPosition >= (heroY-objectH) && yPosition <= heroY){
             xPosition=heroX-60;
             trigoRunningCheck=YES;
-            if(sValue==6&&!trappedChe){
+            if(sValue==6&&!trappedChe && ![FTMUtil sharedInstance].isInvincibilityOn){
                 trappedChe=YES;
                 objectWidth = objectW;
                 objectHeight = objectH;
@@ -1046,7 +1050,7 @@
         if(xPosition >= ((heroX-0)+(objectW-20)) && xPosition<=((heroX-0)+(objectW)) && yPosition >= (heroY-objectH) && yPosition <= heroY){
             xPosition=(heroX-0)+objectW;
             trigoRunningCheck=YES;
-            if(sValue==6&&!trappedChe){
+            if(sValue==6&&!trappedChe && ![FTMUtil sharedInstance].isInvincibilityOn){
                 trappedChe=YES;
                 objectWidth = objectW;
                 objectHeight = objectH;

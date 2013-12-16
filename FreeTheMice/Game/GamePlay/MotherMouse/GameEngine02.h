@@ -65,8 +65,6 @@
     CCSprite *progressBarSprite[120];
     CCSprite *timeCheeseSprite;
     CCSprite *cheeseSprite[5];
-    CCSprite *cheeseSprite2[5];
-    CCSprite *starSprite[5];
     CCSprite *mouseTrappedBackground;
 //    HudLayer *hudLayer;
     BOOL heroStandChe;
@@ -108,7 +106,7 @@
     CCSprite *numbersSprite[15];
     CCLabelAtlas *lifeMinutesAtlas;
     CCLabelAtlas *cheeseCollectedAtlas;
-    int cheeseCollectedScore;
+
     BOOL cheeseCollectedChe[10];
     int cheeseCount;
     int motherLevel;

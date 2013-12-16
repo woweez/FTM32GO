@@ -27,6 +27,7 @@
         [FTMUtil sharedInstance].isRespawnMice = NO;
         currentAnim = 0;
         isLandingAnimationAdded = NO;
+        clockIntervalCounter = 0;
         soundManager = [[sound alloc]  init];
         [soundManager stopPlayingMusic];
         if ([FTMUtil sharedInstance].mouseClicked == FTM_STRONG_MICE_ID) {
@@ -42,6 +43,86 @@
     return self;
 }
 
+-(void) playPushRedBtnAnimation:(CCSprite *) sprite{
+    [cache addSpriteFramesWithFile:@"redBtnAnim.plist"];
+    NSMutableArray *animationFramesArr = [NSMutableArray array];
+    for(int i = 0; i <= 19; i++) {
+        CCSpriteFrame *frame = [cache spriteFrameByName:[NSString stringWithFormat:@"push_btn_red_%d.png",i]];
+        [animationFramesArr addObject:frame];
+    }
+    CCAnimation *animation = [CCAnimation animationWithSpriteFrames:animationFramesArr delay:0.05f];
+    [sprite runAction:[CCRepeatForever actionWithAction: [CCAnimate actionWithAnimation:animation]]];
+}
+
+-(void) resetRedPushBtn :(CGPoint) position{
+    [pushButtonSprite removeFromParentAndCleanup:YES];
+    pushButtonSprite = [CCSprite spriteWithFile:@"push_button.png"];
+    pushButtonSprite.tag = 10;
+    pushButtonSprite.position = position;
+    pushButtonSprite.scaleY = 0.35;
+    pushButtonSprite.scaleX = 0.55;
+    [self addChild:pushButtonSprite z: 1];
+}
+-(void) playStaticCheeseAnimation:(CCSprite *) sprite{
+    [cache addSpriteFramesWithFile:@"cheeseStaticAnim.plist"];
+    [cache addSpriteFramesWithFile:@"cheeseCollectedAnim.plist"];
+    NSMutableArray *animationFramesArr = [NSMutableArray array];
+    for(int i = 0; i <= 39; i++) {
+        CCSpriteFrame *frame = [cache spriteFrameByName:[NSString stringWithFormat:@"CHEESE_%d.png",i]];
+        [animationFramesArr addObject:frame];
+    }
+    CCAnimation *animation = [CCAnimation animationWithSpriteFrames:animationFramesArr delay:0.05f];
+    [sprite runAction:[CCRepeatForever actionWithAction: [CCAnimate actionWithAnimation:animation]]];
+}
+-(void) playCheeseCollectedAnimation:(CCSprite *) sprite{
+    CGPoint point =  CGPointMake([CCDirector sharedDirector].winSize.width *0.94, [CCDirector sharedDirector].winSize.height*0.95);
+    CGPoint spritePos = [self convertToWorldSpace:sprite.position];
+    spritePos = ccp(spritePos.x, spritePos.y + 50);
+    float speed = 140;
+    float distance = ccpDistance(spritePos, point);
+    float time = distance/speed;
+    int totalNoOfFrames = 56;
+    float timePerFrame = time/totalNoOfFrames;
+    sprite.visible = NO;
+    CCSprite *collectSprite = [CCSprite spriteWithSpriteFrameName:@"collect_0.png"];
+    collectSprite.scale = CHEESE_SCALE;
+    collectSprite.position= spritePos;
+    [hudLayer addChild:collectSprite z:9];
+    
+    NSMutableArray *animationFramesArr = [NSMutableArray array];
+    for(int i = 0; i <= 55; i++) {
+        CCSpriteFrame *frame = [cache spriteFrameByName:[NSString stringWithFormat:@"collect_%d.png",i]];
+        [animationFramesArr addObject:frame];
+    }
+    CCMoveTo *move = [CCMoveTo actionWithDuration:time position:point];
+    CCCallFuncN *callback = [CCCallFuncN actionWithTarget:self selector:@selector(starsMovementDone:)];
+    CCAnimation *animation = [CCAnimation animationWithSpriteFrames:animationFramesArr delay:timePerFrame];
+    CCSpawn *span = [CCSpawn actions:[CCAnimate actionWithAnimation:animation], [CCSequence actions:move, callback, nil], nil ];
+    [collectSprite runAction:span];
+}
+-(void) starsMovementDone: (id) sender{
+    CCSprite *starsImage = (CCSprite*)sender;
+    [starsImage removeFromParentAndCleanup:YES];
+    [hudLayer updateNoOfCheeseCollected:cheeseCollectedScore andMaxValue: 5];
+}
+
+-(void) addGateImageAndAnimation:(CGPoint) position{
+    [cache addSpriteFramesWithFile:@"door_animation.plist"];
+    gateSprite=[CCSprite spriteWithSpriteFrameName:@"door_0.png"];
+    gateSprite.scale = 1.6;
+    gateSprite.position=ccp(position.x - 5, position.y);
+    [self addChild:gateSprite z:9];
+}
+-(void) playDoorAnimation{
+    NSMutableArray *animationFramesArr = [NSMutableArray array];
+    for(int i = 0; i <= 5; i++) {
+        CCSpriteFrame *frame = [cache spriteFrameByName:[NSString stringWithFormat:@"door_%d.png",i]];
+        [animationFramesArr addObject:frame];
+    }
+    CCAnimation *animation = [CCAnimation animationWithSpriteFrames:animationFramesArr delay:0.04f];
+    [gateSprite runAction:[CCAnimate actionWithAnimation:animation]];
+    
+}
 -(void) showAnimationWithMiceIdAndIndex:(int)miceId andAnimationIndex:(int)animIndex{
     
     
@@ -69,6 +150,7 @@
     return flamesSprite;
 }
 -(void) showTrappingAnimationForMama: (int) animIndex{
+    [soundManager mama_hurt];
     switch (animIndex) {
         case MAMA_FLAME_ANIM:
             [self playMamaFlameHitAnimation];
@@ -89,6 +171,7 @@
     }
 }
 -(void) showTrappingAnimationForGirl: (int) animIndex{
+    [soundManager girl_hurt];
     switch (animIndex) {
         case GIRL_FLAME_ANIM:
             [self playGirlFlameHitAnimation];
@@ -106,7 +189,9 @@
             break;
     }
 }
+
 -(void) showTrappingAnimationForStrong: (int) animIndex{
+    [soundManager strong_hurt];
     switch (animIndex) {
         case STRONG_FLAME_ANIM:
             [self playGirlFlameHitAnimation];
@@ -125,7 +210,6 @@
     }
 }
 -(void) playMamaKniveHitAnimation{
-    
     [self addAnimation:MAMA_KNIFE_ANIM_PATH noOfFrames:23 startingFrameName:MAMA_KNIFE_ANIM_FRAME_PATH];
 }
 -(void)playStrongKniveHitAnimation{
@@ -525,6 +609,42 @@
     return frameName;
 }
 
+-(void) playDoorLockAnimation :(CGPoint) position{
+    if (locker != nil) {
+        [locker removeFromParentAndCleanup:YES];
+    }
+    
+    locker = [CCSprite spriteWithFile:@"lock.png"];
+    if ([FTMUtil sharedInstance].isRetinaDisplay) {
+        locker.scale = 1.4;
+    }else{
+        locker.scale = 0.7;
+    }
+    
+    locker.position = ccp(position.x + 35, position.y);
+    [self addChild:locker z:9];
+    
+    for (int i = 0; i < 3; i++) {
+        CCSprite *cheese = [CCSprite spriteWithFile:@"lockcheese.png"];
+        cheese.scale = 0;
+        if ([FTMUtil sharedInstance].isRetinaDisplay) {
+            cheese.position = ccp(- 30 +25*i, 45);
+        }else{
+            cheese.position = ccp(- 35 +37*i, 72);
+        }
+        
+        [locker addChild:cheese];
+        if (i+1 > cheeseCollectedScore) {
+            cheese.opacity = 128;
+        }
+        float scalUp = [FTMUtil sharedInstance].isRetinaDisplay ? 1.6: 1;
+        float scalDown = [FTMUtil sharedInstance].isRetinaDisplay ? 1.3: 0.9;
+        CCScaleTo *scaleUp = [CCScaleTo actionWithDuration:0.1 scale: scalUp];
+        CCScaleTo *scaleDown = [CCScaleTo actionWithDuration:0.1 scale: scalDown];
+        CCDelayTime *delay = [CCDelayTime actionWithDuration:i*0.15];
+        [cheese runAction:[CCSequence actions:delay, scaleUp,scaleDown, nil]];
+    }
+}
 -(NSString *) getStandingFrameNameForMice{
     NSString *frameName = nil;
     switch ([FTMUtil sharedInstance].mouseClicked) {
@@ -556,32 +676,63 @@
 
 -(void) startClockTimer{
     [soundManager timer];
+    [cache addSpriteFramesWithFile:@"newClockAnim.plist"];
+    newClockSprite = [CCSprite spriteWithSpriteFrameName:@"timer_0.png"];
+    if (![FTMUtil sharedInstance].isRetinaDisplay) {
+        newClockSprite.scale = NON_RETINA_SCALE/1.25;
+    }
+    newClockSprite.position = ccp(450,250);
+    [hudLayer addChild:newClockSprite z:9989];
+    NSMutableArray *animFrames = [NSMutableArray array];
+    for(int i = 0; i <= 59; i++) {
+        CCSpriteFrame *frame4 = [cache spriteFrameByName:[NSString stringWithFormat:@"timer_%d.png",i]];
+        [animFrames addObject:frame4];
+    }
+    CCCallFunc *animDone = [CCCallFunc actionWithTarget:self selector:@selector(newClockAnimationDone)];
+    CCAnimation *animation = [CCAnimation animationWithSpriteFrames:animFrames delay:0.5];
+    [newClockSprite runAction:[CCSequence actions:[CCAnimate actionWithAnimation:animation], animDone, nil]];
     [self schedule:@selector(stopClockTimer) interval:4];
 }
 
+-(void) newClockAnimationDone{
+    if (newClockSprite != nil) {
+        [newClockSprite removeFromParentAndCleanup:YES];
+        newClockSprite = nil;
+    }
+}
 -(void) stopClockTimer{
     clockIntervalCounter++;
     [soundManager timer];
     if (clockIntervalCounter == 6) {
         [soundManager timer_all];
+        clockIntervalCounter = 0;
         [self unschedule:@selector(stopClockTimer)];
     }
 }
 
 -(void) levelCompleted : (int) tag{
     isLevelCompleted = YES;
-    int totalNoOffCheese = [hudLayer getTotalNoOffCheeseCollected];
+    if (newClockSprite != nil) {
+        [self unschedule:@selector(stopClockTimer)];
+        [newClockSprite removeFromParentAndCleanup:YES];
+        newClockSprite = nil;
+    }
     hudLayer.visible = NO;
     LevelCompleteScreen *lvlCompleteLayer = [[LevelCompleteScreen alloc] init];
-    [lvlCompleteLayer playStarImageAnimationAgainstLevel:totalNoOffCheese];
+    [lvlCompleteLayer playStarImageAnimationAgainstLevel:cheeseCollectedScore];
     lvlCompleteLayer.tag = tag;
-    [[GameKitHelper sharedGameKitHelper]submitScore:(int64_t)1000/(totalNoOffCheese+1) category:kHighScoreLeaderboardCategory];
+    [[GameKitHelper sharedGameKitHelper]submitScore:(int64_t)1000/(cheeseCollectedScore+1) category:kHighScoreLeaderboardCategory];
     [[GameKitHelper sharedGameKitHelper]reportAchievementIdentifier:kFtmFirstAchievementCategory percentComplete:100 maxValue:100 checkPercent:NO];
     [[[CCDirector sharedDirector] runningScene] addChild: lvlCompleteLayer z:2000];
 }
 
 -(void) showLevelFailedUI : (int) tag{
     hudLayer.visible = NO;
+    if (newClockSprite != nil) {
+        [self unschedule:@selector(stopClockTimer)];
+        [newClockSprite removeFromParentAndCleanup:YES];
+        newClockSprite = nil;
+    }
     LevelFailedScreen *lvlFailedLayer = [[LevelFailedScreen alloc] init];
     [lvlFailedLayer setIfNextBtnDisable:tag];
     lvlFailedLayer.tag = tag;

@@ -8,6 +8,7 @@
 
 #import "GirlGameFunc.h"
 #import "cocos2d.h"
+#import "FTMUtil.h"
 
 @implementation GirlGameFunc
 
@@ -828,7 +829,7 @@
                 if(sValue!=16&&sValue!=15){
                     reverseJump=YES;
                     xPosition=heroX-50;
-                    if(sValue==6&&!trappedChe){
+                    if(sValue==6&&!trappedChe && ![FTMUtil sharedInstance].isInvincibilityOn){
                         trappedChe=YES;
                     }
                 }
@@ -851,7 +852,7 @@
                                 movePlatformX=xPosition;
                                 movePlatformY=yPosition;
                                 landMoveCount=moveCount2;
-                            }else if(sValue==6&&!trappedChe){
+                            }else if(sValue==6&&!trappedChe && ![FTMUtil sharedInstance].isInvincibilityOn){
                                 trappedChe=YES;
                             }else  if(sValue==11&&!visibleWindowChe)
                                 visibleWindowChe=YES;
@@ -889,7 +890,7 @@
                 if(sValue!=16&&sValue!=15){
                     reverseJump=YES;
                     xPosition=(heroX-10)+objectW;
-                    if(sValue==6&&!trappedChe){
+                    if(sValue==6&&!trappedChe && ![FTMUtil sharedInstance].isInvincibilityOn){
                         trappedChe=YES;
                     }
                 }
@@ -913,7 +914,7 @@
                                 movePlatformX=xPosition;
                                 movePlatformY=yPosition;
                                 landMoveCount=moveCount2;
-                            }else if(sValue==6&&!trappedChe){
+                            }else if(sValue==6&&!trappedChe && ![FTMUtil sharedInstance].isInvincibilityOn){
                                 trappedChe=YES;
                             }else  if(sValue==11&&!visibleWindowChe)
                                 visibleWindowChe=YES;
@@ -1025,7 +1026,7 @@
         if(xPosition >= heroX-45+aValue && xPosition<=((heroX-45)+20) && yPosition >= (heroY-objectH) && yPosition <= heroY){
             xPosition=heroX-45;
             trigoRunningCheck=YES;
-            if(sValue==6&&!trappedChe)
+            if(sValue==6&&!trappedChe && ![FTMUtil sharedInstance].isInvincibilityOn)
                 trappedChe=YES;
         }else if(xPosition >= ((heroX-10)+(objectW-10)) && xPosition<=((heroX-10)+(objectW)) && yPosition > heroY && yPosition <= heroY+17&&!autoJumpChe){
             autoJumpChe=YES;
@@ -1036,7 +1037,7 @@
         if(xPosition >= ((heroX-15)+(objectW-20)) && xPosition<=((heroX+5)+(objectW)) && yPosition >= (heroY-objectH) && yPosition <= heroY){
             xPosition=(heroX+5)+objectW;
             trigoRunningCheck=YES;
-            if(sValue==6&&!trappedChe)
+            if(sValue==6&&!trappedChe && ![FTMUtil sharedInstance].isInvincibilityOn)
                 trappedChe=YES;
         }else if(xPosition >= heroX-50 && xPosition<=((heroX-50)+30) && yPosition > heroY && yPosition <= heroY+17&&!autoJumpChe){
             autoJumpChe=YES;

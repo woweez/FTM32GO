@@ -183,18 +183,11 @@ GameEngineMenu05 *layer05;
         
         for(int i=0;i<cheeseCount;i++){
             cheeseCollectedChe[i]=YES;
-            cheeseSprite2[i]=[CCSprite spriteWithFile:@"cheeseGlow.png"];
-            cheeseSprite2[i].position=[gameFunc getCheesePosition:1 gameLevel:motherLevel iValue:i];
-            [self addChild:cheeseSprite2[i] z:9];
-            
             cheeseSprite[i]=[CCSprite spriteWithFile:@"Cheese.png"];
             cheeseSprite[i].position=[gameFunc getCheesePosition:1 gameLevel:motherLevel iValue:i];
+            [self playStaticCheeseAnimation:cheeseSprite[i]];
             [self addChild:cheeseSprite[i] z:9];
-            if (![FTMUtil sharedInstance].isRetinaDisplay) {
-                cheeseSprite[i].scale = NON_RETINA_SCALE;
-                cheeseSprite2[i].scale = NON_RETINA_SCALE;
-                
-            }
+            cheeseSprite[i].scale = CHEESE_SCALE;
         }
         int switchWidth = [FTMUtil sharedInstance].isRetinaDisplay ? 40: 80;
         int switchHeight = [FTMUtil sharedInstance].isRetinaDisplay ? 103: 206;
@@ -603,16 +596,13 @@ GameEngineMenu05 *layer05;
     if(motherLevel == 5){
         tileMove.position=ccp(350+gameFunc.moveCount2,449);
         cheeseSprite[2].position=ccp(350+gameFunc.moveCount2,471);
-        cheeseSprite2[2].position=ccp(350+gameFunc.moveCount2,471);
     }else if(motherLevel == 6){
         if(!gameFunc.moveSideChe){
             tileMove2.position=ccp(750,420+gameFunc.moveCount2);
             cheeseSprite[2].position=ccp(750,443+gameFunc.moveCount2);
-            cheeseSprite2[2].position=ccp(750,443+gameFunc.moveCount2);
         }else{
             tileMove2.position=ccp(750-gameFunc.moveCount3,420);
             cheeseSprite[2].position=ccp(750-gameFunc.moveCount3,443);
-            cheeseSprite2[2].position=ccp(750-gameFunc.moveCount3,443);
         }
         if(!gameFunc.switchStrChe)
             [switchAtlas setString:@"0"];
@@ -626,7 +616,6 @@ GameEngineMenu05 *layer05;
         tileMove.position=ccp(650,349+gameFunc.moveCount2);
         domeSprite.position=ccp(650,393+gameFunc.domeMoveCount);
         cheeseSprite[3].position=ccp(655,374+gameFunc.moveCount2);
-        cheeseSprite2[3].position=ccp(655,374+gameFunc.moveCount2);
         if(gameFunc.heightMoveChe&&gameFunc.domeMoveCount==130){
             domeRotateCount+=1;
             domeRotateCount=(domeRotateCount>200?0:domeRotateCount);
@@ -679,7 +668,7 @@ GameEngineMenu05 *layer05;
         }
         
         
-        if(gameFunc.vegetableCount<50&&!gameFunc.trappedChe&&gameFunc.vegetableCount!=0){
+        if(gameFunc.vegetableCount<50&&!gameFunc.trappedChe&&gameFunc.vegetableCount!=0 && ![FTMUtil sharedInstance].isInvincibilityOn){
             if(heroSprite.position.x>=625 &&heroSprite.position.x<715 && heroSprite.position.y>304 &&heroSprite.position.y<312&&!forwardChe){
                 gameFunc.trappedChe=YES;
             }else if(heroSprite.position.x>=680 &&heroSprite.position.x<770 && heroSprite.position.y>304 &&heroSprite.position.y<312&&forwardChe){
@@ -755,23 +744,7 @@ GameEngineMenu05 *layer05;
             }
         }
         
-        
-        if(motherLevel==3){
-            if(hotIntervel<=650&&hotIntervel>=20){
-                if(!forwardChe && heroSprite.position.x>620 && heroSprite.position.x<= 670&& heroSprite.position.y>270&&heroSprite.position.y<=435&&!heroTrappedChe&&motherLevel==3){
-                    gameFunc.trappedChe=YES;
-                }else if(forwardChe && heroSprite.position.x>620 && heroSprite.position.x<= 680&& heroSprite.position.y>270&&heroSprite.position.y<=425&&!heroTrappedChe&&motherLevel==3){
-                    gameFunc.trappedChe=YES;
-                }
-            }
-        }else if(motherLevel==4){
-            if(!forwardChe && heroSprite.position.x>620 && heroSprite.position.x<= 680&& heroSprite.position.y>270&&heroSprite.position.y<=425&&!heroTrappedChe&&gameFunc.switchCount==0){
-                gameFunc.trappedChe=YES;
-                
-            }else if(forwardChe && heroSprite.position.x>600 && heroSprite.position.x<= 680&& heroSprite.position.y>270&&heroSprite.position.y<=425&&!heroTrappedChe &&gameFunc.switchCount==0){
-                gameFunc.trappedChe=YES;
-            }
-        }else if(motherLevel==5){
+        if(motherLevel==5 && ![FTMUtil sharedInstance].isInvincibilityOn){
             if(!forwardChe && heroSprite.position.x>220 && heroSprite.position.x<= 300&& heroSprite.position.y>400&&heroSprite.position.y<=600&&!heroTrappedChe&&gameFunc.switchCount==0){
                 gameFunc.trappedChe=YES;
               //  NSLog(@"Object width and height==== %d %d %d", gameFunc.objectWidth,gameFunc.objectHeight,gameFunc.sideValueForObject);
@@ -779,13 +752,6 @@ GameEngineMenu05 *layer05;
             }else if(forwardChe && heroSprite.position.x>240 && heroSprite.position.x<= 300&& heroSprite.position.y>400&&heroSprite.position.y<=600&&!heroTrappedChe &&gameFunc.switchCount==0){
                 gameFunc.trappedChe=YES;
                // NSLog(@"Object width and height==== %d %d %d", gameFunc.objectWidth,gameFunc.objectHeight,gameFunc.sideValueForObject);
-            }
-        }else if(motherLevel==7){
-            if(!forwardChe && heroSprite.position.x>770 && heroSprite.position.x<= 820&& heroSprite.position.y>230&&heroSprite.position.y<=500&&!heroTrappedChe&&gameFunc.switchCount==0){
-                gameFunc.trappedChe=YES;
-                
-            }else if(forwardChe && heroSprite.position.x>790 && heroSprite.position.x<= 840&& heroSprite.position.y>230&&heroSprite.position.y<=500&&!heroTrappedChe &&gameFunc.switchCount==0){
-                gameFunc.trappedChe=YES;
             }
         }
     }
@@ -796,8 +762,8 @@ GameEngineMenu05 *layer05;
         if(gameFunc.switchCount==1){
             gameFunc.switchCount=2;
             [self startClockTimer];
-            clockArrowSprite.position=ccp(450,258);
-            clockBackgroundSprite.position=ccp(450,258);
+//            clockArrowSprite.position=ccp(450,258);
+//            clockBackgroundSprite.position=ccp(450,258);
             if ([[switchAtlas string] isEqualToString:@"0"]){
                 [soundEffect switchSound];
             }
@@ -810,6 +776,10 @@ GameEngineMenu05 *layer05;
                 clockBackgroundSprite.position=ccp(-100,258);
                 clockArrowSprite.position=ccp(-100,258);
                 gameFunc.switchCount=0;
+//                if (newClockSprite != nil) {
+//                    [newClockSprite removeFromParentAndCleanup:YES];
+//                    newClockSprite = nil;
+//                }
                 [switchAtlas setString:@"0"];
             }
         }
@@ -875,11 +845,19 @@ GameEngineMenu05 *layer05;
         int fValue=(!forwardChe?0:30);
         if(heroSprite.position.x>=920+fValue&&heroSprite.position.y<=295&&!mouseWinChe){
             if(runningChe||heroStandChe){
-                mouseWinChe=YES;
-                heroStandChe=YES;
-                runningChe=NO;
-                heroRunSprite.visible=NO;
+                if (cheeseCollectedScore < 3 && locker.tag != 911) {
+                    [self playDoorLockAnimation:ccp(heroSprite.position.x, heroSprite.position.y)];
+                    locker.tag = 911;
+                }else if(cheeseCollectedScore > 2){
+                    mouseWinChe=YES;
+                    heroStandChe=YES;
+                    runningChe=NO;
+                    heroRunSprite.visible=NO;
+                }
             }
+        }else if(locker.tag == 911){
+            locker.tag = 1;
+            locker.visible = NO;
         }else if(gameFunc.trappedChe && !heroTrappedChe){
             heroTrappedChe=YES;
 //             NSLog(@"Object width and height==== %d %d %d", gameFunc.objectWidth,gameFunc.objectHeight,gameFunc.sideValueForObject);
@@ -896,20 +874,7 @@ GameEngineMenu05 *layer05;
 }
 
 -(void)starCheeseSpriteInitilized{
-    for(int i=0;i<5;i++){
-        starSprite[i] = [CCSprite spriteWithSpriteFrameName:@"starxxx2.png"];
-        starSprite[i].scale=0.4;
-        starSprite[i].position=ccp([gameFunc getCheesePosition:1 gameLevel:motherLevel iValue:i].x-12,[gameFunc getCheesePosition:1 gameLevel:motherLevel iValue:i].y+8);
-        [spriteSheet addChild:starSprite[i]];
-        
-        NSMutableArray *animFrames3 = [NSMutableArray array];
-        for(int j = 0; j <5; j++) {
-            CCSpriteFrame *frame = [cache spriteFrameByName:[NSString stringWithFormat:@"starxxx%d.png",j+1]];
-            [animFrames3 addObject:frame];
-        }
-        CCAnimation *animation2 = [CCAnimation animationWithSpriteFrames:animFrames3 delay:0.1f];
-        [starSprite[i] runAction:[CCRepeatForever actionWithAction: [CCAnimate actionWithAnimation:animation2]]];
-    }
+   
 }
 -(void)cheeseCollisionFunc{
     CGFloat heroX=heroSprite.position.x;
@@ -924,22 +889,17 @@ GameEngineMenu05 *layer05;
                 int x=(arc4random() % 5);
                 cheeseX2=[cheeseArrX[x] intValue];
                 cheeseY2=[cheeseArrY[x] intValue];
-                
-                starSprite[i].position=ccp([gameFunc getCheesePosition:1 gameLevel:motherLevel iValue:i].x-12+cheeseX2,[gameFunc getCheesePosition:1 gameLevel:motherLevel iValue:i].y+8+cheeseY2);
             }
             
             int mValue=0;
             int mValue2=0;
             if(motherLevel==5&&i==2){
                 mValue=gameFunc.moveCount2;
-                
-                starSprite[i].position=ccp([gameFunc getCheesePosition:1 gameLevel:motherLevel iValue:i].x-12+cheeseX2+mValue,[gameFunc getCheesePosition:1 gameLevel:motherLevel iValue:i].y+8+cheeseY2);
             }            
             cheeseAnimationCount+=2;
             cheeseAnimationCount=(cheeseAnimationCount>=500?0:cheeseAnimationCount);
             CGFloat localCheeseAnimationCount=0;
             localCheeseAnimationCount=(cheeseAnimationCount<=250?cheeseAnimationCount:250-(cheeseAnimationCount-250));
-            cheeseSprite2[i].opacity=localCheeseAnimationCount/4;
             
             CGFloat cheeseX=[gameFunc getCheesePosition:1 gameLevel:motherLevel iValue:i].x;
             CGFloat cheeseY=[gameFunc getCheesePosition:1 gameLevel:motherLevel iValue:i].y;
@@ -950,12 +910,8 @@ GameEngineMenu05 *layer05;
                     [soundEffect cheeseCollectedSound];
                     cheeseCollectedChe[i]=NO;
                     cheeseSprite[i].visible=NO;
-                    cheeseSprite2[i].visible=NO;
                     cheeseCollectedScore+=1;
-                    starSprite[i].visible=NO;
-                    [hudLayer updateNoOfCheeseCollected:cheeseCollectedScore andMaxValue:[cheeseSetValue[motherLevel-1] intValue]];
-//                    [cheeseCollectedAtlas setString:[NSString stringWithFormat:@"%d/%d",cheeseCollectedScore,[cheeseSetValue[motherLevel-1] intValue]]];
-                    [self createExplosionX:cheeseX+mValue y:cheeseY];
+                    [self playCheeseCollectedAnimation:cheeseSprite[i]];
                     break;
                 }
             }else{
@@ -963,17 +919,11 @@ GameEngineMenu05 *layer05;
                     [soundEffect cheeseCollectedSound];
                     cheeseCollectedChe[i]=NO;
                     cheeseSprite[i].visible=NO;
-                    cheeseSprite2[i].visible=NO;
                     cheeseCollectedScore+=1;
-                    starSprite[i].visible=NO;
-                    [hudLayer updateNoOfCheeseCollected:cheeseCollectedScore andMaxValue:[cheeseSetValue[motherLevel-1] intValue]];
-//                    [cheeseCollectedAtlas setString:[NSString stringWithFormat:@"%d/%d",cheeseCollectedScore,[cheeseSetValue[motherLevel-1] intValue]]];
-                    [self createExplosionX:cheeseX+mValue y:cheeseY];
+                    [self playCheeseCollectedAnimation:cheeseSprite[i]];
                     break;
                 }
             }
-        }else{
-            starSprite[i].visible=NO;
         }
     }
 }
@@ -1439,6 +1389,7 @@ GameEngineMenu05 *layer05;
     CGFloat angle=jumpAngle;
     int tValue=0;
     int tValue2=0;
+    
     if(!safetyJumpChe){
         jumpPower = activeVect.Length();
         forwardChe=(angle<90.0?NO:YES);
@@ -1623,6 +1574,7 @@ GameEngineMenu05 *layer05;
                 jumpAngle = fabsf( CC_RADIANS_TO_DEGREES( atan2f(-activeVect.y, activeVect.x)));
                 jumpingChe=YES;
                 dragChe=NO;
+                [soundEffect mama_jump];
                 mouseDragSprite.visible=NO;
                 for (int i = 0; i < 20; i=i+1) {
                     heroPimpleSprite[i].position=ccp(-100,100);

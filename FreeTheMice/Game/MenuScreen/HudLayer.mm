@@ -112,8 +112,8 @@
         remainingTime = [[CCLabelAtlas labelWithString:@"1.60" charMapFile:@"numbers.png" itemWidth:15 itemHeight:20 startCharMap:'.'] retain];
         remainingTime.position= ccp(timerBg.position.x, timerBg.position.y - 6 *scaleFactorY);
         remainingTime.scale=0.8;
-        [self addChild:remainingTime z:0];
-               
+//        [self addChild:remainingTime z:0];
+        
         [self addPauseBtnMenu];
         [self addRetryBtnMenu];
         [self addInventoryBtnMenu];
@@ -130,7 +130,8 @@
     if (currentValue > 0) {
         totalCheeseCollected++;
     }
-    switch (currentValue) {
+    maxValue = 5;
+    switch (totalCheeseCollected) {
         case 1:
             [soundEffect cheese_1];
             break;
@@ -141,7 +142,7 @@
             [soundEffect cheese_3];
             break;
         case 4:
-            [soundEffect cheese_3];
+            [soundEffect cheese_4];
             break;
         case 5:
             [soundEffect cheese_all];
@@ -149,7 +150,7 @@
         default:
             break;
     }
-    [noOfCollectedCheese setString:[NSString stringWithFormat:@"%d/%d",currentValue,maxValue]];
+    [noOfCollectedCheese setString:[NSString stringWithFormat:@"%d/%d",totalCheeseCollected,maxValue]];
 }
 
 -(int) getTotalNoOffCheeseCollected{
@@ -159,7 +160,7 @@
     float time = minuts * 60 + seconds;
     float totalTime = 120;
     [timer setScaleX:(time/totalTime) * cScale];
-    [remainingTime setString:[NSString stringWithFormat:@"0%d.%d",minuts,seconds]];
+//    [remainingTime setString:[NSString stringWithFormat:@"0%d.%d",minuts,seconds]];
 }
 
 -(void) addPauseBtnMenu{
@@ -225,6 +226,7 @@
         if ([FTMUtil sharedInstance].isFirstTutorial || [FTMUtil sharedInstance].isSecondTutorial) {
             return;
         }
+        [FTMUtil sharedInstance].isInvincibilityOn = YES;
 //        [FTMUtil sharedInstance].isSlowDownTimer = YES;
 //        [self hideFailureScreen];
     }];
@@ -248,6 +250,7 @@
         if ([FTMUtil sharedInstance].isFirstTutorial || [FTMUtil sharedInstance].isSecondTutorial) {
             return;
         }
+        [FTMUtil sharedInstance].isInvincibilityOn = NO;
 //        [FTMUtil sharedInstance].isBoostPowerUpEnabled = YES;
     }];
     if ([FTMUtil sharedInstance].isRetinaDisplay) {
@@ -309,7 +312,10 @@
     pauseText.visible = YES;
     pauseText.position = ccp([CCDirector sharedDirector].winSize.width/2 +50, [CCDirector sharedDirector].winSize.height/2 - 3);
     if (![FTMUtil sharedInstance].isRetinaDisplay) {
-        pauseText.scale = NON_RETINA_SCALE;
+            pauseText.scale = NON_RETINA_SCALE;
+            pauseText.position = ccp([CCDirector sharedDirector].winSize.width/2 +250, [CCDirector sharedDirector].winSize.height/2 +50);
+    }else if ([FTMUtil sharedInstance].isIphone4){
+        pauseText.position = ccp([CCDirector sharedDirector].winSize.width/2 +75, [CCDirector sharedDirector].winSize.height/2 - 3);
     }
     [pauseScreenBg addChild:pauseText z:9999];
     
@@ -479,7 +485,7 @@
     cheezeCollectedBg.visible = NO;
     leftSprite.visible = NO;
     rightSprite.visible = NO;
-    remainingTime.visible = NO;
+//    remainingTime.visible = NO;
     noOfCollectedCheese.visible = NO;
 }
 
@@ -490,7 +496,7 @@
     cheezeCollectedBg.visible = YES;
     leftSprite.visible = YES;
     rightSprite.visible = YES;
-    remainingTime.visible = YES;
+//    remainingTime.visible = YES;
     noOfCollectedCheese.visible = YES;
 }
 

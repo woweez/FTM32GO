@@ -23,6 +23,7 @@
 @property (readwrite) BOOL isGameSoundOn;
 @property (readwrite) BOOL isIphone4;
 @property (readwrite) BOOL isRetinaDisplay;
+@property (readwrite) BOOL isInvincibilityOn;
 
 + (FTMUtil*) sharedInstance;
 - (NSString *)getModel;

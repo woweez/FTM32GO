@@ -34,6 +34,9 @@
     sound *soundEffect;
     Trigo *trigo;
     b2World* world;
+    CCSprite *pushButtonSprite1;
+    CCSprite *pushButtonSprite2;
+    CCSprite *pushButtonSprite3;
 //    HudLayer *hudLayer;
     CGSize winSize;
 	GLESDebugDraw *m_debugDraw;
@@ -65,8 +68,6 @@
     CCSprite *cheeseCollectedSprite;
     CCSprite *timeCheeseSprite;
     CCSprite *cheeseSprite[5];
-    CCSprite *cheeseSprite2[5];
-//    CCSprite *starSprite[6];
     CCSprite *clockBackgroundSprite;
     CCSprite *clockArrowSprite;
     CCSprite *iceQubeSprite[4];
@@ -122,7 +123,6 @@
     CCLabelAtlas *iceBlastAtlas2;
     int cheeseX2;
     int cheeseY2;
-    int cheeseCollectedScore;
     BOOL cheeseCollectedChe[10];
     int cheeseCount;
     int motherLevel;

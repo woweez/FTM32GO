@@ -593,7 +593,7 @@ GirlMouseEngineMenu15B *gLayer15b;
             catX = catX+40;
 //        }
         int catY = bossCatWalk.position.y;
-        if (!isCatKnockedOut && (!CGRectIsNull(CGRectIntersection(catRect, heroRect)))) {
+        if (![FTMUtil sharedInstance].isInvincibilityOn && !isCatKnockedOut && (!CGRectIsNull(CGRectIntersection(catRect, heroRect)))) {
             gameFunc.trappedChe = YES;
             heroTrappedChe=YES;
             heroSprite.visible=NO;
@@ -602,7 +602,7 @@ GirlMouseEngineMenu15B *gLayer15b;
             [self schedule:@selector(addLevelFailureScreen) interval:1.2];
         }
         else if (!CGRectIsNull(CGRectIntersection(electricity1Rect, heroRect)) || !CGRectIsNull(CGRectIntersection(electricity2Rect, heroRect))){
-            if (wavesSprite.visible || wavesSprite2.visible) {
+            if (![FTMUtil sharedInstance].isInvincibilityOn && (wavesSprite.visible || wavesSprite2.visible)) {
                 gameFunc.trappedChe = YES;
                 heroTrappedChe=YES;
                 heroSprite.visible=NO;
@@ -1411,7 +1411,9 @@ GirlMouseEngineMenu15B *gLayer15b;
 -(void)HeroLiningDraw:(int)cPath{
     
     CGFloat angle=jumpAngle;
-    
+    if (heroPimpleSprite[1].position.x == -100) {
+        [soundEffect pulling_tail];
+    }
     if(!safetyJumpChe){
         jumpPower = activeVect.Length();
         forwardChe=(angle<90.0?NO:YES);
@@ -1696,27 +1698,6 @@ GirlMouseEngineMenu15B *gLayer15b;
                 smokingSprite[i][j].opacity=250-smokingCount[j];
         }
         
-    }
-    if(motherLevel==3){
-        if(!forwardChe && heroSprite.position.x>570 && heroSprite.position.x<= 670&& heroSprite.position.y>270&&heroSprite.position.y<=425&&!heroTrappedChe&&motherLevel==3){
-            if(smokingCount2<=300 &&smokingCount2>=20){
-                gameFunc.trappedChe=YES;
-            }
-            
-        }else if(forwardChe && heroSprite.position.x>620 && heroSprite.position.x<= 720&& heroSprite.position.y>270&&heroSprite.position.y<=425&&!heroTrappedChe&&motherLevel==3){
-            if(smokingCount2<=300 &&smokingCount2>=20){
-                gameFunc.trappedChe=YES;
-            }
-        }
-        
-    }else if(motherLevel==4){
-        if(!forwardChe && heroSprite.position.x>570 && heroSprite.position.x<= 680&& heroSprite.position.y>270&&heroSprite.position.y<=425&&!heroTrappedChe&&gameFunc.switchCount==0){
-            gameFunc.trappedChe=YES;
-            
-        }else if(forwardChe && heroSprite.position.x>680 && heroSprite.position.x<= 730&& heroSprite.position.y>270&&heroSprite.position.y<=425&&!heroTrappedChe &&gameFunc.switchCount==0){
-            gameFunc.trappedChe=YES;
-            
-        }
     }
 }
 -(void) dealloc {

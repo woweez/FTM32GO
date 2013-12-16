@@ -24,6 +24,7 @@
 -(void)cheese_1;
 -(void)cheese_2;
 -(void)cheese_3;
+-(void)cheese_4;
 -(void)cheese_all;
 -(void)correct_switch;
 -(void)door_close;
@@ -52,6 +53,13 @@
 -(void)vent_mist;
 -(void)water_falling_from_vase;
 -(void)water_sink_splash;
+-(void)pulling_tail;
+-(void)mama_jump;
+-(void)strong_jump;
+-(void)girl_jump;
+-(void)mama_hurt;
+-(void)strong_hurt;
+-(void)girl_hurt;
 
 //music
 

@@ -68,13 +68,10 @@
     CCSprite *cheeseCollectedSprite;
     CCSprite *timeCheeseSprite;
     CCSprite *cheeseSprite[5];
-    CCSprite *cheeseSprite2[5];
-//    CCSprite *starSprite[6];
 
     CCSprite *blockSprite[6];
     CCSprite *hotSprite[10];
     CCSprite *iceQubeSprite[5];
-    CCSprite *gateSprite;
     
     CCSprite *dotSprite;
     
@@ -123,7 +120,6 @@
     
     int cheeseX2;
     int cheeseY2;
-    int cheeseCollectedScore;
     BOOL cheeseCollectedChe[10];
     int cheeseCount;
     int motherLevel;

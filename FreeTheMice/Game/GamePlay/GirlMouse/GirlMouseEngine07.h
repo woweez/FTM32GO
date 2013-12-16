@@ -71,8 +71,6 @@
     CCSprite *timeCheeseSprite;
     CCSprite *catSprite2;
     CCSprite *cheeseSprite[5];
-    CCSprite *cheeseSprite2[5];
-    CCSprite *starSprite[6];
     CCSprite *hotSprite[10];
     CCSprite *stickyPlatfromSprite;
     CCSprite *knifeSprite;
@@ -128,7 +126,6 @@
     CCLabelAtlas *appleWoodAtlas[2];
     int cheeseX2;
     int cheeseY2;
-    int cheeseCollectedScore;
     BOOL cheeseCollectedChe[10];
     int cheeseCount;
     int motherLevel;

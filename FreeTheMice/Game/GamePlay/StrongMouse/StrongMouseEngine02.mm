@@ -158,13 +158,11 @@ StrongMouseEngineMenu02 *sLayer02;
         
         for(int i=0;i<cheeseCount;i++){
             cheeseCollectedChe[i]=YES;
-            cheeseSprite2[i]=[CCSprite spriteWithFile:@"cheeseGlow.png"];
-            cheeseSprite2[i].position=[gameFunc getCheesePosition:1 gameLevel:motherLevel iValue:i];
-            [self addChild:cheeseSprite2[i] z:9];
-            
             cheeseSprite[i]=[CCSprite spriteWithFile:@"Cheese.png"];
             cheeseSprite[i].position=[gameFunc getCheesePosition:1 gameLevel:motherLevel iValue:i];
+            [self playStaticCheeseAnimation:cheeseSprite[i]];
             [self addChild:cheeseSprite[i] z:9];
+            cheeseSprite[i].scale = CHEESE_SCALE;
         }
         
         
@@ -213,26 +211,31 @@ StrongMouseEngineMenu02 *sLayer02;
         [self addChild:windowSprite z:1];
         
         
-        CCSprite *pushButtonSprite=[CCSprite spriteWithFile:@"push_button.png"];
-        pushButtonSprite.position=ccp(773,385);
-        pushButtonSprite.scaleY=0.35;
-        pushButtonSprite.scaleX=0.55;
+        pushButtonSprite=[CCSprite spriteWithFile:@"push_button.png"];
+        pushButtonSprite.position = ccp(773,397);
+        if (![FTMUtil sharedInstance].isRetinaDisplay) {
+            pushButtonSprite.scale = NON_RETINA_SCALE;
+        }
+//        pushButtonSprite.position = ccp(773,385);
+//        pushButtonSprite.scaleY = 0.35;
+//        pushButtonSprite.scaleX = 0.55;
+        [self playPushRedBtnAnimation:pushButtonSprite];
         [self addChild:pushButtonSprite z:1];
         
         honeyPotSprite=[CCSprite spriteWithFile:@"honey_pot.png"];
         honeyPotSprite.position=ccp(718,475);
         honeyPotSprite.scale=0.8;
-        [self addChild:honeyPotSprite z:1];
+        [self addChild:honeyPotSprite z:2];
         
         CCSprite *holeSprite=[CCSprite spriteWithFile:@"hole.png"];
         holeSprite.position=ccp(970,411);
         [self addChild:holeSprite z:1];
         
-        gateSprite=[CCSprite spriteWithFile:@"gate.png"];
-        gateSprite.position=ccp(970,409);
-        [self addChild:gateSprite z:1];
+//        gateSprite=[CCSprite spriteWithFile:@"gate.png"];
+//        gateSprite.position=ccp(970,409);
+//        [self addChild:gateSprite z:1];
         
-        
+        [self addGateImageAndAnimation:ccp(970,409)];
         honeyBottleSprite=[CCSprite spriteWithFile:@"honey_bottle.png"];
         honeyBottleSprite.position=ccp(720,659);
         honeyBottleSprite.scale=0.8;
@@ -369,8 +372,8 @@ StrongMouseEngineMenu02 *sLayer02;
         if(gameFunc.switchCount==1){
             gameFunc.switchCount=2;
             [self startClockTimer];
-            clockBackgroundSprite.visible=YES;
-            clockArrowSprite.visible=YES;
+//            clockBackgroundSprite.visible=YES;
+//            clockArrowSprite.visible=YES;
         }else if(gameFunc.switchCount>=1){
             gameFunc.switchCount+=1;
             if(gameFunc.switchCount%60==0)
@@ -379,6 +382,10 @@ StrongMouseEngineMenu02 *sLayer02;
                 gameFunc.switchCount=0;
                 clockBackgroundSprite.visible=NO;
                 clockArrowSprite.visible=NO;
+//                if (newClockSprite != nil) {
+//                    [newClockSprite removeFromParentAndCleanup:YES];
+//                    newClockSprite = nil;
+//                }
             }
         }
     }
@@ -474,22 +481,25 @@ StrongMouseEngineMenu02 *sLayer02;
     stoolSprite.position=ccp(235+gameFunc.stoolCount,260);
     honeyPotSprite.position=ccp(718+gameFunc.honeyPotCount,475-gameFunc.honeyPotCount2);
     if(gameFunc.honeyPotCount2==67){
+        if (gateSprite.tag != 1010) {
+            [self resetRedPushBtn:ccp(773,385)];
+            gateSprite.tag = 1010;
+            [self playDoorAnimation];
+        }
         gateCount+=0.3;
         gateCount=(gateCount>25?25:gateCount);
-        gateSprite.position=ccp(970-(gateCount*1.8),409);
-        if(gateCount<=12.5)
-            gateSprite.scaleX=1.0-(((gateCount*2)*4)/100.0);
-        else
-            gateSprite.scaleX=(((gateCount-12.5)*2)*4)/100.0;
+//        gateSprite.position=ccp(970-(gateCount*1.8),409);
+//        if(gateCount<=12.5)
+//            gateSprite.scaleX=1.0-(((gateCount*2)*4)/100.0);
+//        else
+//            gateSprite.scaleX=(((gateCount-12.5)*2)*4)/100.0;
         
         
     }
     honeyBottleSprite.position=ccp(720+gameFunc.honeyBottleCount,659-gameFunc.honeyBottleCount2);
     cheeseSprite[0].position=ccp([gameFunc getCheesePosition:1 gameLevel:motherLevel iValue:0].x+gameFunc.stoolCount,[gameFunc getCheesePosition:1 gameLevel:motherLevel iValue:0].y);
-    cheeseSprite2[0].position=ccp([gameFunc getCheesePosition:1 gameLevel:motherLevel iValue:0].x+gameFunc.stoolCount,[gameFunc getCheesePosition:1 gameLevel:motherLevel iValue:0].y);
     
     cheeseSprite[4].position=ccp([gameFunc getCheesePosition:1 gameLevel:motherLevel iValue:4].x,[gameFunc getCheesePosition:1 gameLevel:motherLevel iValue:4].y-cheeseFallCount);
-    cheeseSprite2[4].position=ccp([gameFunc getCheesePosition:1 gameLevel:motherLevel iValue:4].x,[gameFunc getCheesePosition:1 gameLevel:motherLevel iValue:4].y-cheeseFallCount);
     
     if(gameFunc.honeyBottleCount2>=10){
         lightRotateCount+=0.5;
@@ -509,12 +519,21 @@ StrongMouseEngineMenu02 *sLayer02;
     int fValue=(!forwardChe?0:30);
     if(heroSprite.position.x>=920+fValue &&heroSprite.position.y<=430&&!mouseWinChe&&gateCount>=25){
         if(runningChe||heroStandChe){
-            mouseWinChe=YES;
-            heroStandChe=YES;
-            runningChe=NO;
-            heroRunSprite.visible=NO;
+            if (cheeseCollectedScore < 3 && locker.tag != 911) {
+                [self playDoorLockAnimation:ccp(heroSprite.position.x, heroSprite.position.y)];
+                locker.tag = 911;
+            }else if(cheeseCollectedScore > 2){
+                mouseWinChe=YES;
+                heroStandChe=YES;
+                runningChe=NO;
+                heroRunSprite.visible=NO;
+            }
         }
+    }else if(locker.tag == 911){
+        locker.tag = 1;
+        locker.visible = NO;
     }
+
 }
 
 //-(void)starCheeseSpriteInitilized{
@@ -567,7 +586,6 @@ StrongMouseEngineMenu02 *sLayer02;
             cheeseAnimationCount=(cheeseAnimationCount>=500?0:cheeseAnimationCount);
             CGFloat localCheeseAnimationCount=0;
             localCheeseAnimationCount=(cheeseAnimationCount<=250?cheeseAnimationCount:250-(cheeseAnimationCount-250));
-            cheeseSprite2[i].opacity=localCheeseAnimationCount/4;
             
             CGFloat cheeseX=[gameFunc getCheesePosition:1 gameLevel:motherLevel iValue:i].x;
             CGFloat cheeseY=[gameFunc getCheesePosition:1 gameLevel:motherLevel iValue:i].y;
@@ -578,7 +596,6 @@ StrongMouseEngineMenu02 *sLayer02;
 //                    starSprite[2].visible=NO;
                 }
                 cheeseSprite[2].zOrder=0;
-                cheeseSprite2[2].zOrder=0;
             }
             
             if(!forwardChe){
@@ -586,12 +603,8 @@ StrongMouseEngineMenu02 *sLayer02;
                     [soundEffect cheeseCollectedSound];
                     cheeseCollectedChe[i]=NO;
                     cheeseSprite[i].visible=NO;
-                    cheeseSprite2[i].visible=NO;
                     cheeseCollectedScore+=1;
-//                    starSprite[i].visible=NO;
-                    
-                    [hudLayer updateNoOfCheeseCollected:cheeseCollectedScore andMaxValue:[cheeseSetValue[motherLevel-1] intValue]];
-                    [self createExplosionX:cheeseX-mValue y:cheeseY+mValue2];
+                    [self playCheeseCollectedAnimation:cheeseSprite[i]];
                     break;
                 }
             }else{
@@ -599,17 +612,11 @@ StrongMouseEngineMenu02 *sLayer02;
                     [soundEffect cheeseCollectedSound];
                     cheeseCollectedChe[i]=NO;
                     cheeseSprite[i].visible=NO;
-                    cheeseSprite2[i].visible=NO;
                     cheeseCollectedScore+=1;
-//                    starSprite[i].visible=NO;
-                    
-                    [hudLayer updateNoOfCheeseCollected:cheeseCollectedScore andMaxValue:[cheeseSetValue[motherLevel-1] intValue]];
-                    [self createExplosionX:cheeseX-mValue y:cheeseY+mValue2];
+                    [self playCheeseCollectedAnimation:cheeseSprite[i]];
                     break;
                 }
             }
-        }else{
-//            starSprite[i].visible=NO;
         }
     }
 }
@@ -996,7 +1003,9 @@ StrongMouseEngineMenu02 *sLayer02;
 -(void)HeroLiningDraw:(int)cPath{
     
     CGFloat angle=jumpAngle;
-    
+    if (heroPimpleSprite[1].position.x == -100) {
+        [soundEffect pulling_tail];
+    }
     if(!safetyJumpChe){
         jumpPower = activeVect.Length();
         forwardChe=(angle<90.0?NO:YES);
@@ -1147,6 +1156,7 @@ StrongMouseEngineMenu02 *sLayer02;
             jumpAngle = fabsf( CC_RADIANS_TO_DEGREES( atan2f(-activeVect.y, activeVect.x)));
             jumpingChe=YES;
             dragChe=NO;
+            [soundEffect strong_jump];
             mouseDragSprite.visible=NO;
             for (int i = 0; i < 20; i=i+1) {
                 heroPimpleSprite[i].position=ccp(-100,100);

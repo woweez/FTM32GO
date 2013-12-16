@@ -65,7 +65,6 @@
     CCSprite *cheeseCollectedSprite;
     CCSprite *timeCheeseSprite;
     CCSprite *cheeseSprite[5];
-    CCSprite *cheeseSprite2[5];
     StrongLevel7Cat *catObj;
 //    CCSprite *starSprite[6];
     
@@ -122,7 +121,6 @@
     CCLabelAtlas *cheeseCollectedAtlas;
     int cheeseX2;
     int cheeseY2;
-    int cheeseCollectedScore;
     BOOL cheeseCollectedChe[10];
     int cheeseCount;
     int motherLevel;

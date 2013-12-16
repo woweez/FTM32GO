@@ -50,7 +50,7 @@
     
     BOOL jumpingChe;
     CGFloat saveDottedPathCount;
-    
+    int cheeseCollectedScore;
     CCParticleSystem	*cheeseEmitter;
     CCSprite *heroSprite;
     CCSprite *heroRunSprite;
@@ -117,7 +117,6 @@
     CCLabelAtlas *cheeseCollectedAtlas;
     CCLabelAtlas *switchAtlas;
     CCLabelAtlas *switchAtlas2;
-    int cheeseCollectedScore;
     BOOL cheeseCollectedChe[10];
     int cheeseCount;
     int motherLevel;

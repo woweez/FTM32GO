@@ -182,13 +182,11 @@ GirlMouseEngineMenu13 *gLayer13;
         
         for(int i=0;i<cheeseCount;i++){
             cheeseCollectedChe[i]=YES;
-            cheeseSprite2[i]=[CCSprite spriteWithFile:@"cheeseGlow.png"];
-            cheeseSprite2[i].position=[gameFunc getCheesePosition:1 gameLevel:motherLevel iValue:i];
-            [self addChild:cheeseSprite2[i] z:9];
-            
             cheeseSprite[i]=[CCSprite spriteWithFile:@"Cheese.png"];
             cheeseSprite[i].position=[gameFunc getCheesePosition:1 gameLevel:motherLevel iValue:i];
+            [self playStaticCheeseAnimation:cheeseSprite[i]];
             [self addChild:cheeseSprite[i] z:9];
+            cheeseSprite[i].scale = CHEESE_SCALE;
         }
         
         CCSprite *sprite=[CCSprite spriteWithFile:@"fridge.png"];
@@ -1051,45 +1049,46 @@ GirlMouseEngineMenu13 *gLayer13;
         [combButtonAtlas setString:@"1"];
     }
     
-    
-    for(int i=0;i<4;i++){
-        if(hx-iValue>iceQubeSprite[i].position.x-60 &&hx-iValue<iceQubeSprite[i].position.x-30 &&hy > iceQubeSprite[i].position.y-30 &&hy<iceQubeSprite[i].position.y+20 &&!gameFunc.trappedChe){
-            gameFunc.trappedChe=YES;
-            trappedTypeValue=2;
-        }
-    }
-    for(int i=0;i<5;i++){
-        for(int j=0;j<2;j++){
-            if(hx-iValue>iceSmokingSprite[i][j].position.x-40 &&hx-iValue<iceSmokingSprite[i][j].position.x-30 &&hy > iceSmokingSprite[i][j].position.y-30 &&hy<iceSmokingSprite[i][j].position.y+20 &&!gameFunc.trappedChe){
+    if (![FTMUtil sharedInstance].isInvincibilityOn) {
+        
+        for(int i=0;i<4;i++){
+            if(hx-iValue>iceQubeSprite[i].position.x-60 &&hx-iValue<iceQubeSprite[i].position.x-30 &&hy > iceQubeSprite[i].position.y-30 &&hy<iceQubeSprite[i].position.y+20 &&!gameFunc.trappedChe){
                 gameFunc.trappedChe=YES;
-                 trappedTypeValue=2;
+                trappedTypeValue=2;
             }
         }
-    }
-    
-    if(hx-iValue>360 && hx-iValue<470 && hy> 615 && hy<630){
-        if((pulbCount>50&&pulbCount<70)|| (pulbCount>175&&pulbCount<195)){
+        for(int i=0;i<5;i++){
+            for(int j=0;j<2;j++){
+                if(hx-iValue>iceSmokingSprite[i][j].position.x-40 &&hx-iValue<iceSmokingSprite[i][j].position.x-30 &&hy > iceSmokingSprite[i][j].position.y-30 &&hy<iceSmokingSprite[i][j].position.y+20 &&!gameFunc.trappedChe){
+                    gameFunc.trappedChe=YES;
+                    trappedTypeValue=2;
+                }
+            }
+        }
+        
+        if(hx-iValue>360 && hx-iValue<470 && hy> 615 && hy<630){
+            if((pulbCount>50&&pulbCount<70)|| (pulbCount>175&&pulbCount<195)){
+                gameFunc.trappedChe=YES;
+                trappedTypeValue=2;
+            }
+        }
+        
+        
+        
+        if(hx-iValue>catSprite.position.x-90 &&hx-iValue<catSprite.position.x+40 &&hy > catSprite.position.y-30 &&hy<catSprite.position.y+50 &&!gameFunc.
+           trappedChe&&!gameFunc.stickyChe){
             gameFunc.trappedChe=YES;
-            trappedTypeValue=2;
+            trappedTypeValue=1;
+        }else if(hx-iValue>catSprite2.position.x-90 &&hx-iValue<catSprite2.position.x+40 &&hy > catSprite2.position.y-30 &&hy<catSprite2.position.y+50 &&!gameFunc.
+                 trappedChe&&!gameFunc.stickyChe){
+            gameFunc.trappedChe=YES;
+            trappedTypeValue=1;
+        }else if(hx-iValue>catSprite3.position.x-90 &&hx-iValue<catSprite3.position.x+40 &&hy > catSprite3.position.y-30 &&hy<catSprite3.position.y+50 &&!gameFunc.
+                 trappedChe&&!gameFunc.stickyChe){
+            gameFunc.trappedChe=YES;
+            trappedTypeValue=1;
         }
     }
-    
-    
-    
-    if(hx-iValue>catSprite.position.x-90 &&hx-iValue<catSprite.position.x+40 &&hy > catSprite.position.y-30 &&hy<catSprite.position.y+50 &&!gameFunc.
-       trappedChe&&!gameFunc.stickyChe){
-        gameFunc.trappedChe=YES;
-        trappedTypeValue=1;
-    }else if(hx-iValue>catSprite2.position.x-90 &&hx-iValue<catSprite2.position.x+40 &&hy > catSprite2.position.y-30 &&hy<catSprite2.position.y+50 &&!gameFunc.
-             trappedChe&&!gameFunc.stickyChe){
-        gameFunc.trappedChe=YES;
-        trappedTypeValue=1;
-    }else if(hx-iValue>catSprite3.position.x-90 &&hx-iValue<catSprite3.position.x+40 &&hy > catSprite3.position.y-30 &&hy<catSprite3.position.y+50 &&!gameFunc.
-             trappedChe&&!gameFunc.stickyChe){
-        gameFunc.trappedChe=YES;
-        trappedTypeValue=1;
-    }
-    
     
 }
 -(void)waterDropsFunc{
@@ -1296,11 +1295,19 @@ GirlMouseEngineMenu13 *gLayer13;
     int fValue=(!forwardChe?0:30);
     if(heroSprite.position.x>=920+fValue &&heroSprite.position.y>540&&heroSprite.position.y<=650&&!mouseWinChe&&!gameFunc.trappedChe&&gameFunc.gateOpenChe){
         if(runningChe||heroStandChe){
-            mouseWinChe=YES;
-            heroStandChe=YES;
-            runningChe=NO;
-            heroRunSprite.visible=NO;
+            if (cheeseCollectedScore < 3 && locker.tag != 911) {
+                [self playDoorLockAnimation:ccp(heroSprite.position.x, heroSprite.position.y)];
+                locker.tag = 911;
+            }else if(cheeseCollectedScore > 2){
+                mouseWinChe=YES;
+                heroStandChe=YES;
+                runningChe=NO;
+                heroRunSprite.visible=NO;
+            }
         }
+    }else if(locker.tag == 911){
+        locker.tag = 1;
+        locker.visible = NO;
     }else if(gameFunc.trappedChe){
         heroTrappedChe=YES;
         heroSprite.visible=NO;
@@ -1357,20 +1364,7 @@ GirlMouseEngineMenu13 *gLayer13;
 }
 
 -(void)starCheeseSpriteInitilized{
-    for(int i=0;i<5;i++){
-        starSprite[i] = [CCSprite spriteWithSpriteFrameName:@"star2.png"];
-        starSprite[i].scale=0.4;
-        starSprite[i].position=ccp([gameFunc getCheesePosition:1 gameLevel:motherLevel iValue:i].x-12,[gameFunc getCheesePosition:1 gameLevel:motherLevel iValue:i].y+8);
-        [spriteSheet addChild:starSprite[i] z:10];
-        
-        NSMutableArray *animFrames3 = [NSMutableArray array];
-        for(int j = 0; j <5; j++) {
-            CCSpriteFrame *frame = [cache spriteFrameByName:[NSString stringWithFormat:@"star%d.png",j+1]];
-            [animFrames3 addObject:frame];
-        }
-        CCAnimation *animation2 = [CCAnimation animationWithSpriteFrames:animFrames3 delay:0.2f];
-        [starSprite[i] runAction:[CCRepeatForever actionWithAction: [CCAnimate actionWithAnimation:animation2]]];
-    }
+    
 }
 -(void)cheeseCollisionFunc{
     CGFloat heroX=heroSprite.position.x;
@@ -1386,7 +1380,6 @@ GirlMouseEngineMenu13 *gLayer13;
                 cheeseX2=[cheeseArrX[x] intValue];
                 cheeseY2=[cheeseArrY[x] intValue];
                 
-                starSprite[i].position=ccp([gameFunc getCheesePosition:1 gameLevel:motherLevel iValue:i].x-12+cheeseX2,[gameFunc getCheesePosition:1 gameLevel:motherLevel iValue:i].y+8+cheeseY2);
             }
             
             int mValue=0;
@@ -1396,7 +1389,6 @@ GirlMouseEngineMenu13 *gLayer13;
             cheeseAnimationCount=(cheeseAnimationCount>=500?0:cheeseAnimationCount);
             CGFloat localCheeseAnimationCount=0;
             localCheeseAnimationCount=(cheeseAnimationCount<=250?cheeseAnimationCount:250-(cheeseAnimationCount-250));
-            cheeseSprite2[i].opacity=localCheeseAnimationCount/4;
             
             CGFloat cheeseX=[gameFunc getCheesePosition:1 gameLevel:motherLevel iValue:i].x;
             CGFloat cheeseY=[gameFunc getCheesePosition:1 gameLevel:motherLevel iValue:i].y;
@@ -1406,11 +1398,8 @@ GirlMouseEngineMenu13 *gLayer13;
                     [soundEffect cheeseCollectedSound];
                     cheeseCollectedChe[i]=NO;
                     cheeseSprite[i].visible=NO;
-                    cheeseSprite2[i].visible=NO;
                     cheeseCollectedScore+=1;
-                    starSprite[i].visible=NO;
-                    [hudLayer updateNoOfCheeseCollected:cheeseCollectedScore andMaxValue:[cheeseSetValue[motherLevel-1] intValue]];
-                    [self createExplosionX:cheeseX-mValue y:cheeseY+mValue2];
+                    [self playCheeseCollectedAnimation:cheeseSprite[i]];
                     break;
                 }
             }else{
@@ -1418,16 +1407,11 @@ GirlMouseEngineMenu13 *gLayer13;
                     [soundEffect cheeseCollectedSound];
                     cheeseCollectedChe[i]=NO;
                     cheeseSprite[i].visible=NO;
-                    cheeseSprite2[i].visible=NO;
                     cheeseCollectedScore+=1;
-                    starSprite[i].visible=NO;
-                    [hudLayer updateNoOfCheeseCollected:cheeseCollectedScore andMaxValue:[cheeseSetValue[motherLevel-1] intValue]];
-                    [self createExplosionX:cheeseX-mValue y:cheeseY+mValue2];
+                    [self playCheeseCollectedAnimation:cheeseSprite[i]];
                     break;
                 }
             }
-        }else{
-            starSprite[i].visible=NO;
         }
     }
 }
@@ -1901,6 +1885,9 @@ GirlMouseEngineMenu13 *gLayer13;
     int tValue=0;
     int tValue2=0;
     int tValue3=0;
+    if (heroPimpleSprite[1].position.x == -100) {
+        [soundEffect pulling_tail];
+    }
     if(!safetyJumpChe){
         jumpPower = activeVect.Length();
         forwardChe=(angle<90.0?NO:YES);
@@ -2098,6 +2085,7 @@ GirlMouseEngineMenu13 *gLayer13;
             jumpAngle = fabsf( CC_RADIANS_TO_DEGREES( atan2f(-activeVect.y, activeVect.x)));
             jumpingChe=YES;
             dragChe=NO;
+            [soundEffect girl_jump];
             mouseDragSprite.visible=NO;
             for (int i = 0; i < 25; i=i+1) {
                 heroPimpleSprite[i].position=ccp(-100,100);

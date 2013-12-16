@@ -8,6 +8,8 @@
 
 #import "StrongGameFunc.h"
 #import "cocos2d.h"
+#import "FTMUtil.h"
+#import "FTMConstants.h"
 
 @implementation StrongGameFunc
 
@@ -1138,7 +1140,7 @@
                 topHittingCollisionChe=NO;
                 reverseJump=YES;
                 xPosition=heroX-50;
-                if(sValue==6&&!trappedChe){
+                if(sValue==6&&!trappedChe && ![FTMUtil sharedInstance].isInvincibilityOn){
                     trappedChe=YES;
                     if(gameLevel==5)
                         trappedVesselsChe=YES;
@@ -1159,7 +1161,7 @@
                             movePlatformX=xPosition;
                             movePlatformY=yPosition;
                             landMoveCount=moveCount2;
-                        }else if(sValue==6&&!trappedChe){
+                        }else if(sValue==6&&!trappedChe && ![FTMUtil sharedInstance].isInvincibilityOn){
                             trappedChe=YES;
                             if(gameLevel==5)
                                 trappedVesselsChe=YES;
@@ -1182,7 +1184,7 @@
                 topHittingCollisionChe=NO;
                 reverseJump=YES;
                 xPosition=(heroX-10)+objectW;
-                if(sValue==6&&!trappedChe){
+                if(sValue==6&&!trappedChe && ![FTMUtil sharedInstance].isInvincibilityOn){
                     trappedChe=YES;
                     if(gameLevel==5)
                         trappedVesselsChe=YES;
@@ -1205,7 +1207,7 @@
                             movePlatformY=yPosition;
                             landMoveCount=moveCount2;
                             
-                        }else if(sValue==6&&!trappedChe){
+                        }else if(sValue==6&&!trappedChe && ![FTMUtil sharedInstance].isInvincibilityOn){
                             trappedChe=YES;
                             if(gameLevel==5)
                                 trappedVesselsChe=YES;
@@ -1239,7 +1241,7 @@
         //Running
         if(xPosition >= heroX-45+aValue && xPosition<=((heroX-45)+20) && yPosition >= (heroY-objectH) && yPosition <= heroY){
             xPosition=heroX-45;
-            if(sValue==6&&!trappedChe)
+            if(sValue==6&&!trappedChe && ![FTMUtil sharedInstance].isInvincibilityOn)
                 trappedChe=YES;
             if(sValue==20){
                 stoolCount+=1;
@@ -1387,7 +1389,7 @@
     }else{
         if(xPosition >= ((heroX-15)+(objectW-20)) && xPosition<=((heroX-15)+(objectW)) && yPosition >= (heroY-objectH) && yPosition <= heroY){
             xPosition=(heroX-15)+objectW;
-            if(sValue==6&&!trappedChe)
+            if(sValue==6&&!trappedChe && ![FTMUtil sharedInstance].isInvincibilityOn)
                 trappedChe=YES;
             if(sValue==20){
                 stoolCount-=1;

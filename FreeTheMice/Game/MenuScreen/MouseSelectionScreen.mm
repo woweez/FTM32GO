@@ -205,7 +205,11 @@ int counter;
                 [[CCDirector sharedDirector] replaceScene:[MouseSelectionScreen scene]];
             }
         }];
-        [magnifyMenuItem setScale:0.6];
+        [magnifyMenuItem setScale:.6];
+        if ([FTMUtil sharedInstance].isRetinaDisplay) {
+            [magnifyMenuItem setScale:1.2];
+        }
+        
         magnifyMenuItem.position = ccp(170 *scaleFactorX, 250 *scaleFactorY);
         [menu addChild:magnifyMenuItem];
 	}

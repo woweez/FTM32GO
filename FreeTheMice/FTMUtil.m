@@ -17,6 +17,7 @@
 @synthesize offsetY;
 @synthesize isIphone5;
 @synthesize isSlowDownTimer;
+
 @synthesize isRespawnMice;
 @synthesize isFirstTutorial;
 @synthesize isGameSoundOn;
@@ -24,6 +25,8 @@
 @synthesize isBoostPowerUpEnabled;
 @synthesize isIphone4;
 @synthesize isRetinaDisplay;
+@synthesize isInvincibilityOn;
+
 
 static FTMUtil *sharedInstance =nil;
 

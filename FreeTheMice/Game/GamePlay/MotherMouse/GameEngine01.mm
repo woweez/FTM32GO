@@ -83,7 +83,7 @@ GameEngine01Menu *layer01;
         _contactListener = new MyContactListener();
         world->SetContactListener(_contactListener);
         
-        
+       
         self.tileMap = [CCTMXTiledMap tiledMapWithTMXFile:@"level1.tmx"];
         self.background = [_tileMap layerNamed:@"level1"];
         if ([FTMUtil sharedInstance].isRetinaDisplay) {
@@ -169,7 +169,7 @@ GameEngine01Menu *layer01;
             progressBarSprite[i]=[CCSprite spriteWithFile:fStr];
             progressBarSprite[i].position=ccp(121+(i*2),301);
             progressBarSprite[i].scaleX=2.2;
-             progressBarSprite[i].visible=NO;
+            progressBarSprite[i].visible=NO;
             [layer01 addChild:progressBarSprite[i] z:10];
         }
         
@@ -187,21 +187,16 @@ GameEngine01Menu *layer01;
         
         for(int i=0;i<cheeseCount;i++){
             cheeseCollectedChe[i]=YES;
-            cheeseSprite2[i]=[CCSprite spriteWithFile:@"cheeseGlow.png"];
-            cheeseSprite2[i].position=[gameFunc getCheesePosition:1 gameLevel:motherLevel iValue:i];
-            [self addChild:cheeseSprite2[i] z:9];
             cheeseSprite[i]=[CCSprite spriteWithFile:@"Cheese.png"];
             cheeseSprite[i].position=[gameFunc getCheesePosition:1 gameLevel:motherLevel iValue:i];
+            [self playStaticCheeseAnimation:cheeseSprite[i]];
             [self addChild:cheeseSprite[i] z:9];
+            cheeseSprite[i].scale = CHEESE_SCALE;
             if (![FTMUtil sharedInstance].isRetinaDisplay) {
-                cheeseSprite2[i].scale = NON_RETINA_SCALE;
-                cheeseSprite[i].scale = NON_RETINA_SCALE;
+                cheeseSprite[i].scale = CHEESE_SCALE;
             }
         }
-        
-        
-        
-        
+    
         for(int i=0;i<20;i++){
             heroPimpleSprite[i]=[CCSprite spriteWithFile:@"dotted.png"];
             heroPimpleSprite[i].position=ccp(-100,160);
@@ -218,6 +213,7 @@ GameEngine01Menu *layer01;
         
         CCSprite *bed=[CCSprite spriteWithFile:@"bed.png"];
         bed.position=ccp(75,240);
+        bed.scale = 0.7;
         if ([FTMUtil sharedInstance].isRetinaDisplay) {
             bed.scale = 1.4;
         }
@@ -225,6 +221,7 @@ GameEngine01Menu *layer01;
         
         CCSprite *lamp=[CCSprite spriteWithFile:@"lamp.png"];
         lamp.position=ccp(180,270);
+        lamp.scale = 0.7;
         if ([FTMUtil sharedInstance].isRetinaDisplay) {
             lamp.scale = 1.4;
         }
@@ -247,7 +244,7 @@ GameEngine01Menu *layer01;
         dotSprite.position=ccp(962,240);
         dotSprite.scale=0.3;
         [self addChild:dotSprite z:10];
-
+        
         [self addHudLayerToTheScene];
         [self starCheeseSpriteInitilized];
         if ([FTMUtil sharedInstance].isFirstTutorial) {
@@ -270,8 +267,8 @@ GameEngine01Menu *layer01;
             }
             CCAnimation *animation = [CCAnimation animationWithSpriteFrames:animFrames delay:0.4f];
             [tutorialArrow runAction:[CCRepeatForever actionWithAction: [CCAnimate actionWithAnimation:animation]]];
-   
-           [layer01 addChild:tutorialArrow];
+            
+            [layer01 addChild:tutorialArrow];
             
             tutorialCircle = [CCSprite spriteWithSpriteFrameName:@"hand_3.png"];
             tutorialCircle.position = ccp(443 *scaleFactorX, 30 *scaleFactorY);
@@ -303,17 +300,6 @@ GameEngine01Menu *layer01;
     hudLayer.tag = 1;
     [layer01 addChild: hudLayer z:2000];
     [hudLayer updateNoOfCheeseCollected:0 andMaxValue:[cheeseSetValue[motherLevel-1] intValue]];
-//    [cache addSpriteFramesWithFile:@"cat_default.plist"];
-//    CCSpriteBatchNode *catSpriteSheet = [CCSpriteBatchNode batchNodeWithFile:@"cat_default.png"];
-//    [self addChild:catSpriteSheet z:10];
-//    
-//    NSMutableArray *animationFramesArr = [NSMutableArray array];
-//    for(int i = 1; i <= 30; i++) {
-//        CCSpriteFrame *frame = [cache spriteFrameByName:@"cat_run13.png"];
-//        [animationFramesArr addObject:frame];
-//    }
-//    CCAnimation *aanimation = [CCAnimation animationWithSpriteFrames:animationFramesArr delay:0.03f];
-
 }
 
 -(void) addLevelCompleteLayerToTheScene{
@@ -420,7 +406,7 @@ GameEngine01Menu *layer01;
                 screenShowX2=233;
                 screenShowY2=platformY;
                 firstRunningChe=NO;
-
+                
             }else{
                 firstRunningChe=NO;
             }
@@ -478,20 +464,7 @@ GameEngine01Menu *layer01;
     heroRunSprite.visible=NO;
 }
 -(void)starCheeseSpriteInitilized{
-    for(int i=0;i<5;i++){
-        starSprite[i] = [CCSprite spriteWithSpriteFrameName:@"starxxx2.png"];
-        starSprite[i].scale=0.4;
-        starSprite[i].position=ccp([gameFunc getCheesePosition:1 gameLevel:motherLevel iValue:i].x-12,[gameFunc getCheesePosition:1 gameLevel:motherLevel iValue:i].y+8);
-        [spriteSheet addChild:starSprite[i]];
-        
-        NSMutableArray *animFrames3 = [NSMutableArray array];
-        for(int j = 0; j <5; j++) {
-            CCSpriteFrame *frame = [cache spriteFrameByName:[NSString stringWithFormat:@"starxxx%d.png",j+1]];
-            [animFrames3 addObject:frame];
-        }
-        CCAnimation *animation2 = [CCAnimation animationWithSpriteFrames:animFrames3 delay:0.1f];
-        [starSprite[i] runAction:[CCRepeatForever actionWithAction: [CCAnimate actionWithAnimation:animation2]]];
-    }
+    
 }
 -(void)cheeseCollisionFunc{
     CGFloat heroX=heroSprite.position.x;
@@ -506,36 +479,27 @@ GameEngine01Menu *layer01;
                 int x=(arc4random() % 5);
                 cheeseX2=[cheeseArrX[x] intValue];
                 cheeseY2=[cheeseArrY[x] intValue];
-                
-                starSprite[i].position=ccp([gameFunc getCheesePosition:1 gameLevel:motherLevel iValue:i].x-12+cheeseX2,[gameFunc getCheesePosition:1 gameLevel:motherLevel iValue:i].y+8+cheeseY2);
             }
             
             int mValue=0;
             int mValue2=0;
             if(motherLevel==5&&i==2){
                 mValue=gameFunc.moveCount2;
-                
-                starSprite[i].position=ccp([gameFunc getCheesePosition:1 gameLevel:motherLevel iValue:i].x-12+cheeseX2+mValue,[gameFunc getCheesePosition:1 gameLevel:motherLevel iValue:i].y+8+cheeseY2);
             }else if(motherLevel == 6 && i ==2){
                 if(!gameFunc.moveSideChe){
                     mValue2=gameFunc.moveCount2;
-                    starSprite[i].position=ccp([gameFunc getCheesePosition:1 gameLevel:motherLevel iValue:i].x-12+cheeseX2,[gameFunc getCheesePosition:1 gameLevel:motherLevel iValue:i].y+8+cheeseY2+mValue2);
                 }else{
                     mValue=gameFunc.moveCount3;
-                    starSprite[i].position=ccp([gameFunc getCheesePosition:1 gameLevel:motherLevel iValue:i].x-12+cheeseX2-mValue,[gameFunc getCheesePosition:1 gameLevel:motherLevel iValue:i].y+8+cheeseY2);
                     mValue=-mValue;
                 }
             }else if(motherLevel == 7 && i ==3){
                 mValue2=gameFunc.moveCount2;
-                starSprite[i].position=ccp([gameFunc getCheesePosition:1 gameLevel:motherLevel iValue:i].x-12+cheeseX2,[gameFunc getCheesePosition:1 gameLevel:motherLevel iValue:i].y+8+cheeseY2+mValue2);
             }
             
             cheeseAnimationCount+=2;
             cheeseAnimationCount=(cheeseAnimationCount>=500?0:cheeseAnimationCount);
             CGFloat localCheeseAnimationCount=0;
             localCheeseAnimationCount=(cheeseAnimationCount<=250?cheeseAnimationCount:250-(cheeseAnimationCount-250));
-            cheeseSprite2[i].opacity=localCheeseAnimationCount/4;
-            
             CGFloat cheeseX=[gameFunc getCheesePosition:1 gameLevel:motherLevel iValue:i].x;
             CGFloat cheeseY=[gameFunc getCheesePosition:1 gameLevel:motherLevel iValue:i].y;
             
@@ -545,11 +509,8 @@ GameEngine01Menu *layer01;
                     [soundEffect cheeseCollectedSound];
                     cheeseCollectedChe[i]=NO;
                     cheeseSprite[i].visible=NO;
-                    cheeseSprite2[i].visible=NO;
                     cheeseCollectedScore+=1;
-                    starSprite[i].visible=NO;
-                    [hudLayer updateNoOfCheeseCollected:cheeseCollectedScore andMaxValue:[cheeseSetValue[motherLevel-1] intValue]];
-                    [self createExplosionX:cheeseX+mValue y:cheeseY];
+                    [self playCheeseCollectedAnimation:cheeseSprite[i]];
                     break;
                 }
             }else{
@@ -557,16 +518,11 @@ GameEngine01Menu *layer01;
                     [soundEffect cheeseCollectedSound];
                     cheeseCollectedChe[i]=NO;
                     cheeseSprite[i].visible=NO;
-                    cheeseSprite2[i].visible=NO;
                     cheeseCollectedScore+=1;
-                    starSprite[i].visible=NO;
-                    [hudLayer updateNoOfCheeseCollected:cheeseCollectedScore andMaxValue:[cheeseSetValue[motherLevel-1] intValue]];
-                    [self createExplosionX:cheeseX+mValue y:cheeseY];
+                    [self playCheeseCollectedAnimation:cheeseSprite[i]];
                     break;
                 }
             }
-        }else{
-            starSprite[i].visible=NO;
         }
     }
 }
@@ -583,7 +539,7 @@ GameEngine01Menu *layer01;
             [db setSettingsFor:@"mamaCurrLvl" withValue:[NSString stringWithFormat:@"%d", motherLevel+1]];
         }
         [db release];
-
+        
         heroWinCount+=1;
         if(heroWinCount==15){
             heroWinSprite = [CCSprite spriteWithSpriteFrameName:@"mother_win01.png"];
@@ -1011,8 +967,9 @@ GameEngine01Menu *layer01;
     CGPoint actualPosition = ccp(x, y);
     if(x<=winSize.width / 2)
         screenHeroPosX=position.x;
-    else if(x>=_tileMap.mapSize.width-(winSize.width / 2))
+    else if(x>=_tileMap.mapSize.width-(winSize.width / 2)){
         screenHeroPosX=(position.x-x)+(winSize.width / 2);
+    }
     if(y<=(winSize.height / 2))
         screenHeroPosY=position.y;
     else if(y>=_tileMap.mapSize.height-(winSize.height / 2))
@@ -1070,21 +1027,21 @@ GameEngine01Menu *layer01;
         }
     }else{
         if(((location.x<70 && ![FTMUtil sharedInstance].isFirstTutorial) || (location.x>winSize.width-70 && ([FTMUtil sharedInstance].isFirstTutorial || pressImage == nil))) && location.y < 70){
-        if(!jumpingChe&&!landingChe&&!firstRunningChe){
-            if(!runningChe&&!mouseWinChe&&!heroTrappedChe){
-                if(screenHeroPosX+25<location.x)
-                    forwardChe=NO;
-                else
-                    forwardChe=YES;
-                heroStandChe=NO;
-                runningChe=YES;
-                heroSprite.visible=NO;
-                heroRunSprite.visible=YES;
-                if ([FTMUtil sharedInstance].isFirstTutorial) {
-                    [self schedule:@selector(startTutorialTimer) interval:0.7];
+            if(!jumpingChe&&!landingChe&&!firstRunningChe){
+                if(!runningChe&&!mouseWinChe&&!heroTrappedChe){
+                    if(screenHeroPosX+25<location.x)
+                        forwardChe=NO;
+                    else
+                        forwardChe=YES;
+                    heroStandChe=NO;
+                    runningChe=YES;
+                    heroSprite.visible=NO;
+                    heroRunSprite.visible=YES;
+                    if ([FTMUtil sharedInstance].isFirstTutorial) {
+                        [self schedule:@selector(startTutorialTimer) interval:0.7];
+                    }
                 }
             }
-        }
         }
     }
 }

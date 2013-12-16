@@ -96,6 +96,9 @@ StrongMouseEngineMenu11 *sLayer11;
         
         cache = [CCSpriteFrameCache sharedSpriteFrameCache];
         [cache addSpriteFramesWithFile:@"strong0_default.plist"];
+        [cache addSpriteFramesWithFile:@"electricity_anim1.plist"];
+        [cache addSpriteFramesWithFile:@"electricity_anim2.plist"];
+        
         spriteSheet = [CCSpriteBatchNode batchNodeWithFile:@"strong0_default.png"];
         [self addChild:spriteSheet z:10];
         
@@ -165,13 +168,11 @@ StrongMouseEngineMenu11 *sLayer11;
         
         for(int i=0;i<cheeseCount;i++){
             cheeseCollectedChe[i]=YES;
-            cheeseSprite2[i]=[CCSprite spriteWithFile:@"cheeseGlow.png"];
-            cheeseSprite2[i].position=[gameFunc getCheesePosition:1 gameLevel:motherLevel iValue:i];
-            [self addChild:cheeseSprite2[i] z:9];
-            
             cheeseSprite[i]=[CCSprite spriteWithFile:@"Cheese.png"];
             cheeseSprite[i].position=[gameFunc getCheesePosition:1 gameLevel:motherLevel iValue:i];
+            [self playStaticCheeseAnimation:cheeseSprite[i]];
             [self addChild:cheeseSprite[i] z:9];
+            cheeseSprite[i].scale = CHEESE_SCALE;
         }
         
         
@@ -336,17 +337,25 @@ StrongMouseEngineMenu11 *sLayer11;
         electricSprite=[CCSprite spriteWithFile:@"electric.png"];
         electricSprite.position=ccp(890,360);
         electricSprite.scale=0.7;
+        if ([FTMUtil sharedInstance].isRetinaDisplay) {
+            electricSprite.scale = 1.4;
+        }
         [self addChild:electricSprite z:9];
         
         CCSprite *holeSprite=[CCSprite spriteWithFile:@"bridge_hole.png"];
         holeSprite.position=ccp(973,558);
         [self addChild:holeSprite z:0];
         
-        CCSprite *pushButtonSprite=[CCSprite spriteWithFile:@"push_button.png"];
-        pushButtonSprite.position=ccp(43,337);
-        pushButtonSprite.scaleY=0.35;
-        pushButtonSprite.scaleX=0.55;
+        pushButtonSprite=[CCSprite spriteWithFile:@"push_button.png"];
+        pushButtonSprite.position = ccp(43,349);
+        if (![FTMUtil sharedInstance].isRetinaDisplay) {
+            pushButtonSprite.scale = NON_RETINA_SCALE;
+        }
+        [self playPushRedBtnAnimation:pushButtonSprite];
         [self addChild:pushButtonSprite z:1];
+//        pushButtonSprite.position=ccp(43,337);
+//        pushButtonSprite.scaleY=0.35;
+//        pushButtonSprite.scaleX=0.55;
         
         for(int i=0;i<20;i++){
             heroPimpleSprite[i]=[CCSprite spriteWithFile:@"dotted.png"];
@@ -364,9 +373,33 @@ StrongMouseEngineMenu11 *sLayer11;
         [self starCheeseSpriteInitilized];
         [self scheduleFridgeMotorFallSound];
         [self scheduleUpdate];
+        [self moveElectricityAnimation];
     }
     return self;
 }
+
+-(void) moveElectricityAnimation{
+    
+    NSMutableArray *frameArr1 = [NSMutableArray array];
+    for(int i = 0; i <= 35; i++) {
+        CCSpriteFrame *frame = [cache spriteFrameByName:[NSString stringWithFormat:@"moving_electricity_%d.png",i]];
+        [frameArr1 addObject:frame];
+    }
+    CCAnimation *animation1 = [CCAnimation animationWithSpriteFrames:frameArr1 delay:0.03f];
+    CCAnimate *anim1 = [CCAnimate actionWithAnimation:animation1];
+    
+    NSMutableArray *frameArr2 = [NSMutableArray array];
+    for(int i = 36; i <= 70; i++) {
+        CCSpriteFrame *frame = [cache spriteFrameByName:[NSString stringWithFormat:@"moving_electricity_%d.png",i]];
+        [frameArr2 addObject:frame];
+    }
+    CCAnimation *animation2 = [CCAnimation animationWithSpriteFrames:frameArr2 delay:0.03f];
+    CCAnimate *anim2 = [CCAnimate actionWithAnimation:animation2];
+    
+    CCSequence *seq11 = [CCSequence actions:anim1,anim2, nil];
+    [electricSprite runAction:[CCRepeatForever actionWithAction:seq11]];
+}
+
 -(void) addHudLayerToTheScene{
     hudLayer = [[HudLayer alloc] init];
     hudLayer.tag = 11;
@@ -482,32 +515,34 @@ StrongMouseEngineMenu11 *sLayer11;
     CGFloat hx=heroSprite.position.x;
     CGFloat hy=heroSprite.position.y;
     int iValue=(forwardChe?43:0);
-    for(int i=0;i<4;i++){
-        if(hx-iValue>iceQubeSprite[i].position.x-70 &&hx-iValue<iceQubeSprite[i].position.x-30 &&hy > iceQubeSprite[i].position.y-30 &&hy<iceQubeSprite[i].position.y+20 &&!gameFunc.trappedChe){
-            gameFunc.trappedChe=YES;
-            trappedTypeValue=1;
-            
-        }
-    }
-    
-    //Combination Collision
-    for(int i=0;i<2;i++){
-        for(int j=0;j<2;j++){
-            CGFloat xx=combinationFreezeSprite[i][j].position.x;
-            CGFloat yy=combinationFreezeSprite[i][j].position.y;
-            
-            if(hx-iValue>xx-60 &&hx-iValue<xx+20 &&hy > yy-30 &&hy<yy+20 &&!gameFunc.trappedChe){
+    if (![FTMUtil sharedInstance].isInvincibilityOn) {
+        
+        for(int i=0;i<4;i++){
+            if(hx-iValue>iceQubeSprite[i].position.x-70 &&hx-iValue<iceQubeSprite[i].position.x-30 &&hy > iceQubeSprite[i].position.y-30 &&hy<iceQubeSprite[i].position.y+20 &&!gameFunc.trappedChe){
                 gameFunc.trappedChe=YES;
-                trappedTypeValue=2;
+                trappedTypeValue=1;
+                
             }
         }
+        
+        //Combination Collision
+        for(int i=0;i<2;i++){
+            for(int j=0;j<2;j++){
+                CGFloat xx=combinationFreezeSprite[i][j].position.x;
+                CGFloat yy=combinationFreezeSprite[i][j].position.y;
+                
+                if(hx-iValue>xx-60 &&hx-iValue<xx+20 &&hy > yy-30 &&hy<yy+20 &&!gameFunc.trappedChe){
+                    gameFunc.trappedChe=YES;
+                    trappedTypeValue=2;
+                }
+            }
+        }
+        
+        if(hx-iValue>electricSprite.position.x-120 &&hx-iValue<electricSprite.position.x+60 &&hy > electricSprite.position.y-30 &&hy<electricSprite.position.y+20 &&!gameFunc.trappedChe){
+            gameFunc.trappedChe=YES;
+            trappedTypeValue=3;
+        }
     }
-    
-    if(hx-iValue>electricSprite.position.x-120 &&hx-iValue<electricSprite.position.x+60 &&hy > electricSprite.position.y-30 &&hy<electricSprite.position.y+20 &&!gameFunc.trappedChe){
-        gameFunc.trappedChe=YES;
-        trappedTypeValue=3;
-    }
-    
     if(heroStandChe){
         if(hx-iValue>=270 &&hx-iValue<310&&hy==569){
             if(combinationFreezeCount[0]==0)
@@ -703,6 +738,9 @@ StrongMouseEngineMenu11 *sLayer11;
     
     movePlatformSprite.position=ccp(320+gameFunc.moveCount2,472);
     honeyPotSprite.position=ccp(90+gameFunc.honeyPotCount,390-gameFunc.honeyPotCount2);
+    if (gameFunc.honeyPotCount2 == 30 && pushButtonSprite.tag != 10) {
+        [self resetRedPushBtn:ccp(43,332)];
+    }
 }
 -(void)level01{
     if(firstRunningChe){
@@ -722,11 +760,19 @@ StrongMouseEngineMenu11 *sLayer11;
     int fValue=(!forwardChe?0:30);
     if(heroSprite.position.x>=920+fValue && heroSprite.position.y>450 && heroSprite.position.y<=550&&!mouseWinChe&&!gameFunc.trappedChe){
         if(runningChe||heroStandChe){
-            mouseWinChe=YES;
-            heroStandChe=YES;
-            runningChe=NO;
-            heroRunSprite.visible=NO;
+            if (cheeseCollectedScore < 3 && locker.tag != 911) {
+                [self playDoorLockAnimation:ccp(heroSprite.position.x, heroSprite.position.y)];
+                locker.tag = 911;
+            }else if(cheeseCollectedScore > 2){
+                mouseWinChe=YES;
+                heroStandChe=YES;
+                runningChe=NO;
+                heroRunSprite.visible=NO;
+            }
         }
+    }else if(locker.tag == 911){
+        locker.tag = 1;
+        locker.visible = NO;
     }else if(gameFunc.trappedChe){
         heroTrappedChe=YES;
         heroSprite.visible=NO;
@@ -782,7 +828,6 @@ StrongMouseEngineMenu11 *sLayer11;
             cheeseAnimationCount=(cheeseAnimationCount>=500?0:cheeseAnimationCount);
             CGFloat localCheeseAnimationCount=0;
             localCheeseAnimationCount=(cheeseAnimationCount<=250?cheeseAnimationCount:250-(cheeseAnimationCount-250));
-            cheeseSprite2[i].opacity=localCheeseAnimationCount/4;
             
             CGFloat cheeseX=[gameFunc getCheesePosition:1 gameLevel:motherLevel iValue:i].x;
             CGFloat cheeseY=[gameFunc getCheesePosition:1 gameLevel:motherLevel iValue:i].y;
@@ -793,11 +838,8 @@ StrongMouseEngineMenu11 *sLayer11;
                     [soundEffect cheeseCollectedSound];
                     cheeseCollectedChe[i]=NO;
                     cheeseSprite[i].visible=NO;
-                    cheeseSprite2[i].visible=NO;
                     cheeseCollectedScore+=1;
-//                    starSprite[i].visible=NO;
-                    [hudLayer updateNoOfCheeseCollected:cheeseCollectedScore andMaxValue:[cheeseSetValue[motherLevel-1] intValue]];
-                    [self createExplosionX:cheeseX-mValue y:cheeseY+mValue2];
+                    [self playCheeseCollectedAnimation:cheeseSprite[i]];
                     break;
                 }
             }else{
@@ -805,11 +847,8 @@ StrongMouseEngineMenu11 *sLayer11;
                     [soundEffect cheeseCollectedSound];
                     cheeseCollectedChe[i]=NO;
                     cheeseSprite[i].visible=NO;
-                    cheeseSprite2[i].visible=NO;
                     cheeseCollectedScore+=1;
-//                    starSprite[i].visible=NO;
-                    [hudLayer updateNoOfCheeseCollected:cheeseCollectedScore andMaxValue:[cheeseSetValue[motherLevel-1] intValue]];
-                    [self createExplosionX:cheeseX-mValue y:cheeseY+mValue2];
+                    [self playCheeseCollectedAnimation:cheeseSprite[i]];
                     break;
                 }
             }
@@ -1265,7 +1304,9 @@ StrongMouseEngineMenu11 *sLayer11;
 -(void)HeroLiningDraw:(int)cPath{
     
     CGFloat angle=jumpAngle;
-    
+    if (heroPimpleSprite[1].position.x == -100) {
+        [soundEffect pulling_tail];
+    }
     if(!safetyJumpChe){
         jumpPower = activeVect.Length();
         forwardChe=(angle<90.0?NO:YES);
@@ -1417,6 +1458,7 @@ StrongMouseEngineMenu11 *sLayer11;
             jumpAngle = fabsf( CC_RADIANS_TO_DEGREES( atan2f(-activeVect.y, activeVect.x)));
             jumpingChe=YES;
             dragChe=NO;
+            [soundEffect strong_jump];
             mouseDragSprite.visible=NO;
             for (int i = 0; i < 20; i=i+1) {
                 heroPimpleSprite[i].position=ccp(-100,100);

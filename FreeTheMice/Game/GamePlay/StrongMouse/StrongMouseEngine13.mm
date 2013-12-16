@@ -163,13 +163,11 @@ StrongMouseEngineMenu13 *sLayer13;
         
         for(int i=0;i<cheeseCount;i++){
             cheeseCollectedChe[i]=YES;
-            cheeseSprite2[i]=[CCSprite spriteWithFile:@"cheeseGlow.png"];
-            cheeseSprite2[i].position=[gameFunc getCheesePosition:1 gameLevel:motherLevel iValue:i];
-            [self addChild:cheeseSprite2[i] z:9];
-            
             cheeseSprite[i]=[CCSprite spriteWithFile:@"Cheese.png"];
             cheeseSprite[i].position=[gameFunc getCheesePosition:1 gameLevel:motherLevel iValue:i];
+            [self playStaticCheeseAnimation:cheeseSprite[i]];
             [self addChild:cheeseSprite[i] z:9];
+            cheeseSprite[i].scale = CHEESE_SCALE;
         }
         
         iceBlastAtlas = [[CCLabelAtlas labelWithString:@"0" charMapFile:@"ice_blast.png" itemWidth:100 itemHeight:50 startCharMap:'0'] retain];
@@ -283,18 +281,31 @@ StrongMouseEngineMenu13 *sLayer13;
         sprite.position=ccp(405,234);
         sprite.scale=0.5;
         [self addChild:sprite z:1];
-        
-        CCSprite *pushButtonSprite=[CCSprite spriteWithFile:@"push_button.png"];
-        pushButtonSprite.position=ccp(496,234);
-        pushButtonSprite.scaleY=0.35;
-        pushButtonSprite.scaleX=0.55;
-        [self addChild:pushButtonSprite z:1];
-        
-        pushButtonSprite=[CCSprite spriteWithFile:@"push_button.png"];
-        pushButtonSprite.position=ccp(404,242);
-        pushButtonSprite.scaleY=0.35;
-        pushButtonSprite.scaleX=0.55;
-        [self addChild:pushButtonSprite z:1];
+
+        pushButtonSprite1=[CCSprite spriteWithFile:@"push_button.png"];
+        pushButtonSprite1.position = ccp(496,254);
+        if (![FTMUtil sharedInstance].isRetinaDisplay) {
+            pushButtonSprite1.scale = NON_RETINA_SCALE;
+        }
+        [self playPushRedBtnAnimation:pushButtonSprite1];
+        [self addChild:pushButtonSprite1 z:1];
+//        CCSprite *pushButtonSprite=[CCSprite spriteWithFile:@"push_button.png"];
+//        pushButtonSprite.position=ccp(496,234);
+//        pushButtonSprite.scaleY=0.35;
+//        pushButtonSprite.scaleX=0.55;
+//        [self addChild:pushButtonSprite z:1];
+        pushButtonSprite2=[CCSprite spriteWithFile:@"push_button.png"];
+        pushButtonSprite2.position = ccp(404,254);
+        if (![FTMUtil sharedInstance].isRetinaDisplay) {
+            pushButtonSprite2.scale = NON_RETINA_SCALE;
+        }
+        [self playPushRedBtnAnimation:pushButtonSprite2];
+        [self addChild:pushButtonSprite2 z:1];
+//        pushButtonSprite=[CCSprite spriteWithFile:@"push_button.png"];
+//        pushButtonSprite.position=ccp(404,242);
+//        pushButtonSprite.scaleY=0.35;
+//        pushButtonSprite.scaleX=0.55;
+//        [self addChild:pushButtonSprite z:1];
         
         movePlatformSprite=[CCSprite spriteWithFile:@"move_platform2.png"];
         movePlatformSprite.position=ccp(990,470);
@@ -366,6 +377,29 @@ StrongMouseEngineMenu13 *sLayer13;
     }
     return self;
 }
+
+-(void) resetRedPushBtn :(CGPoint) position sprite:(CCSprite *) sprite index:(int) index{
+    if (index == 1) {
+        [pushButtonSprite1 removeFromParentAndCleanup:YES];
+        pushButtonSprite1 = [CCSprite spriteWithFile:@"push_button.png"];
+        pushButtonSprite1.tag = 10;
+        pushButtonSprite1.position = position;
+        pushButtonSprite1.scaleY = 0.35;
+        pushButtonSprite1.scaleX = 0.55;
+        [self addChild:pushButtonSprite1 z: 1];
+        
+    }else if (index == 2){
+        [pushButtonSprite2 removeFromParentAndCleanup:YES];
+        pushButtonSprite2 = [CCSprite spriteWithFile:@"push_button.png"];
+        pushButtonSprite2.tag = 10;
+        pushButtonSprite2.position = position;
+        pushButtonSprite2.scaleY = 0.35;
+        pushButtonSprite2.scaleX = 0.55;
+        [self addChild:pushButtonSprite2 z: 1];
+    }
+}
+
+
 -(void) addHudLayerToTheScene{
     hudLayer = [[HudLayer alloc] init];
     hudLayer.tag = 13;
@@ -1008,28 +1042,31 @@ StrongMouseEngineMenu13 *sLayer13;
             fridgeVisibleCount=250;
     }
     fridgeSprite.opacity=fridgeVisibleCount;
-    for(int i=0;i<4;i++){
-        if(hx-iValue>iceQubePos[i][0]-70 &&hx-iValue<iceQubePos[i][0]-30 &&hy > iceQubePos[i][1]-30 &&hy<iceQubePos[i][1]+20&&iceQubeCount[i]<187 &&!gameFunc.trappedChe){
-            gameFunc.trappedChe=YES;
-            trappedTypeValue=1;
-        }
-    }
-    
-    for(int i=0;i<5;i++){
-        for(int j=0;j<2;j++){
-            if(hx-iValue>iceSmokingSprite[i][j].position.x-30 &&hx-iValue<iceSmokingSprite[i][j].position.x+20 &&hy > iceSmokingSprite[i][j].position.y-30 &&hy<iceSmokingSprite[i][j].position.y+20&&!gameFunc.trappedChe){
-                 gameFunc.trappedChe=YES;
-                trappedTypeValue=2;
+    if (![FTMUtil sharedInstance].isInvincibilityOn) {
+        
+        for(int i=0;i<4;i++){
+            if(hx-iValue>iceQubePos[i][0]-70 &&hx-iValue<iceQubePos[i][0]-30 &&hy > iceQubePos[i][1]-30 &&hy<iceQubePos[i][1]+20&&iceQubeCount[i]<187 &&!gameFunc.trappedChe){
+                gameFunc.trappedChe=YES;
+                trappedTypeValue=1;
             }
         }
+        
+        for(int i=0;i<5;i++){
+            for(int j=0;j<2;j++){
+                if(hx-iValue>iceSmokingSprite[i][j].position.x-30 &&hx-iValue<iceSmokingSprite[i][j].position.x+20 &&hy > iceSmokingSprite[i][j].position.y-30 &&hy<iceSmokingSprite[i][j].position.y+20&&!gameFunc.trappedChe){
+                    gameFunc.trappedChe=YES;
+                    trappedTypeValue=2;
+                }
+            }
+        }
+        
+        if(hx-iValue>[catObj getCatSprite].position.x-90 &&hx-iValue<[catObj getCatSprite].position.x+40 &&hy > [catObj getCatSprite].position.y-30 &&hy<[catObj getCatSprite].position.y+50 &&!gameFunc.
+           trappedChe){
+            gameFunc.trappedChe=YES;
+            trappedTypeValue=3;
+        }
+        
     }
-    
-    if(hx-iValue>[catObj getCatSprite].position.x-90 &&hx-iValue<[catObj getCatSprite].position.x+40 &&hy > [catObj getCatSprite].position.y-30 &&hy<[catObj getCatSprite].position.y+50 &&!gameFunc.
-       trappedChe){
-        gameFunc.trappedChe=YES;
-        trappedTypeValue=3;
-    }
-    
     if(hx-iValue>375&&hx-iValue<=401 && hy==266&&!screenMoveChe&&screenMovementFindValue2==0){
         screenMoveChe=YES;
         [[catObj getCatSprite] pauseSchedulerAndActions];
@@ -1145,6 +1182,13 @@ StrongMouseEngineMenu13 *sLayer13;
     }
     
     hoenyPotSprite.position=ccp(723+gameFunc.honeyPotCount,273-gameFunc.honeyPotCount2);
+    
+    if (gameFunc.honeyPotCount == -225 && pushButtonSprite1.tag != 10) {
+        [self resetRedPushBtn:ccp(496,238) sprite:pushButtonSprite1 index:1];
+    }else if (gameFunc.boxCount == -80 && pushButtonSprite2.tag != 10){
+        [self resetRedPushBtn:ccp(293,68) sprite:pushButtonSprite2 index:1];
+    }
+    
     if(gameFunc.honeyPotCount2>=10&&waterIntervalTimeCount==0)
         waterIntervalTimeCount=300;
     
@@ -1187,11 +1231,19 @@ StrongMouseEngineMenu13 *sLayer13;
     int fValue=(!forwardChe?0:30);
     if(heroSprite.position.x>=920+fValue&&heroSprite.position.y>=250 && heroSprite.position.y<300&&!mouseWinChe){
         if(runningChe||heroStandChe){
-            mouseWinChe=YES;
-            heroStandChe=YES;
-            runningChe=NO;
-            heroRunSprite.visible=NO;
+            if (cheeseCollectedScore < 3 && locker.tag != 911) {
+                [self playDoorLockAnimation:ccp(heroSprite.position.x, heroSprite.position.y)];
+                locker.tag = 911;
+            }else if(cheeseCollectedScore > 2){
+                mouseWinChe=YES;
+                heroStandChe=YES;
+                runningChe=NO;
+                heroRunSprite.visible=NO;
+            }
         }
+    }else if(locker.tag == 911){
+        locker.tag = 1;
+        locker.visible = NO;
     }else if(gameFunc.trappedChe){
         heroTrappedChe=YES;
         heroSprite.visible=NO;
@@ -1249,7 +1301,6 @@ StrongMouseEngineMenu13 *sLayer13;
             cheeseAnimationCount=(cheeseAnimationCount>=500?0:cheeseAnimationCount);
             CGFloat localCheeseAnimationCount=0;
             localCheeseAnimationCount=(cheeseAnimationCount<=250?cheeseAnimationCount:250-(cheeseAnimationCount-250));
-            cheeseSprite2[i].opacity=localCheeseAnimationCount/4;
             
             CGFloat cheeseX=[gameFunc getCheesePosition:1 gameLevel:motherLevel iValue:i].x;
             CGFloat cheeseY=[gameFunc getCheesePosition:1 gameLevel:motherLevel iValue:i].y;
@@ -1260,7 +1311,6 @@ StrongMouseEngineMenu13 *sLayer13;
 //                    starSprite[2].visible=NO;
                 }
                 cheeseSprite[2].zOrder=0;
-                cheeseSprite2[2].zOrder=0;
             }
             
             if(!forwardChe){
@@ -1268,12 +1318,8 @@ StrongMouseEngineMenu13 *sLayer13;
                     [soundEffect cheeseCollectedSound];
                     cheeseCollectedChe[i]=NO;
                     cheeseSprite[i].visible=NO;
-                    cheeseSprite2[i].visible=NO;
                     cheeseCollectedScore+=1;
-//                    starSprite[i].visible=NO;
-                    [hudLayer updateNoOfCheeseCollected:cheeseCollectedScore andMaxValue:[cheeseSetValue[motherLevel-1] intValue]];
-
-                    [self createExplosionX:cheeseX-mValue y:cheeseY+mValue2];
+                    [self playCheeseCollectedAnimation:cheeseSprite[i]];
                     break;
                 }
             }else{
@@ -1281,12 +1327,8 @@ StrongMouseEngineMenu13 *sLayer13;
                     [soundEffect cheeseCollectedSound];
                     cheeseCollectedChe[i]=NO;
                     cheeseSprite[i].visible=NO;
-                    cheeseSprite2[i].visible=NO;
                     cheeseCollectedScore+=1;
-//                    starSprite[i].visible=NO;
-                    [hudLayer updateNoOfCheeseCollected:cheeseCollectedScore andMaxValue:[cheeseSetValue[motherLevel-1] intValue]];
-
-                    [self createExplosionX:cheeseX-mValue y:cheeseY+mValue2];
+                    [self playCheeseCollectedAnimation:cheeseSprite[i]];
                     break;
                 }
             }
@@ -1758,7 +1800,9 @@ StrongMouseEngineMenu13 *sLayer13;
 -(void)HeroLiningDraw:(int)cPath{
     
     CGFloat angle=jumpAngle;
-    
+    if (heroPimpleSprite[1].position.x == -100) {
+        [soundEffect pulling_tail];
+    }
     if(!safetyJumpChe){
         jumpPower = activeVect.Length();
         forwardChe=(angle<90.0?NO:YES);
@@ -1910,6 +1954,7 @@ StrongMouseEngineMenu13 *sLayer13;
             jumpAngle = fabsf( CC_RADIANS_TO_DEGREES( atan2f(-activeVect.y, activeVect.x)));
             jumpingChe=YES;
             dragChe=NO;
+            [soundEffect strong_jump];
             mouseDragSprite.visible=NO;
             for (int i = 0; i < 20; i=i+1) {
                 heroPimpleSprite[i].position=ccp(-100,100);

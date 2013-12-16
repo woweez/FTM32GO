@@ -585,7 +585,7 @@ GameEngineMenu15 *layer15;
         catX = catX+40;
     }
     //        int catY = bossCatWalk.position.y;
-    if ((!CGRectIsNull(CGRectIntersection(bossCatRect, heroRect)) ||!CGRectIsNull(CGRectIntersection(catRect1, heroRect)) ||!CGRectIsNull(CGRectIntersection(catRect2, heroRect)) )) {
+    if ((!CGRectIsNull(CGRectIntersection(bossCatRect, heroRect)) ||!CGRectIsNull(CGRectIntersection(catRect1, heroRect)) ||!CGRectIsNull(CGRectIntersection(catRect2, heroRect)) ) && ![FTMUtil sharedInstance].isInvincibilityOn) {
         gameFunc.trappedChe = YES;
         heroTrappedChe=YES;
         heroSprite.visible=NO;
@@ -1400,6 +1400,9 @@ GameEngineMenu15 *layer15;
     CGFloat angle=jumpAngle;
     int tValue=0;
     int tValue2=0;
+    if (heroPimpleSprite[1].position.x == -100) {
+        [soundEffect pulling_tail];
+    }
     if(!safetyJumpChe){
         jumpPower = activeVect.Length();
         forwardChe=(angle<90.0?NO:YES);

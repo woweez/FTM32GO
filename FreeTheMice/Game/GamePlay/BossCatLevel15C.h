@@ -122,7 +122,6 @@
     CCLabelAtlas *switchAtlas3;
     CCLabelAtlas *switchAtlas4;
     
-    int cheeseCollectedScore;
     BOOL cheeseCollectedChe[10];
     int cheeseCount;
     int motherLevel;

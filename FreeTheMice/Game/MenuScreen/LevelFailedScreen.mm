@@ -123,8 +123,9 @@
     }];
     [levelsMenuItem setScale:cScale];
 
-    if([FTMUtil sharedInstance].isRetinaDisplay && [FTMUtil sharedInstance].isIphone5){
+    if([FTMUtil sharedInstance].isRetinaDisplay){
         levelsMenuItem.position = ccp(-4 *scaleFactorX, 12 *scaleFactorY);
+        [levelsMenuItem setScale:cScale/2];
     }else{
         levelsMenuItem.position = ccp(-14 *scaleFactorX, 11 *scaleFactorY);
     }
@@ -153,7 +154,9 @@
                 break;
         }
     }];
+    
     [retryMenuItem setScale:cScale];
+
     retryMenuItem.position = ccp(53 *scaleFactorX, 11 *scaleFactorY);
     [menu addChild:retryMenuItem];
 }

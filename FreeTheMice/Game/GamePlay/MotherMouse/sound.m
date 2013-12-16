@@ -53,6 +53,14 @@
     [[SimpleAudioEngine sharedEngine] preloadEffect: VENT_MIST];
     [[SimpleAudioEngine sharedEngine] preloadEffect: WATER_FALLING_FROM_VASE];
     [[SimpleAudioEngine sharedEngine] preloadEffect: WATER_SINK_SPLASH];
+    [[SimpleAudioEngine sharedEngine] preloadEffect: PULLING_TAIL];
+    [[SimpleAudioEngine sharedEngine] preloadEffect: CHEESE_4];
+    [[SimpleAudioEngine sharedEngine] preloadEffect: MAMA_HURT];
+    [[SimpleAudioEngine sharedEngine] preloadEffect: MAMA_JUMP];
+    [[SimpleAudioEngine sharedEngine] preloadEffect: STRONG_HURT];
+    [[SimpleAudioEngine sharedEngine] preloadEffect: STRONG_JUMP];
+    [[SimpleAudioEngine sharedEngine] preloadEffect: GIRL_HURT];
+    [[SimpleAudioEngine sharedEngine] preloadEffect: GIRL_JUMP];
     
     //music
     
@@ -123,6 +131,12 @@
         return;
     }
     [[SimpleAudioEngine sharedEngine] playEffect:CHEESE_3 loop:NO];
+}
+-(void)cheese_4{
+    if (![FTMUtil sharedInstance].isGameSoundOn) {
+        return;
+    }
+    [[SimpleAudioEngine sharedEngine] playEffect:CHEESE_4 loop:NO];
 }
 -(void)cheese_all{
     if (![FTMUtil sharedInstance].isGameSoundOn) {
@@ -292,6 +306,50 @@
     }
     [[SimpleAudioEngine sharedEngine] playEffect:WATER_SINK_SPLASH loop:NO];
 }
+-(void)pulling_tail{
+    if (![FTMUtil sharedInstance].isGameSoundOn) {
+        return;
+    }
+    [[SimpleAudioEngine sharedEngine] playEffect:PULLING_TAIL loop:NO];
+}
+-(void) mama_hurt{
+    if (![FTMUtil sharedInstance].isGameSoundOn) {
+        return;
+    }
+    [[SimpleAudioEngine sharedEngine] playEffect:MAMA_HURT loop:NO];
+}
+-(void) mama_jump{
+    if (![FTMUtil sharedInstance].isGameSoundOn) {
+        return;
+    }
+    [[SimpleAudioEngine sharedEngine] playEffect:MAMA_JUMP loop:NO];
+}
+-(void) strong_hurt{
+    if (![FTMUtil sharedInstance].isGameSoundOn) {
+        return;
+    }
+    [[SimpleAudioEngine sharedEngine] playEffect:STRONG_HURT loop:NO];
+}
+-(void) strong_jump{
+    if (![FTMUtil sharedInstance].isGameSoundOn) {
+        return;
+    }
+    [[SimpleAudioEngine sharedEngine] playEffect:STRONG_JUMP loop:NO];
+}
+-(void) girl_hurt{
+    if (![FTMUtil sharedInstance].isGameSoundOn) {
+        return;
+    }
+    [[SimpleAudioEngine sharedEngine] playEffect:GIRL_HURT loop:NO];
+}
+-(void) girl_jump{
+    if (![FTMUtil sharedInstance].isGameSoundOn) {
+        return;
+    }
+    [[SimpleAudioEngine sharedEngine] playEffect:GIRL_JUMP loop:NO];
+}
+
+
 
 //music
 

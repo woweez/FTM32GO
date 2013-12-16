@@ -20,6 +20,8 @@
 #import "FTMConstants.h"
 #import "LevelFailedScreen.h"
 #import "LevelCompleteScreen.h"
+#import <Social/Social.h>
+#import <Accounts/Accounts.h>
 
 enum {
 	kTagParentNode = 1,
@@ -29,6 +31,7 @@ enum {
 
 @implementation MenuScreen
 
+@synthesize _webView;
 +(CCScene *) scene {
 	
     CCScene *scene = [CCScene node];
@@ -143,7 +146,7 @@ enum {
         if ([FTMUtil sharedInstance].isRetinaDisplay || scaleFactorX > 1) {
             [storeMenuItem setScale:cScale *scaleFactorX];
         }
-        CCMenu *storeBtnMenu = [CCMenu menuWithItems:storeMenuItem, nil];
+        storeBtnMenu = [CCMenu menuWithItems:storeMenuItem, nil];
         storeBtnMenu.position = ccp(25 *scaleFactorX, 300 *scaleFactorY);
         [self addChild:storeBtnMenu z:10];
         
@@ -163,7 +166,7 @@ enum {
         if ([FTMUtil sharedInstance].isRetinaDisplay || scaleFactorX > 1) {
             [gameCenterMenuItem setScale:cScale *scaleFactorX];
         }
-        CCMenu *gameCenterBtnMenu = [CCMenu menuWithItems:gameCenterMenuItem, nil];
+        gameCenterBtnMenu = [CCMenu menuWithItems:gameCenterMenuItem, nil];
         gameCenterBtnMenu.position = ccp(455*scaleFactorX, 300*scaleFactorY);
         [self addChild:gameCenterBtnMenu z:10];
         
@@ -373,10 +376,83 @@ enum {
     slidingBgForAbout.position = ccp(467*scaleFactorX, 4*scaleFactorY);
     [slidingBgForAbout setTag:121];
     [self addChild: slidingBgForAbout z:0];
+    backgroundForSocial = [CCSprite spriteWithFile:@"Select_Level_background.png"];
+    backgroundForSocial.position = ccp(240*scaleFactorX, 160);
+    [backgroundForSocial setScaleX:xScale];
+    [backgroundForSocial setScaleY:yScale];
+    backgroundForSocial.visible = NO;
+    [self addChild: backgroundForSocial z:0];
+    
+    // social back btn.
+    CCMenuItemImage *backBtnSocial = [CCMenuItemImage itemWithNormalImage:@"back_button_1.png" selectedImage:@"back_button_2.png" block:^(id sender) {
+        [soundEffect button_1];
+        backFromSocial.visible = NO;
+        backgroundForSocial.visible = NO;
+        postBtn.visible = NO;
+        [self addAboutSlidingAnimation];
+        [_webView removeFromSuperview];
+        storeBtnMenu.visible = YES;
+        gameCenterBtnMenu.visible = YES;
+    }];
+    [backBtnSocial setScale:cScale *0.7];
+    
+    CGSize winSize = [CCDirector sharedDirector].winSize;
+    backFromSocial = [CCMenu menuWithItems:backBtnSocial, nil];
+    backFromSocial.position = ccp(30 *scaleFactorX, winSize.height - 20*scaleFactorY);
+    [self addChild:backFromSocial z:10];
+    backFromSocial.visible = NO;
+    //end
+    
+    // post btn.
+    CCMenuItemImage *btnSocial = [CCMenuItemImage itemWithNormalImage:@"post_Btn.png" selectedImage:@"post_Btn_Press.png" block:^(id sender) {
+        [soundEffect button_1];
+        backFromSocial.visible = NO;
+        backgroundForSocial.visible = NO;
+        [self addAboutSlidingAnimation];
+        [_webView removeFromSuperview];
+        postBtn.visible = NO;
+        if (postBtn.tag == 12) {
+            SLComposeViewController *socialSheet = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeTwitter];
+            [socialSheet setInitialText:@""];
+            
+            [socialSheet addImage:[UIImage imageNamed:@"Icon_114x114.png"]];
+            [socialSheet addURL:[NSURL URLWithString:@"https://twitter.com/woweezgames"]];
+            [[CCDirector sharedDirector] presentViewController:socialSheet animated:YES completion:nil];
+        }else if (postBtn.tag == 11){
+            SLComposeViewController *facebookSheet = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeFacebook];
+            [facebookSheet setInitialText:@""];
+            [facebookSheet addImage:[UIImage imageNamed:@"Icon_114x114.png"]];
+            [[CCDirector sharedDirector] presentViewController:facebookSheet animated:YES completion:nil];
+     }
+        
+        storeBtnMenu.visible = YES;
+        gameCenterBtnMenu.visible = YES;
+    }];
+    [btnSocial setScale:cScale *0.7];
+ 
+    postBtn = [CCMenu menuWithItems:btnSocial, nil];
+    postBtn.position = ccp(winSize.width - 30 *scaleFactorX, winSize.height - 20*scaleFactorY);
+    [self addChild:postBtn z:10];
+    postBtn.visible = NO;
+    //end
     
     CCMenuItem *twitterMenuItem = [CCMenuItemImage itemWithNormalImage:@"twitter.png" selectedImage:@"twitter.png" block:^(id sender) {
         [soundEffect button_1];
-       // do nothing...
+//        backFromSocial.visible = YES;
+//        backgroundForSocial.visible = YES;
+//        postBtn.visible = YES;
+//        storeBtnMenu.visible = NO;
+//        gameCenterBtnMenu.visible = NO;
+//        postBtn.tag = 12; //12 for twitter click.
+        NSURL *url = [NSURL URLWithString:@"https://twitter.com/woweezgames"];// Apple i love u.
+        [[UIApplication sharedApplication] openURL:url];
+//        NSString *urlAddress=@"http://twitter.com/woweezgames";
+//        NSURL *url = [NSURL URLWithString:urlAddress];
+//        NSURLRequest *reqObject=[NSURLRequest requestWithURL:url];
+//        _webView = [[UIWebView alloc] initWithFrame:CGRectMake(0, 35, winSize.width, 285)];
+//        [_webView loadRequest:reqObject];
+//        [[[CCDirector sharedDirector] view] addSubview:_webView];
+        
         
     }];
 
@@ -388,9 +464,24 @@ enum {
     }
     [slidingBgForAbout addChild:twitterBtnMenu z:10];
     
+
+    
     CCMenuItem *facebookMenuItem = [CCMenuItemImage itemWithNormalImage:@"facebook_like.png" selectedImage:@"facebook_like.png" block:^(id sender) {
-        [soundEffect button_1];
-        // do nothing...
+        [soundEffect button_1];        
+//        backFromSocial.visible = YES;
+//        backgroundForSocial.visible = YES;
+//        postBtn.visible = YES;
+//        postBtn.tag = 11; //11 for facebook click.
+//        storeBtnMenu.visible = NO;
+//        gameCenterBtnMenu.visible = NO;
+        NSURL *url = [NSURL URLWithString:@"https://www.facebook.com/pages/Woweez/645382115513182"];
+        [[UIApplication sharedApplication] openURL:url];
+//        NSString *urlAddress=@"https://www.facebook.com/pages/Woweez/645382115513182";
+//        NSURL *url = [NSURL URLWithString:urlAddress];
+//        NSURLRequest *reqObject=[NSURLRequest requestWithURL:url];
+//        _webView = [[UIWebView alloc] initWithFrame:CGRectMake(0, 35, winSize.width, 285)];
+//        [_webView loadRequest:reqObject];
+//        [[[CCDirector sharedDirector] view] addSubview:_webView];
     }];
 
     CCMenu *facebookBtnMenu = [CCMenu menuWithItems:facebookMenuItem, nil];
@@ -402,6 +493,13 @@ enum {
     [slidingBgForAbout addChild:facebookBtnMenu z:10];
 }
 
+-(void) callbackForWebView{
+   
+}
+-(void) onEnterTransitionDidFinish {
+    //Don't show web view until transition finishes
+//    [[[CCDirector sharedDirector] openGLView] addSubview:_webView];
+}
 -(void) addSettingsSelectionMenu{
     slidingBgForSettings = [CCSprite spriteWithFile:@"button_base.png"];
     [slidingBgForSettings setScaleX:0.0001f];
@@ -533,14 +631,11 @@ enum {
 }
 
 
-
 -(void)ccTouchesMoved:(NSSet *)touches withEvent:(UIEvent *)event {
     for( UITouch *touch in touches ) {
 		CGPoint location = [touch locationInView: [touch view]];
 		
 		location = [[CCDirector sharedDirector] convertToGL: location];
-		
-        
 	}
 }
 

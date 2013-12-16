@@ -24,6 +24,11 @@
     sound *soundEffect;
     CCSprite *slidingBgForAbout;
     CCSprite *slidingBgForSettings;
+    CCSprite *backgroundForSocial;
+    CCMenu *gameCenterBtnMenu;
+    CCMenu *storeBtnMenu;
+    CCMenu *backFromSocial;
+    CCMenu *postBtn;
     float scaleFactorX;
     float scaleFactorY;
     float xScale;
@@ -33,6 +38,6 @@
     CCMenuItem *soundOff;
     float cScale;
 }
-
+@property (nonatomic,retain) IBOutlet UIWebView *_webView;
 +(CCScene *) scene;
 @end

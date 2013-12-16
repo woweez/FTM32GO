@@ -22,8 +22,12 @@
     CCSprite *heroRunSprite;
     CCSprite *heroSprite;
     CCSprite *flamesSprite;
+    CCSprite *locker;
+    CCSprite * newClockSprite;
     CCSprite *heroPushSprite;
+    CCSprite *gateSprite;
     CCSprite *catSprite;
+    CCSprite *pushButtonSprite;
     sound *soundManager;
     CCSpriteBatchNode *spriteSheet;
     //boots power up feature..
@@ -50,6 +54,7 @@
     BOOL isLevelCompleted;
     int miceTrapAnimationType;
     int currentAnim;
+    int cheeseCollectedScore;
     CCSpriteFrameCache *cache;
     HudLayer *hudLayer;
     CGFloat platformX,platformY;
@@ -81,6 +86,13 @@
 -(void) unScheduleHotPotSmokeSound;
 -(void) mamaAnimationWithType:(int)fValue animationType:(NSString *)type;
 -(void) girlAnimationWithType:(int)fValue animationType:(NSString *)type;
+-(void) addGateImageAndAnimation:(CGPoint) position;
+-(void) playDoorAnimation;
+-(void) playStaticCheeseAnimation:(CCSprite *) sprite;
+-(void) playCheeseCollectedAnimation:(CCSprite *) sprite;
+-(void) playPushRedBtnAnimation:(CCSprite *) sprite;
+-(void) resetRedPushBtn:(CGPoint)position;
+-(void) playDoorLockAnimation :(CGPoint) position;
 //-(void)playMamaKniveHitAnimation;
 //-(void)playStrongKniveHitAnimation;
 //-(void)playGirlKniveHitAnimation;

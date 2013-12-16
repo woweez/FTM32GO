@@ -16,13 +16,17 @@
 
 #define IS_RETINA_SUPPORT ([[UIScreen mainScreen] respondsToSelector:@selector(displayLinkWithTarget:selector:)] && ([UIScreen mainScreen].scale == 2.0))
 
-#define STRONG_SCALE (([[UIScreen mainScreen] respondsToSelector:@selector(displayLinkWithTarget:selector:)] && ([UIScreen mainScreen].scale == 2.0)) ? 1.3 : 0.65)
-#define MAMA_SCALE (([[UIScreen mainScreen] respondsToSelector:@selector(displayLinkWithTarget:selector:)] && ([UIScreen mainScreen].scale == 2.0)) ? 1.6 : 0.8)
-#define GIRL_SCALE (([[UIScreen mainScreen] respondsToSelector:@selector(displayLinkWithTarget:selector:)] && ([UIScreen mainScreen].scale == 2.0)) ? 1.3 : 0.65)
-#define MAMA_RUN_SCALE (([[UIScreen mainScreen] respondsToSelector:@selector(displayLinkWithTarget:selector:)] && ([UIScreen mainScreen].scale == 2.0)) ? 1.6 : 0.8)
-#define MAMA_PUSH_SCALE (([[UIScreen mainScreen] respondsToSelector:@selector(displayLinkWithTarget:selector:)] && ([UIScreen mainScreen].scale == 2.0)) ? 1.6 : 0.8)
-#define CAT_SCALE (([[UIScreen mainScreen] respondsToSelector:@selector(displayLinkWithTarget:selector:)] && ([UIScreen mainScreen].scale == 2.0)) ? 1.2 : 0.6)
-#define MICE_TAIL_SCALE (([[UIScreen mainScreen] respondsToSelector:@selector(displayLinkWithTarget:selector:)] && ([UIScreen mainScreen].scale == 2.0)) ? 1.2 : 0.6)
+#define STRONG_SCALE (IS_RETINA_SUPPORT ? 1.3 : 0.65)
+#define MAMA_SCALE (IS_RETINA_SUPPORT ? 1.6 : 0.8)
+#define GIRL_SCALE (IS_RETINA_SUPPORT ? 1.3 : 0.65)
+#define MAMA_RUN_SCALE (IS_RETINA_SUPPORT ? 1.6 : 0.8)
+#define MAMA_PUSH_SCALE (IS_RETINA_SUPPORT ? 1.6 : 0.8)
+#define CAT_SCALE (IS_RETINA_SUPPORT ? 1.2 : 0.6)
+#define MICE_TAIL_SCALE (IS_RETINA_SUPPORT ? 1.2 : 0.6)
+#define CHEESE_SCALE (IS_RETINA_SUPPORT ? 1.8 : 0.9)
+#define MAMA_NORMAL_TRAPPED (IS_RETINA_SUPPORT ? 1.6 : 0.8)
+#define MAMA_MIST_TRAPPED (IS_RETINA_SUPPORT ? 1 : 0.5)
+
 //bhai
 //convenience measurements
 #define SCREEN [[CCDirector sharedDirector] winSize]
@@ -91,6 +95,7 @@
 #define DRAG_SPRITE_OFFSET_X     12
 #define DRAG_SPRITE_OFFSET_Y     8
 
+#define MAXIMUM_Z                9999
 #define HERO_SPRITE_TAG          211
 #define HERO_RUN_SPRITE_TAG      212
 
@@ -170,6 +175,7 @@
 #define CHEESE_1                            @"cheese_1.mp3"
 #define CHEESE_2                            @"cheese_2.mp3"
 #define CHEESE_3                            @"cheese_3.mp3"
+#define CHEESE_4                            @"cheese_4.mp3"
 #define CHEESE_ALL                          @"cheese_all.mp3"
 #define CORRECT_SWITCH                      @"correct_switch.mp3"
 #define DOOR_CLOSE                          @"door_close.mp3"
@@ -198,6 +204,13 @@
 #define VENT_MIST                           @"vent_mist.mp3"
 #define WATER_FALLING_FROM_VASE             @"water_falling_from_vase.mp3"
 #define WATER_SINK_SPLASH                   @"water_sink_splash.mp3"
+#define PULLING_TAIL                        @"pulling_tail.mp3"
+#define MAMA_JUMP                           @"Mama_Jump.mp3"
+#define STRONG_JUMP                         @"Mussle_Jump.mp3"
+#define GIRL_JUMP                           @"Pimple_Jump.mp3"
+#define MAMA_HURT                           @"Mama_Hurt.mp3"
+#define STRONG_HURT                         @"Mussle_Hurt.mp3"
+#define GIRL_HURT                           @"Girl_Hurt.mp3"
 
 //music
 

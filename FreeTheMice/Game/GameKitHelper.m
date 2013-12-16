@@ -125,7 +125,7 @@
     
     if (object != nil || tempAchievement != nil) {
         if (object != nil) {
-            if ([object integerValue] >= 100) {
+            if ([object floatValue] >= 100) {
                 return;
             }else if (tempAchievement != nil && tempAchievement.percentComplete >= 100){
                 return;
@@ -134,7 +134,7 @@
     }
     // end already complete check.
     
-    float percentage = [self calculateAchievementpercentage: identifier currentValue:percent maxValue:max];
+    float percentage = [self calculateAchievementPercentage: identifier currentValue:percent maxValue:max];
     GKAchievement *achievement = [self getAchievementForIdentifier:identifier percentage:percentage];
     
     if (achievement)
@@ -149,17 +149,21 @@
     }
 }
 
--(float) calculateAchievementpercentage :(NSString *) identifier currentValue:(float) percent maxValue:(float) maxValue{
+-(float) calculateAchievementPercentage :(NSString *) identifier currentValue:(float) cValue maxValue:(float) maxValue{
     GKAchievement *achievement = [achievementsDictionary objectForKey:identifier];
+    float percentage = (cValue/maxValue)*100;
     if (achievement == nil && [userPreferencesDictionary objectForKey:identifier] != nil) {
         
-        percent = (([[userPreferencesDictionary valueForKey:identifier] integerValue] + percent) / maxValue) * 100;
+        float percent = [[userPreferencesDictionary valueForKey:identifier] floatValue] + percentage;
+        return percent;
+    }else if (achievement != nil){
+        float percent = achievement.percentComplete + percentage;
         return percent;
     }
+    
     if (achievement == nil)
     {
-        percent = (percent / maxValue) * 100;
-        return percent;
+        return percentage;
     }
     return 100;
 }
@@ -187,7 +191,7 @@
             NSMutableArray *achievementsToComplete = [[NSMutableArray alloc] init];
             for (GKAchievement* achievement in achievements){
                 if ([userPreferencesDictionary objectForKey:achievement.identifier] == nil) {
-                    [userPreferencesDictionary setValue:[NSNumber numberWithInt:achievement.percentComplete] forKey:achievement.identifier];
+                    [userPreferencesDictionary setValue:[NSNumber numberWithFloat:achievement.percentComplete] forKey:achievement.identifier];
                     [[NSUserDefaults standardUserDefaults] setObject:userPreferencesDictionary forKey:@"FTM_Achievements"];
                     [[NSUserDefaults standardUserDefaults] synchronize];
                 }
@@ -197,10 +201,18 @@
             for (id key in userPreferencesDictionary){
                 if ([achievementsDictionary objectForKey:key] == nil) {
                     GKAchievement *achievement = [[GKAchievement alloc] initWithIdentifier:key];
-                    achievement.percentComplete = [[userPreferencesDictionary valueForKey:key] integerValue];
+                    achievement.percentComplete = [[userPreferencesDictionary valueForKey:key] floatValue];
                     achievement.showsCompletionBanner = YES;
                     [achievementsDictionary setObject: achievement forKey: achievement.identifier];
                     [achievementsToComplete addObject:achievement];
+                }else{
+                    GKAchievement *achievement = [achievementsDictionary objectForKey:key];
+                    if (achievement.percentComplete < [[userPreferencesDictionary valueForKey:key] floatValue]) {
+                        achievement.percentComplete = [[userPreferencesDictionary valueForKey:key] floatValue];
+                        achievement.showsCompletionBanner = YES;
+                        [achievementsDictionary setObject: achievement forKey: achievement.identifier];
+                        [achievementsToComplete addObject:achievement];
+                    }
                 }
             }
             
@@ -218,7 +230,7 @@
         
         achievement = [[GKAchievement alloc] initWithIdentifier:identifier];
         [achievementsDictionary setObject:achievement forKey:achievement.identifier];
-        [userPreferencesDictionary setValue:[NSNumber numberWithInt:percent] forKey:identifier];
+        [userPreferencesDictionary setValue:[NSNumber numberWithFloat:percent] forKey:identifier];
         [[NSUserDefaults standardUserDefaults] setObject:userPreferencesDictionary forKey:@"FTM_Achievements"];
         [[NSUserDefaults standardUserDefaults] synchronize];
         return achievement;
@@ -227,7 +239,7 @@
     {
         achievement = [[GKAchievement alloc] initWithIdentifier:identifier];
         [achievementsDictionary setObject:achievement forKey:achievement.identifier];
-        [userPreferencesDictionary setValue:[NSNumber numberWithInt:percent] forKey:identifier];
+        [userPreferencesDictionary setValue:[NSNumber numberWithFloat:percent] forKey:identifier];
         [[NSUserDefaults standardUserDefaults] setObject:userPreferencesDictionary forKey:@"FTM_Achievements"];
         [[NSUserDefaults standardUserDefaults] synchronize];
     }
